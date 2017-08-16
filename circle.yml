@@ -1,0 +1,11 @@
+version: 2
+jobs:
+  build:
+    working_directory: ~/ogp
+    machine: true
+    steps:
+      - checkout
+      - run:
+          name: "Build Image"
+          command: |
+            make build
