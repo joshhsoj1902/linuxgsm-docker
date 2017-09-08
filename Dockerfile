@@ -14,6 +14,8 @@ RUN  mkdir ~/bin \
   && curl -sSLf -z ~/bin/gomplate -o ~/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.0.0/gomplate_linux-amd64-slim \
   && chmod 755 ~/bin/gomplate
 
-ADD docker-runner.sh ./
+ADD docker-runner.sh docker-health.sh ./
+
+HEALTHCHECK --start-period=45s CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]

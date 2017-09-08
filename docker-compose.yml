@@ -4,4 +4,4 @@ services:
     image: joshhsoj1902/linuxgsm-docker:latest
     environment:
       - LGSM_GAMESERVERNAME=mumbleserver
-      - LGSM_UPDATEINSTALLSKIP=INSTALL
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
