@@ -1,6 +1,5 @@
 #!/bin/bash
 
-"${LGSM_GAMESERVERNAME:?Need to set LGSM_GAMESERVERNAME environment }"
 if [ -z "$LGSM_GAMESERVERNAME" ]; then
   echo "Need to set LGSM_GAMESERVERNAME environment"
   exit 1
