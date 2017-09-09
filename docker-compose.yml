@@ -3,5 +3,5 @@ services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
     environment:
-      - LGSM_GAMESERVERNAME=ricochetserver
+      - LGSM_GAMESERVERNAME=mumbleserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
