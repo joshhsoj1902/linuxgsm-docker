@@ -23,10 +23,10 @@ jobs:
           name: "Build image"
           command: |
             make build
-      # - run:
-      #     name: "Test"
-      #     command: |
-      #       docker run -d --name gmod joshhsoj1902/linuxgsm-docker:latest
-      #       sleep 60
-      #       docker ps
-      #       docker exec gmod "./docker-health.sh"
+      - run:
+          name: "Test"
+          command: |
+            docker run -d --name game joshhsoj1902/linuxgsm-docker:latest
+            sleep 60
+            docker ps
+            docker exec game "./docker-health.sh"
