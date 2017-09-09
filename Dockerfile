@@ -17,6 +17,8 @@ RUN  mkdir ~/bin \
 
 ADD docker-runner.sh docker-health.sh ./
 
+CMD chmod +x docker-runner.sh docker-health.sh
+
 HEALTHCHECK --start-period=45s CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]
