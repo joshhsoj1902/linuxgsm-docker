@@ -3,9 +3,30 @@ jobs:
   build:
     working_directory: ~/ogp
     machine: true
+    environment:
+      DOCKER_URL: https://download.docker.com/linux/static/edge/x86_64/docker-17.05.0-ce.tgz
+      DOCKER_COMPOSE_URL: https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
     steps:
       - checkout
       - run:
-          name: "Build Image"
+          name: Upgrade Docker
+          command: |
+            curl -sSL $DOCKER_URL | sudo tar -xz --strip-components=1 -C /usr/bin/
+            sudo service docker restart
+      - run:
+          name: Upgrade Docker Compose
+          command: |
+            loc=$(which docker-compose)
+            sudo curl -sSLf -z $loc -o $loc $DOCKER_COMPOSE_URL
+            sudo chmod 755 $loc
+      - run:
+          name: "Build image"
           command: |
             make build
+      # - run:
+      #     name: "Test"
+      #     command: |
+      #       docker run -d --name game joshhsoj1902/linuxgsm-docker:latest
+      #       sleep 60
+      #       docker ps
+      #       docker exec game "./docker-health.sh"
