@@ -1,0 +1,30 @@
+##################################
+######## Instance Settings ########
+##################################
+# PLACE COMMON SETTINGS HERE
+#
+#### LinuxGSM Settings ####
+#
+## Notification Alerts
+# (on|off)
+# Email Alerts | https://github.com/GameServerManagers/LinuxGSM/wiki/Email
+{{if (getenv "LGSM_EMAILALERT")}}emailalert={{.Env.LGSM_EMAILALERT}}{{else}}#emailalert{{end}}
+{{if (getenv "LGSM_EMAIL")}}email={{.Env.LGSM_EMAIL}}{{else}}#email{{end}}
+{{if (getenv "LGSM_EMAILFROM")}}emailfrom={{.Env.LGSM_EMAILFROM}}{{else}}#emailfrom{{end}}
+#
+# Pushbullet Alerts | https://github.com/GameServerManagers/LinuxGSM/wiki/Pushbullet
+{{if (getenv "LGSM_PUSHBULLETALERT")}}pushbulletalert={{.Env.LGSM_PUSHBULLETALERT}}{{else}}#pushbulletalert{{end}}
+{{if (getenv "LGSM_PUSHBULLETTOKEN")}}pushbullettoken={{.Env.LGSM_PUSHBULLETTOKEN}}{{else}}#pushbullettoken{{end}}
+{{if (getenv "LGSM_CHANNELTAG")}}channeltag={{.Env.LGSM_CHANNELTAG}}{{else}}#channeltag{{end}}
+#
+## Updating | https://github.com/GameServerManagers/LinuxGSM/wiki/Update
+{{if (getenv "LGSM_UPDATEONSTART")}}updateonstart={{.Env.LGSM_UPDATEONSTART}}{{else}}#updateonstart{{end}}
+#
+## Backup | https://github.com/GameServerManagers/LinuxGSM/wiki/Backup
+{{if (getenv "LGSM_MAXBACKUPS")}}maxbackups={{.Env.LGSM_MAXBACKUPS}}{{else}}#maxbackups{{end}}
+{{if (getenv "LGSM_MAXBACKUPDAYS")}}maxbackupdays={{.Env.LGSM_LGSM_MAXBACKUPDAYS}}{{else}}#maxbackupdays{{end}}
+{{if (getenv "LGSM_STOPONBACKUP")}}stoponbackup={{.Env.LGSM_STOPONBACKUP}}{{else}}#stoponbackup{{end}}
+#
+## Logging | https://github.com/GameServerManagers/LinuxGSM/wiki/Logging
+{{if (getenv "LGSM_CONSOLELOGGING")}}consolelogging={{.Env.LGSM_CONSOLELOGGING}}{{else}}#consolelogging{{end}}
+{{if (getenv "LGSM_LOGDAYS")}}logdays={{.Env.LGSM_LOGDAYS}}{{else}}#logdays{{end}}
