@@ -19,6 +19,8 @@ ADD docker-runner.sh docker-health.sh ./
 
 CMD chmod 777 docker-runner.sh docker-health.sh
 
+RUN usermod -G tty steam
+
 HEALTHCHECK --start-period=45s CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]
