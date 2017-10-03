@@ -5,7 +5,7 @@ WORKDIR /home/steam/linuxgsm
 RUN git fetch --all \
  && git reset --hard origin/master
 
-RUN git checkout tags/170710.1
+RUN git checkout tags/170926.1
 
 RUN find /home/steam/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && find /home/steam/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
