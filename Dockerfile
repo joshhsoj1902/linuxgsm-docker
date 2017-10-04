@@ -32,6 +32,8 @@ RUN chown steam:steam docker-runner.sh docker-health.sh \
 
 USER steam
 
+RUN mkdir logs serverfiles
+
 HEALTHCHECK --start-period=45s CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]
