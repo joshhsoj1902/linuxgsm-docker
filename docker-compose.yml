@@ -5,3 +5,5 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=mumbleserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+    volumes:
+      - "/home/steam/linuxgsm/logs"
