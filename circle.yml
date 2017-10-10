@@ -27,7 +27,7 @@ jobs:
           name: "Test"
           command: |
             docker-compose -f docker-compose.test.yml up -d
-            sleep 120
+            sleep 240
             docker ps
             docker-compose logs game
             docker-compose exec game "./docker-health.sh"
