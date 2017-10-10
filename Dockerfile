@@ -7,7 +7,7 @@ USER steam
 RUN git fetch --all \
  && git reset --hard origin/master
 
-RUN git checkout tags/170710.1
+RUN git checkout tags/170926.1
 
 RUN  mkdir ~/bin \
   && curl -sSLf -z ~/bin/gomplate -o ~/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.0.0/gomplate_linux-amd64-slim \
@@ -31,6 +31,8 @@ RUN chown steam:steam docker-runner.sh docker-health.sh \
  && chmod +x docker-runner.sh docker-health.sh
 
 USER steam
+
+RUN mkdir logs serverfiles
 
 HEALTHCHECK --start-period=45s CMD ./docker-health.sh
 
