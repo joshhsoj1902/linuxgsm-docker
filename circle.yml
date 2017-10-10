@@ -30,4 +30,6 @@ jobs:
             sleep 240
             docker ps
             docker-compose logs game
+            echo 'vvvvvvvvvvvvvvvvvv'
             docker-compose exec game "./docker-health.sh"
+            echo '^^^^^^^^^^^^^^^^^^'
