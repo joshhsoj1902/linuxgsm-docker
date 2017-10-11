@@ -24,6 +24,10 @@ jobs:
           command: |
             make build
       - run:
+          name: "Make logs dir"
+          command: |
+            mkdir logs
+      - run:
           name: "Test"
           command: |
             docker-compose -f docker-compose.test.yml up -d
@@ -33,3 +37,6 @@ jobs:
             echo 'vvvvvvvvvvvvvvvvvv'
             docker-compose exec game "./docker-health.sh"
             echo '^^^^^^^^^^^^^^^^^^'
+      - store_artifacts:
+          path: ./logs
+          destination: logs
