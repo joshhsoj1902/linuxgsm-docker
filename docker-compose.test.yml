@@ -15,4 +15,4 @@ services:
       - LGSM_CLIENTPORT="27005"
       - LGSM_SOURCETVPORT="27020"
     volumes:
-      - "logs:/home/steam/linuxgsm/logs"
+      - "./logs:/home/steam/linuxgsm/logs"
