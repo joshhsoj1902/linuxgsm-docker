@@ -43,6 +43,6 @@ sleep 30s
 #
 while :
 do
-bash lgsm-gameserver monitor
+./lgsm-gameserver monitor
 sleep 30s
 done

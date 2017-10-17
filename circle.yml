@@ -23,10 +23,20 @@ jobs:
           name: "Build image"
           command: |
             make build
-      # - run:
-      #     name: "Test"
-      #     command: |
-      #       docker run -d --name game joshhsoj1902/linuxgsm-docker:latest
-      #       sleep 60
-      #       docker ps
-      #       docker exec game "./docker-health.sh"
+      - run:
+          name: "Make logs dir"
+          command: |
+            mkdir logs
+      - run:
+          name: "Test"
+          command: |
+            docker-compose -f docker-compose.test.yml up -d
+            sleep 300
+            docker ps
+            docker-compose logs game
+            echo 'vvvvvvvvvvvvvvvvvv'
+            docker-compose exec game "./docker-health.sh"
+            echo '^^^^^^^^^^^^^^^^^^'
+      - store_artifacts:
+          path: ./logs
+          destination: logs
