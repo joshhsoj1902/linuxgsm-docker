@@ -25,6 +25,8 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
 fi
 
 
+# TODO: Right here use "hostname -i" to set the IP address to bind to.
+
 
 if [ ! -f lgsm-gameserver ]; then
     echo "No game is installed, please set LGSM_UPDATEINSTALLSKIP"
