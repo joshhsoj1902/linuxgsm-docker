@@ -44,9 +44,9 @@ jobs:
             docker stack deploy --compose-file docker-compose.test.yml game
             sleep 300
             docker ps
-            docker-compose logs game
+            docker service logs game_game
             echo 'vvvvvvvvvvvvvvvvvv'
-            docker-compose exec game "./docker-health.sh"
+            docker exec $(docker ps -q) "./docker-health.sh"
             echo '^^^^^^^^^^^^^^^^^^'
       - store_artifacts:
           path: ./logs
