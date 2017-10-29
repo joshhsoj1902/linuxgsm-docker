@@ -31,8 +31,13 @@ if [ ! -f lgsm-gameserver ]; then
     exit 1
 fi
 
+echo 'BANANA'
+hostname -i
+echo 'Apple'
+hostname -I
 export LGSM_IP=$(hostname -i)
 echo 'IP is '$LGSM_IP
+echo 'ORANGE'
 
 ~/bin/gomplate -f ~/linuxgsm/lgsm/config-default/config-lgsm/common.cfg.tmpl -o ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/common.cfg
 if [ -f ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/$LGSM_GAMESERVERNAME.cfg.tmpl ]; then
