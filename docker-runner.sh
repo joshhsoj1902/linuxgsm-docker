@@ -31,7 +31,7 @@ if [ ! -f lgsm-gameserver ]; then
     exit 1
 fi
 
-export LGSM_IP = $(hostname -i)
+export LGSM_IP=$(hostname -i)
 echo 'IP is '$LGSM_IP
 
 ~/bin/gomplate -f ~/linuxgsm/lgsm/config-default/config-lgsm/common.cfg.tmpl -o ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/common.cfg
