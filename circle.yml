@@ -43,7 +43,7 @@ jobs:
           command: |
             docker swarm init
             docker stack deploy --compose-file docker-compose.test.yml game
-            sleep 312000
+            sleep 120
             docker ps
             docker logs $(docker ps -q)
             echo 'vvvvvvvvvvvvvvvvvv'
