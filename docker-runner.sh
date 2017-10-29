@@ -24,6 +24,8 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
   esac
 fi
 
+export LGSM_IP=$(hostname -i)
+echo "IP is set to "$LGSM_IP
 
 
 if [ ! -f lgsm-gameserver ]; then
