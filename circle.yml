@@ -31,7 +31,7 @@ jobs:
           name: "Test compose"
           command: |
             docker-compose -f docker-compose.test.yml up -d
-            sleep 300
+            sleep 120
             docker ps
             docker-compose logs game
             echo 'vvvvvvvvvvvvvvvvvv'
@@ -43,9 +43,9 @@ jobs:
           command: |
             docker swarm init
             docker stack deploy --compose-file docker-compose.test.yml game
-            sleep 300
+            sleep 312000
             docker ps
-            docker service logs game_game
+            docker logs $(docker ps -q)
             echo 'vvvvvvvvvvvvvvvvvv'
             docker exec $(docker ps -q) "./docker-health.sh"
             echo '^^^^^^^^^^^^^^^^^^'
