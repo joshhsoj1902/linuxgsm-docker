@@ -24,7 +24,8 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
   esac
 fi
 
-
+source choose-ip.sh
+echo "IP is set to "${LGSM_IP}
 
 if [ ! -f lgsm-gameserver ]; then
     echo "No game is installed, please set LGSM_UPDATEINSTALLSKIP"

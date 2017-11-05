@@ -1,0 +1,27 @@
+version: '3.2'
+services:
+  game:
+    image: joshhsoj1902/gmod-docker:latest
+    ports:
+      - target: 27015
+        published: 27015
+        protocol: tcp
+        mode: host
+      - target: 27015
+        published: 27015
+        protocol: udp
+        mode: host
+      - target: 27020
+        published: 27020
+        protocol: udp
+        mode: host
+      - target: 27005
+        published: 27005
+        protocol: udp
+        mode: host
+    environment:
+      - bind_gateway
+      - LGSM_GAMESERVERNAME=mumbleserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+
+
