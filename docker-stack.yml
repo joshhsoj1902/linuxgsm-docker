@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   game:
-    image: joshhsoj1902/gmod-docker:latest
+    image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - target: 27015
         published: 27015
