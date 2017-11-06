@@ -28,7 +28,7 @@ jobs:
           command: |
             mkdir logs
       - run:
-          name: "Test compose"
+          name: "Test Compose"
           command: |
             docker-compose -f docker-compose.test.yml up -d
             sleep 120
