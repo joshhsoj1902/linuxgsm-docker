@@ -42,12 +42,15 @@ jobs:
           name: "Test swarm"
           command: |
             docker swarm init
-            docker network ls
+
+            docker stack deploy --compose-file docker-stack.yml game
+
+            sleep 15
             source export-gwbridge.sh
             docker stack deploy --compose-file docker-stack.yml game
+
             sleep 120
             docker ps
-            docker network ls
             docker logs $(docker ps -q)
             echo 'vvvvvvvvvvvvvvvvvv'
             docker exec $(docker ps -q) "./docker-health.sh"
