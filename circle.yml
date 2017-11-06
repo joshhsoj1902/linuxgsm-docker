@@ -46,6 +46,7 @@ jobs:
             docker stack deploy --compose-file docker-stack.yml game
             sleep 120
             docker ps
+            docker network ls
             docker logs $(docker ps -q)
             echo 'vvvvvvvvvvvvvvvvvv'
             docker exec $(docker ps -q) "./docker-health.sh"
