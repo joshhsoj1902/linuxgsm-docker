@@ -30,7 +30,7 @@ jobs:
       - run:
           name: "Test Compose"
           command: |
-            docker-compose -f docker-compose.test.yml up -d
+            docker-compose -f docker-compose.citest.yml up -d
             sleep 300
             docker ps
             docker-compose logs game
