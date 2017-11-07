@@ -1,7 +1,7 @@
 version: '3.2'
 services:
   game:
-    image: joshhsoj1902/gmod-docker:latest
+    image: joshhsoj1902/linuxgsm-docker:local
     ports:
       - target: 27015
         published: 27015
@@ -21,7 +21,8 @@ services:
         mode: host
     environment:
       - bind_gateway
-      - LGSM_GAMESERVERNAME=mumbleserver
+      # - LGSM_GAMESERVERNAME=mumbleserver
+      - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
 
 

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+rm -f INSTALLING.LOCK
+
 if [ -z "$LGSM_GAMESERVERNAME" ]; then
   echo "Need to set LGSM_GAMESERVERNAME environment"
   exit 1
@@ -8,16 +10,22 @@ fi
 if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
   case "$LGSM_UPDATEINSTALLSKIP" in
   "UPDATE")
+      touch INSTALLING.LOCK
       ./linuxgsm.sh $LGSM_GAMESERVERNAME
       mv $LGSM_GAMESERVERNAME lgsm-gameserver
       ./lgsm-gameserver auto-install
+      rm -f INSTALLING.LOCK
+      
       echo "Game has been updaed. Starting"
       ;;
   "INSTALL")
+      touch INSTALLING.LOCK  
       ./linuxgsm.sh $LGSM_GAMESERVERNAME
       mv $LGSM_GAMESERVERNAME lgsm-gameserver
       ls -ltr
       ./lgsm-gameserver auto-install
+      rm -f INSTALLING.LOCK
+       
       echo "Game has been installed. Exiting"
       exit
       ;;
