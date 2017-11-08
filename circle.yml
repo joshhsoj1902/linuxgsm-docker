@@ -37,6 +37,20 @@ jobs:
             echo 'vvvvvvvvvvvvvvvvvv'
             docker-compose exec game "./docker-health.sh"
             echo '^^^^^^^^^^^^^^^^^^'
+      - run:
+          name: "Test swarm"
+          command: |
+            docker swarm init
+            docker stack deploy --compose-file docker-stack.yml game
+            sleep 15
+            source export-gwbridge.sh
+            docker stack deploy --compose-file docker-stack.yml game
+            sleep 120
+            docker ps
+            docker logs $(docker ps -q)
+            echo 'vvvvvvvvvvvvvvvvvv'
+            docker exec $(docker ps -q) "./docker-health.sh"
+            echo '^^^^^^^^^^^^^^^^^^'
       - store_artifacts:
           path: ./logs
           destination: logs
