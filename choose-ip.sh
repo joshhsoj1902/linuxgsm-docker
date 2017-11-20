@@ -9,7 +9,9 @@ if [[ -n "${bind_gateway}" ]]; then
             export LGSM_IP=$element            
         fi
     done
-else
-    export LGSM_IP=$(hostname -i)
+fi
+
+if [ -z "$LGSM_IP" ]; then
+  export LGSM_IP=$(hostname -i)
 fi
 echo 'IP SET TO '$LGSM_IP
