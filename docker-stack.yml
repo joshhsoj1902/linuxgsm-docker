@@ -19,8 +19,13 @@ services:
         published: 27005
         protocol: udp
         mode: host
+    deploy:
+      mode: replicated
+      replicas: 1
+      endpoint_mode: dnsrr
     environment:
       - bind_gateway
+      # - bind_gateway=10.255.0.1
       # - LGSM_GAMESERVERNAME=mumbleserver
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE

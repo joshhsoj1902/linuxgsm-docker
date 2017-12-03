@@ -15,6 +15,8 @@ RUN  mkdir ~/bin \
 
 USER root
 
+RUN apt-get update && apt-get install -y netcat iputils-ping dnsutils traceroute iptables
+
 RUN find /home/steam/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && find /home/steam/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
  && chmod u+x /home/steam/linuxgsm/lgsm/functions/README.md
