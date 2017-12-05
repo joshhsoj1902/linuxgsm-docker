@@ -15,11 +15,12 @@ fi
 
 echo 'LGSM_IP 2 '$LGSM_IP
 
-if [[ -z "$LGSM_IP" && -n "${bind_overlay}" && -n "${bind_ingress}" ]]; then
+if [[ -z "$LGSM_IP" && -n "${bind_ingress}" ]]; then
     IFS=' ' read -r -a ips <<< $(hostname -I)
+    dnsIP=$(hostname -i)
     for element in "${ips[@]}"
     do
-        if [[ $element != $matchOverlayIP && $element != $matchIngressIP ]]; then
+        if [[ $element != $dnsIP && $element != $matchIngressIP ]]; then
             echo 'N-MATCH '$element
             export LGSM_IP=$element            
         fi
