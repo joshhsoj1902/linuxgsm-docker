@@ -10,10 +10,6 @@ fi
 source choose-ip.sh
 echo "IP is set to "${LGSM_IP}
 
-# sleep 60
-
-# exit 1 #Stop processing (only testing the ip)
-
 if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
   case "$LGSM_UPDATEINSTALLSKIP" in
   "UPDATE")
