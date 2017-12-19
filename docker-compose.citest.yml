@@ -10,9 +10,7 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
-      - LGSM_IP="0.0.0.0"
-      - LGSM_PORT="27015"
-      - LGSM_CLIENTPORT="27005"
-      - LGSM_SOURCETVPORT="27020"
+      - LGSM_IP=0.0.0.0
+      - LGSM_PORT=27015
     volumes:
       - "./logs:/home/steam/linuxgsm/logs"
