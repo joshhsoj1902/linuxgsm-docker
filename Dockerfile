@@ -36,6 +36,6 @@ USER steam
 
 RUN mkdir logs serverfiles
 
-HEALTHCHECK --start-period=30s CMD ./docker-health.sh
+# HEALTHCHECK --start-period=30s CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]

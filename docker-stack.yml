@@ -24,11 +24,12 @@ services:
       replicas: 1
       endpoint_mode: dnsrr
     environment:
-      - bind_gateway
-      - bind_overlay=10.0.0.1
-      - bind_ingress=10.255.0.1
+      # - bind_gateway
+      # - bind_overlay=10.0.0.1
+      # - bind_ingress=10.255.0.1
       # - bind_gateway=10.255.0.1
       # - LGSM_GAMESERVERNAME=mumbleserver
+      - LGSM_IP=0.0.0.0
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
 
