@@ -27,10 +27,10 @@ RUN chown -R steam:steam /home/steam/linuxgsm \
  && chmod -R 777 /home/steam/linuxgsm \
  && ls -ltr
 
-ADD docker-runner.sh docker-health.sh choose-ip.sh ./
+ADD --chown=steam:steam docker-runner.sh docker-health.sh choose-ip.sh ./
 
-RUN chown steam:steam docker-runner.sh docker-health.sh choose-ip.sh \
- && chmod +x docker-runner.sh docker-health.sh choose-ip.sh
+# RUN chown steam:steam docker-runner.sh docker-health.sh choose-ip.sh \
+#  && chmod +x docker-runner.sh docker-health.sh choose-ip.sh
 
 USER steam
 
