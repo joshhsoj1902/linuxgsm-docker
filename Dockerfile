@@ -27,10 +27,15 @@ RUN chown -R steam:steam /home/steam/linuxgsm \
  && chmod -R 777 /home/steam/linuxgsm \
  && ls -ltr
 
-ADD --chown=steam:steam docker-runner.sh docker-health.sh choose-ip.sh ./
+ADD docker-runner.sh docker-health.sh ./
 
-# RUN chown steam:steam docker-runner.sh docker-health.sh choose-ip.sh \
-#  && chmod +x docker-runner.sh docker-health.sh choose-ip.sh
+RUN chown steam:steam docker-runner.sh docker-health.sh \
+ && chmod +x docker-runner.sh docker-health.sh
+
+ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
+
+RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+ && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
 
 USER steam
 

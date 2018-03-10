@@ -30,6 +30,8 @@ if [ -n "${queryport}" ]; then
 	port="${queryport}"
 fi
 
+hostname=$(hostname)
+
 fn_print_info "Querying port: gsquery.py enabled"
 fn_script_log_info "Querying port: gsquery.py enabled"
 sleep 1
@@ -39,30 +41,30 @@ sleep 1
 # Will Wait up to 60 seconds to confirm server is down giving server time to change map.
 totalseconds=0
 for queryattempt in {1..5}; do
-	fn_print_dots "Querying port: ${ip}:${port} : ${totalseconds}/${queryattempt} : "
+	fn_print_dots "Querying port: ${hostname}:${port} : ${totalseconds}/${queryattempt} : "
 	fn_print_querying_eol
-	fn_script_log_info "Querying port: ${ip}:${port} : ${queryattempt} : QUERYING"
+	fn_script_log_info "Querying port: ${hostname}:${port} : ${queryattempt} : QUERYING"
 
-	gsquerycmd=$("${functionsdir}"/gsquery.py -a "${ip}" -p "${port}" -e "${engine}" 2>&1)
+	gsquerycmd=$("${functionsdir}"/gsquery.py -a "${hostname}" -p "${port}" -e "${engine}" 2>&1)
 	exitcode=$?
 
 	sleep 1
 	if [ "${exitcode}" == "0" ]; then
 		# Server OK
-		fn_print_ok "Querying port: ${ip}:${port} : ${queryattempt} : "
+		fn_print_ok "Querying port: ${hostname}:${port} : ${queryattempt} : "
 		fn_print_ok_eol_nl
-		fn_script_log_pass "Querying port: ${ip}:${port} : ${queryattempt} : OK"
+		fn_script_log_pass "Querying port: ${hostname}:${port} : ${queryattempt} : OK"
 		exitcode=0
 		break
 	else
 		# Server failed query
-		fn_script_log_info "Querying port: ${ip}:${port} : ${queryattempt} : ${gsquerycmd}"
+		fn_script_log_info "Querying port: ${hostname}:${port} : ${queryattempt} : ${gsquerycmd}"
 
 		if [ "${queryattempt}" == "5" ]; then
 			# Server failed query 4 times confirmed failure
-			fn_print_fail "Querying port: ${ip}:${port} : ${totalseconds}/${queryattempt} : "
+			fn_print_fail "Querying port: ${hostname}:${port} : ${totalseconds}/${queryattempt} : "
 			fn_print_fail_eol_nl
-			fn_script_log_error "Querying port: ${ip}:${port} : ${queryattempt} : FAIL"
+			fn_script_log_error "Querying port: ${hostname}:${port} : ${queryattempt} : FAIL"
 			sleep 1
 
 			# Send alert if enabled
@@ -74,7 +76,7 @@ for queryattempt in {1..5}; do
 
 		# Seconds counter
 		for seconds in {1..15}; do
-			fn_print_fail "Querying port: ${ip}:${port} : ${totalseconds}/${queryattempt} : ${red}${gsquerycmd}${default}"
+			fn_print_fail "Querying port: ${hostname}:${port} : ${totalseconds}/${queryattempt} : ${red}${gsquerycmd}${default}"
 			totalseconds=$((totalseconds + 1))
 			sleep 1
 			if [ "${seconds}" == "15" ]; then
