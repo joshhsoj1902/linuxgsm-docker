@@ -10,7 +10,7 @@ RUN git fetch --all \
 RUN git checkout tags/170926.1
 
 RUN  mkdir ~/bin \
-  && curl -sSLf -z ~/bin/gomplate -o ~/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.0.0/gomplate_linux-amd64-slim \
+  && curl -sSLf -z ~/bin/gomplate -o ~/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.2.0/gomplate_linux-amd64-slim \
   && chmod 755 ~/bin/gomplate
 
 USER root

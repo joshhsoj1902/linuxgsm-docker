@@ -5,6 +5,15 @@
 #
 {{if (getenv "LGSM_IP")}}ip={{.Env.LGSM_IP}}{{else}}#ip{{end}}
 {{if (getenv "LGSM_PORT")}}port={{.Env.LGSM_PORT}}{{else}}#port{{end}}
+{{if (getenv "LGSM_PORT")}}clientport={{math.Sub .Env.LGSM_PORT 10}}{{else}}#clientport{{end}}
+{{if (getenv "LGSM_PORT")}}sourcetvport={{math.Add .Env.LGSM_PORT 5}}{{else}}#clientport{{end}}
+{{if (getenv "LGSM_MAXPLAYERS")}}maxplayers={{.Env.LGSM_MAXPLAYERS}}{{else}}#LGSM_MAXPLAYERS{{end}}
+
+#Gmod
+{{if (getenv "LGSM_DEFAULTMAP")}}defaultmap={{.Env.LGSM_DEFAULTMAP}}{{else}}#LGSM_DEFAULTMAP{{end}}
+{{if (getenv "LGSM_GAMEMODE")}}gamemode={{.Env.LGSM_GAMEMODE}}{{else}}#LGSM_GAMEMODE{{end}}
+{{if (getenv "LGSM_WORKSHOPAUTH")}}workshopauth={{.Env.LGSM_WORKSHOPAUTH}}{{else}}#LGSM_WORKSHOPAUTH{{end}}
+{{if (getenv "LGSM_WORKSHOPCOLLECTIONID")}}workshopcollectionid={{.Env.LGSM_WORKSHOPCOLLECTIONID}}{{else}}#LGSM_WORKSHOPCOLLECTIONID{{end}}
 
 #### LinuxGSM Settings ####
 #

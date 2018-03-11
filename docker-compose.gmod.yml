@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    environment:
+      - LGSM_GAMESERVERNAME=gmodserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=20000
+      - LGSM_DEFAULTMAP=gm_construct
+      - LGSM_GAMEMODE=sandbox
+      # - LGSM_WORKSHOPAUTH
+      # - LGSM_WORKSHOPCOLLECTIONID
+    volumes:
+      - "/home/steam/linuxgsm/logs"
+      - "/home/steam/linuxgsm/serverfiles/"
+
+
