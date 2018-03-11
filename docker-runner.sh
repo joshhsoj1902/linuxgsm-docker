@@ -7,7 +7,6 @@ if [ -z "$LGSM_GAMESERVERNAME" ]; then
   exit 1
 fi
 
-source choose-ip.sh
 echo "IP is set to "${LGSM_IP}
 
 if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then

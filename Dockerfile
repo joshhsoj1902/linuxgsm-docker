@@ -15,8 +15,9 @@ RUN  mkdir ~/bin \
 
 USER root
 
-RUN apt-get update && apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim
-
+RUN apt-get update \
+ && apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim 
+ 
 RUN find /home/steam/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && find /home/steam/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
  && chmod u+x /home/steam/linuxgsm/lgsm/functions/README.md
@@ -27,15 +28,20 @@ RUN chown -R steam:steam /home/steam/linuxgsm \
  && chmod -R 777 /home/steam/linuxgsm \
  && ls -ltr
 
-ADD docker-runner.sh docker-health.sh choose-ip.sh ./
+ADD docker-runner.sh docker-health.sh ./
 
-RUN chown steam:steam docker-runner.sh docker-health.sh choose-ip.sh \
- && chmod +x docker-runner.sh docker-health.sh choose-ip.sh
+RUN chown steam:steam docker-runner.sh docker-health.sh \
+ && chmod +x docker-runner.sh docker-health.sh
+
+ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
+
+RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+ && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
 
 USER steam
 
 RUN mkdir logs serverfiles
 
-HEALTHCHECK --start-period=30s CMD ./docker-health.sh
+# HEALTHCHECK --start-period=30s CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]

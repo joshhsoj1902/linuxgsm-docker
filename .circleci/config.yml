@@ -41,9 +41,7 @@ jobs:
           name: "Test swarm"
           command: |
             docker swarm init
-            docker stack deploy --compose-file docker-stack.yml game
-            sleep 15
-            source export-gwbridge.sh
+            sleep 10
             docker stack deploy --compose-file docker-stack.yml game
             sleep 120
             docker ps
