@@ -21,7 +21,7 @@ jobs:
           name: "Build image"
           command: |
             make build
-      - run: docker save joshhsoj1902/linuxgsm-docker:latest images.tar
+      - run: docker save joshhsoj1902/linuxgsm-docker:latest -o images.tar
       - persist_to_workspace:
           root: workspace
           paths: 
