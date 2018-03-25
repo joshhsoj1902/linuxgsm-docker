@@ -1,15 +1,15 @@
 # linuxgsm-docker
 
-[![CircleCI][ciecle-image]][circle-url]
+[![CircleCI][circle-image]][circle-url]
 
 ## Options
 This image uses environment variables for configuration, below is a list of the supported environment variables
 
-| Environment Variable   | Description                            | Options               | Supported Games |
-|------------------------|----------------------------------------|-----------------------|-----------------|
-| LGSM_GAMESERVERNAME    | LGSM name of the game to install       | [configs][lgsm-config]|All              |
-| LGSM_UPDATEINSTALLSKIP | What sort of intall to do on startup   | UPDATE, INSTALL, SKIP |All              |
-| LGSM_PORT              | Port to bind to                        |                       |All              |
+| Environment Variable   | Description                            | Options                     | Supported Games  |
+|------------------------|----------------------------------------|-----------------------------|------------------|
+| LGSM_GAMESERVERNAME    | Name of the game to install            | [LGSM Configs][lgsm-config] | All              |
+| LGSM_UPDATEINSTALLSKIP | What sort of intall to do on startup   | UPDATE, INSTALL, SKIP       | All              |
+| LGSM_PORT              | Port to bind to                        |                             | All              |
 
 
 ## Usage
