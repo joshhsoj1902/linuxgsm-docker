@@ -100,11 +100,11 @@ jobs:
           name: Inspect things
           command: |
             docker ps
-            docker-compose logs game
+            docker-compose logs -f ./workspace/docker-compose.citest.yml game
       - run:
           name: "Test Compose"
           command: |
-            docker-compose exec game "./docker-health.sh"
+            docker-compose exec -f ./workspace/docker-compose.citest.yml game "./docker-health.sh"
       - store_artifacts:
           path: ./logs
           destination: logs
