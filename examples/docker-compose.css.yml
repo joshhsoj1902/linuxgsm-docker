@@ -1,9 +1,3 @@
-# linuxgsm-docker
-
-## Usage
-
-### Counter strike source
-```
 version: '3.1'
 services:
   game:
@@ -13,4 +7,3 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
     volumes:
       - "/home/steam/linuxgsm/logs"
-```
