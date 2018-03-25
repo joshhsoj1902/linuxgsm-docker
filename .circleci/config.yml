@@ -33,47 +33,6 @@ jobs:
             - images.tar
             - docker-compose.citest.yml
             - docker-stack.yml
-  test:
-    <<: *defaults
-    steps:
-      - attach_workspace:
-          at: workspace
-      - run: docker load -i ./workspace/images.tar
-      - run:
-          name: Upgrade Docker Compose
-          command: |
-            loc=$(which docker-compose)
-            sudo curl -sSLf -z $loc -o $loc $DOCKER_COMPOSE_URL
-            sudo chmod 755 $loc
-      - run:
-          name: "Make logs dir"
-          command: |
-            mkdir logs
-      - run:
-          name: "Test Compose"
-          command: |
-            docker-compose -f ./workspace/docker-compose.citest.yml up -d
-            sleep 300
-            docker ps
-            docker-compose -f ./workspace/docker-compose.citest.yml logs game
-            echo 'vvvvvvvvvvvvvvvvvv'
-            docker-compose -f ./workspace/docker-compose.citest.yml exec game "./docker-health.sh"
-            echo '^^^^^^^^^^^^^^^^^^'
-      - run:
-          name: "Test swarm"
-          command: |
-            docker swarm init
-            sleep 10
-            docker stack deploy --compose-file ./workspace/docker-stack.yml game
-            sleep 120
-            docker ps
-            docker logs $(docker ps -q)
-            echo 'vvvvvvvvvvvvvvvvvv'
-            docker exec $(docker ps -q) "./docker-health.sh"
-            echo '^^^^^^^^^^^^^^^^^^'
-      - store_artifacts:
-          path: ./logs
-          destination: logs
   compose:
     <<: *defaults
     steps:
@@ -105,9 +64,6 @@ jobs:
           name: "Test Compose"
           command: |
             docker-compose -f ./workspace/docker-compose.citest.yml exec game  "./docker-health.sh"
-      # - store_artifacts:
-      #     path: ./logs
-      #     destination: logs
   swarm:
     <<: *defaults
     steps:
@@ -136,17 +92,11 @@ jobs:
           name: Test Swarm
           command: |
             docker exec $(docker ps -q) "./docker-health.sh"
-      # - store_artifacts:
-      #     path: ./logs
-      #     destination: logs
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
-      - test:
-          requires:
-            - build
       - compose:
           requires:
             - build
