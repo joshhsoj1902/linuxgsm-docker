@@ -21,11 +21,13 @@ jobs:
           name: "Build image"
           command: |
             make build
-      - run: docker save joshhsoj1902/linuxgsm-docker:latest -o workspace/images.tar
+      - run: docker save joshhsoj1902/linuxgsm-docker -o workspace/images.tar
       - persist_to_workspace:
           root: workspace
           paths: 
             - images.tar
+            - docker-compose.citest.yml
+            - docker-stack.yml
   test:
     <<: *defaults
     steps:
@@ -45,7 +47,7 @@ jobs:
       - run:
           name: "Test Compose"
           command: |
-            docker-compose -f docker-compose.citest.yml up -d
+            docker-compose -f ./workspace/docker-compose.citest.yml up -d
             sleep 300
             docker ps
             docker-compose logs game
@@ -57,7 +59,7 @@ jobs:
           command: |
             docker swarm init
             sleep 10
-            docker stack deploy --compose-file docker-stack.yml game
+            docker stack deploy --compose-file ./workspace/docker-stack.yml game
             sleep 120
             docker ps
             docker logs $(docker ps -q)
