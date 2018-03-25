@@ -22,10 +22,16 @@ jobs:
           command: |
             make build
       - run: docker save joshhsoj1902/linuxgsm-docker:latest images.tar
-
+      - persist_to_workspace:
+          root: workspace
+          paths: 
+            - image.tar
   test:
     <<: *defaults
     steps:
+      - attach_workspace:
+          at: workspace
+      - run: docker load images.tar
       - run:
           name: Upgrade Docker Compose
           command: |
@@ -67,5 +73,5 @@ workflows:
     jobs:
       - build
       - test:
-        requires:
-          - build
+          requires:
+            - build
