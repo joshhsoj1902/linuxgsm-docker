@@ -5,10 +5,12 @@
 ## Options
 This image uses environment variables for configuration, below is a list of the supported environment variables
 
-|ENV VAR                | Description                            | Options               |
-|-----------------------|----------------------------------------|-----------------------|
-|LGSM_GAMESERVERNAME    | LGSM name of the game to install       |                       |
-|LGSM_UPDATEINSTALLSKIP | What sort of intall to do on startup   | UPDATE, INSTALL, SKIP |
+| Environment Variable   | Description                            | Options               | Supported Games |
+|------------------------|----------------------------------------|-----------------------|-----------------|
+| LGSM_GAMESERVERNAME    | LGSM name of the game to install       |                       |All              |
+| LGSM_UPDATEINSTALLSKIP | What sort of intall to do on startup   | UPDATE, INSTALL, SKIP |All              |
+| LGSM_PORT              | Port to bind to                        |                       |All              |
+
 
 ## Usage
 
