@@ -1,6 +1,8 @@
+[![CircleCI][circle-image]][circle-url]
+
 # linuxgsm-docker
 
-[![CircleCI][circle-image]][circle-url]
+Dockerized version of the [Linux Game Server Manager][lgsm-home] project
 
 ## Options
 This image uses environment variables for configuration, below is a list of the supported environment variables
@@ -30,3 +32,4 @@ services:
 [circle-image]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg
 [circle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
 [lgsm-config]: https://github.com/GameServerManagers/LinuxGSM/tree/master/lgsm/config-default/config-lgsm
+[lgsm-home]: https://github.com/GameServerManagers/LinuxGSM
