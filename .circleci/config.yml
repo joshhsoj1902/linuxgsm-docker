@@ -31,7 +31,7 @@ jobs:
     steps:
       - attach_workspace:
           at: workspace
-      - run: docker load ./workspace/images.tar
+      - run: docker load -i ./workspace/images.tar
       - run:
           name: Upgrade Docker Compose
           command: |
