@@ -1,5 +1,7 @@
 # linuxgsm-docker
 
+[![CircleCI](https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg)](https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master)
+
 ## Usage
 
 ### Counter strike source
