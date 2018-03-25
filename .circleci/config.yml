@@ -4,10 +4,6 @@ defaults: &defaults
     environment:
       DOCKER_URL: https://download.docker.com/linux/static/edge/x86_64/docker-17.05.0-ce.tgz
       DOCKER_COMPOSE_URL: https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
-attach_workspace: &attach_workspace
-    - attach_workspace:
-        at: workspace
-    - run: docker load -i ./workspace/images.tar
 
 version: 2
 jobs:
@@ -40,7 +36,9 @@ jobs:
   test:
     <<: *defaults
     steps:
-      <<: *attach_workspace
+      - attach_workspace:
+          at: workspace
+      - run: docker load -i ./workspace/images.tar
       - run:
           name: Upgrade Docker Compose
           command: |
@@ -79,7 +77,9 @@ jobs:
   compose:
     <<: *defaults
     steps:
-      <<: *attach_workspace
+      - attach_workspace:
+          at: workspace
+      - run: docker load -i ./workspace/images.tar
       - run:
           name: Upgrade Docker Compose
           command: |
