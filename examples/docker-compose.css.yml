@@ -1,0 +1,9 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    environment:
+      - LGSM_GAMESERVERNAME=cssserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+    volumes:
+      - "/home/steam/linuxgsm/logs"
