@@ -1,18 +1,44 @@
-version: 2
-jobs:
-  build:
+defaults: &defaults 
     working_directory: ~/ogp
     machine: true
     environment:
       DOCKER_URL: https://download.docker.com/linux/static/edge/x86_64/docker-17.05.0-ce.tgz
       DOCKER_COMPOSE_URL: https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
+
+version: 2
+jobs:
+  build:
+    <<: *defaults
     steps:
       - checkout
+      - run: 
+          name: setup workspace
+          background: true
+          command: |
+            mkdir -p workspace
+            cp -p docker-compose.citest.yml docker-stack.yml workspace
       - run:
           name: Upgrade Docker
           command: |
             curl -sSL $DOCKER_URL | sudo tar -xz --strip-components=1 -C /usr/bin/
             sudo service docker restart
+      - run:
+          name: "Build image"
+          command: |
+            make build
+      - run: docker save joshhsoj1902/linuxgsm-docker -o workspace/images.tar
+      - persist_to_workspace:
+          root: workspace
+          paths: 
+            - images.tar
+            - docker-compose.citest.yml
+            - docker-stack.yml
+  compose:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: workspace
+      - run: docker load -i ./workspace/images.tar
       - run:
           name: Upgrade Docker Compose
           command: |
@@ -20,35 +46,60 @@ jobs:
             sudo curl -sSLf -z $loc -o $loc $DOCKER_COMPOSE_URL
             sudo chmod 755 $loc
       - run:
-          name: "Build image"
+          name: "Make logs dir"
           command: |
-            make build
+            mkdir logs
+      - run:
+          name: Start container
+          command: docker-compose -f ./workspace/docker-compose.citest.yml up -d
+      - run:
+          name: Delay a little bit
+          command: sleep 60
+      - run: 
+          name: Inspect things
+          command: |
+            docker ps
+            docker-compose -f ./workspace/docker-compose.citest.yml logs game
+      - run:
+          name: "Test Compose"
+          command: |
+            docker-compose -f ./workspace/docker-compose.citest.yml exec game  "./docker-health.sh"
+  swarm:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: workspace
+      - run: docker load -i ./workspace/images.tar
       - run:
           name: "Make logs dir"
           command: |
             mkdir logs
       - run:
-          name: "Test Compose"
-          command: |
-            docker-compose -f docker-compose.citest.yml up -d
-            sleep 300
-            docker ps
-            docker-compose logs game
-            echo 'vvvvvvvvvvvvvvvvvv'
-            docker-compose exec game "./docker-health.sh"
-            echo '^^^^^^^^^^^^^^^^^^'
-      - run:
-          name: "Test swarm"
-          command: |
+          name: Start Stack
+          command: | 
             docker swarm init
             sleep 10
-            docker stack deploy --compose-file docker-stack.yml game
-            sleep 120
+            docker stack deploy --compose-file ./workspace/docker-stack.yml game
+      - run:
+          name: Delay a little bit
+          command: sleep 60
+      - run: 
+          name: Inspect things
+          command: |
             docker ps
             docker logs $(docker ps -q)
-            echo 'vvvvvvvvvvvvvvvvvv'
+      - run:
+          name: Test Swarm
+          command: |
             docker exec $(docker ps -q) "./docker-health.sh"
-            echo '^^^^^^^^^^^^^^^^^^'
-      - store_artifacts:
-          path: ./logs
-          destination: logs
+workflows:
+  version: 2
+  build_and_test:
+    jobs:
+      - build
+      - compose:
+          requires:
+            - build
+      - swarm:
+          requires:
+            - build
