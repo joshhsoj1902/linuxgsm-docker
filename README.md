@@ -28,5 +28,5 @@ services:
 ```
 
 [circle-image]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg
-[ciecle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
-[lgsm-configs]: https://github.com/GameServerManagers/LinuxGSM/tree/master/lgsm/config-default/config-lgsm
+[circle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
+[lgsm-config]: https://github.com/GameServerManagers/LinuxGSM/tree/master/lgsm/config-default/config-lgsm
