@@ -11,7 +11,12 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-      - run: mkdir -p workspace
+      - run: 
+          name: setup workspace
+          background: true
+          command: |
+            mkdir -p workspace
+            cp -p docker-compose.citest.yml docker-stack.yml workspace
       - run:
           name: Upgrade Docker
           command: |
