@@ -33,6 +33,7 @@ jobs:
             - images.tar
             - docker-compose.citest.yml
             - docker-stack.yml
+            - examples
   swarm:
     <<: *defaults
     steps:
