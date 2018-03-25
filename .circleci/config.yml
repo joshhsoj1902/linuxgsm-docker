@@ -108,6 +108,37 @@ jobs:
       - store_artifacts:
           path: ./logs
           destination: logs
+  swarm:
+    <<: *defaults
+    steps:
+      - attach_workspace:
+          at: workspace
+      - run: docker load -i ./workspace/images.tar
+      - run:
+          name: "Make logs dir"
+          command: |
+            mkdir logs
+      - run:
+          name: Start Stack
+          command: | 
+            docker swarm init
+            sleep 10
+            docker stack deploy --compose-file ./workspace/docker-stack.yml game
+      - run:
+          name: Delay a little bit
+          command: sleep 60
+      - run: 
+          name: Inspect things
+          command: |
+            docker ps
+            docker logs $(docker ps -q)
+      - run:
+          name: Test Swarm
+          command: |
+            docker exec $(docker ps -q) "./docker-health.sh"
+      - store_artifacts:
+          path: ./logs
+          destination: logs
 workflows:
   version: 2
   build_and_test:
@@ -117,5 +148,8 @@ workflows:
           requires:
             - build
       - compose:
+          requires:
+            - build
+      - swarm:
           requires:
             - build
