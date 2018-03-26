@@ -1,34 +1,29 @@
 defaults: &defaults 
-    working_directory: ~/ogp
-    machine: true
-    environment:
-      DOCKER_URL: https://download.docker.com/linux/static/edge/x86_64/docker-17.05.0-ce.tgz
-      DOCKER_COMPOSE_URL: https://github.com/docker/compose/releases/download/1.13.0/docker-compose-Linux-x86_64
-
+    working_directory: ~/build
+    docker: 
+      - image: joshhsoj1902/circleci-build-image:latest
+remote_docker_version: &remote_docker_version
+    version: 17.11.0-ce
 version: 2
 jobs:
   build:
     <<: *defaults
     steps:
       - checkout
+      - setup_remote_docker:
+          <<: *remote_docker_version
       - run: 
           name: setup workspace
           background: true
           command: |
-            mkdir -p workspace
-            cp -rp docker-compose.citest.yml docker-stack.yml examples workspace
-      - run:
-          name: Upgrade Docker
-          command: |
-            curl -sSL $DOCKER_URL | sudo tar -xz --strip-components=1 -C /usr/bin/
-            sudo service docker restart
+            cp -rp docker-compose.citest.yml docker-stack.yml examples /tmp/workspace
       - run:
           name: "Build image"
           command: |
             make build
-      - run: docker save joshhsoj1902/linuxgsm-docker -o workspace/images.tar
+      - run: docker save joshhsoj1902/linuxgsm-docker -o /tmp/workspace/images.tar
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/workspace
           paths: 
             - images.tar
             - docker-compose.citest.yml
@@ -37,19 +32,17 @@ jobs:
   swarm:
     <<: *defaults
     steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
       - attach_workspace:
-          at: workspace
-      - run: docker load -i ./workspace/images.tar
-      - run:
-          name: Make logs dir
-          command: |
-            mkdir logs
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
       - run:
           name: Start Stack
           command: | 
             docker swarm init
             sleep 10
-            docker stack deploy --compose-file ./workspace/docker-stack.yml game
+            docker stack deploy --compose-file /tmp/workspace/docker-stack.yml game
       - run:
           name: Delay a little bit
           command: sleep 60
@@ -65,22 +58,14 @@ jobs:
   compose:
     <<: *defaults
     steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
       - attach_workspace:
-          at: workspace
-      - run: docker load -i ./workspace/images.tar
-      - run:
-          name: Upgrade Docker Compose
-          command: |
-            loc=$(which docker-compose)
-            sudo curl -sSLf -z $loc -o $loc $DOCKER_COMPOSE_URL
-            sudo chmod 755 $loc
-      - run:
-          name: Make logs dir
-          command: |
-            mkdir logs
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
       - run:
           name: Start container
-          command: docker-compose -f ./workspace/docker-compose.citest.yml up -d
+          command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up -d
       - run:
           name: Delay a little bit
           command: sleep 60
@@ -88,37 +73,29 @@ jobs:
           name: Inspect things
           command: |
             docker ps
-            docker-compose -f ./workspace/docker-compose.citest.yml logs game
+            docker-compose -f /tmp/workspace/docker-compose.citest.yml logs game
       - run:
           name: "Test Compose"
           command: |
-            docker-compose -f ./workspace/docker-compose.citest.yml exec game  "./docker-health.sh"
+            docker-compose -f /tmp/workspace/docker-compose.citest.yml exec game  "./docker-health.sh"
   compose-css:
     <<: *defaults
     steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
       - attach_workspace:
-          at: workspace
-      - run: docker load -i ./workspace/images.tar
-      - run:
-          name: Upgrade Docker Compose
-          command: |
-            loc=$(which docker-compose)
-            sudo curl -sSLf -z $loc -o $loc $DOCKER_COMPOSE_URL
-            sudo chmod 755 $loc
-      - run:
-          name: Make logs dir
-          command: |
-            mkdir logs
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
       - run:
           name: Start container
-          command: docker-compose -f ./workspace/examples/docker-compose.css.yml up -d
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up -d
       - run:
           name: Delay a little bit
           command: sleep 60
       - run:
           name: "Test Compose"
           command: |
-            docker-compose -f ./workspace/examples/docker-compose.css.yml exec game  "./docker-health.sh"
+            docker-compose -f /tmp/workspace/examples/docker-compose.css.yml exec game  "./docker-health.sh"
 workflows:
   version: 2
   build_and_test:
