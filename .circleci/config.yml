@@ -7,9 +7,9 @@ remote_docker_version: &remote_docker_version
 compose_test: &compose_test
     name: Start container & run tests
     command: | 
-      docker-compose -f up -d
+      docker-compose up -d
       sleep 60
-      docker-compose -f exec game  "./docker-health.sh"
+      docker-compose exec game  "./docker-health.sh"
 version: 2
 jobs:
   build:
