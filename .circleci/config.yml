@@ -1,5 +1,5 @@
 defaults: &defaults 
-    working_directory: ~/ogp
+    working_directory: /tmp/build
     docker: 
       - image: joshhsoj1902/circleci-build-image:better-copy
 
@@ -15,7 +15,6 @@ jobs:
           name: setup workspace
           background: true
           command: |
-            mkdir -p workspace
             cp -rp docker-compose.citest.yml docker-stack.yml examples workspace
       - run:
           name: "Build image"
