@@ -53,18 +53,13 @@ RUN adduser \
     --gecos "" \
     steam
 
-# Select the script as entry point
-COPY ./update-linuxgsm.sh /home/steam/
-RUN [ -d /home/steam/linuxgsm ] || mkdir -p /home/steam/linuxgsm && \
-    chown -R steam:steam /home/steam && \
-    chmod u+x /home/steam/update-linuxgsm.sh
+RUN chown -R steam:steam /home/steam
 
 # Switch to the user steam
 USER steam
 
 # Install LinuxGSM
-RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm && \
-    /home/steam/update-linuxgsm.sh
+RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm 
 
 # RUN git fetch --all \
 #  && git reset --hard origin/master
