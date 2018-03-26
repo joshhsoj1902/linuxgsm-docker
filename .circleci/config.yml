@@ -10,7 +10,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 17.12.0-ce
+          version: 17.11.0-ce
       - run: 
           name: setup workspace
           background: true
@@ -38,7 +38,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.12.0-ce
+          version: 17.11.0-ce
       - attach_workspace:
           at: workspace
       - run: docker load -i ./workspace/images.tar
@@ -68,7 +68,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.12.0-ce
+          version: 17.11.0-ce
       - attach_workspace:
           at: workspace
       - run: docker load -i ./workspace/images.tar
@@ -101,7 +101,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.12.0-ce
+          version: 17.11.0-ce
       - attach_workspace:
           at: workspace
       - run: docker load -i ./workspace/images.tar
