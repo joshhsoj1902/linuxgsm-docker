@@ -1,7 +1,7 @@
 defaults: &defaults 
     working_directory: ~/ogp
     docker: 
-      - image: joshhsoj1902/circleci-build-image:latest
+      - image: joshhsoj1902/circleci-build-image:better-copy
 
 version: 2
 jobs:
