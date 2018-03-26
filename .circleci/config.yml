@@ -1,7 +1,7 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:better-copy
+      - image: joshhsoj1902/circleci-build-image:latest
 remote_docker_version: &remote_docker_version
     version: 17.11.0-ce
 version: 2
