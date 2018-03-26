@@ -128,3 +128,6 @@ workflows:
       - compose-css:
           requires:
             - build
+      - compose-gmod:
+          requires:
+            - build
