@@ -2,7 +2,8 @@ defaults: &defaults
     working_directory: ~/build
     docker: 
       - image: joshhsoj1902/circleci-build-image:better-copy
-
+remote_docker_version: &remote_docker_version
+    version: 17.11.0-ce
 version: 2
 jobs:
   build:
@@ -10,7 +11,7 @@ jobs:
     steps:
       - checkout
       - setup_remote_docker:
-          version: 17.11.0-ce
+          <<: *remote_docker_version
       - run: 
           name: setup workspace
           background: true
@@ -32,7 +33,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.11.0-ce
+          <<: *remote_docker_version
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
@@ -62,7 +63,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.11.0-ce
+          <<: *remote_docker_version
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
@@ -89,7 +90,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.11.0-ce
+          <<: *remote_docker_version
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
