@@ -38,10 +38,6 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run:
-          name: Make logs dir
-          command: |
-            mkdir logs
-      - run:
           name: Start Stack
           command: | 
             docker swarm init
@@ -68,10 +64,6 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run:
-          name: Make logs dir
-          command: |
-            mkdir logs
-      - run:
           name: Start container
           command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up -d
       - run:
@@ -94,10 +86,6 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
-      - run:
-          name: Make logs dir
-          command: |
-            mkdir logs
       - run:
           name: Start container
           command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up -d
