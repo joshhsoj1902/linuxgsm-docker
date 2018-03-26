@@ -4,6 +4,12 @@ defaults: &defaults
       - image: joshhsoj1902/circleci-build-image:latest
 remote_docker_version: &remote_docker_version
     version: 17.11.0-ce
+compose_test: &compose_test
+    name: Start container & run tests
+    command: | 
+      docker-compose up -d
+      sleep 60
+      docker-compose exec game  "./docker-health.sh"
 version: 2
 jobs:
   build:
@@ -63,21 +69,9 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/docker-compose.citest.yml ./docker-compose.yml
       - run:
-          name: Start container
-          command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up -d
-      - run:
-          name: Delay a little bit
-          command: sleep 60
-      - run: 
-          name: Inspect things
-          command: |
-            docker ps
-            docker-compose -f /tmp/workspace/docker-compose.citest.yml logs game
-      - run:
-          name: "Test Compose"
-          command: |
-            docker-compose -f /tmp/workspace/docker-compose.citest.yml exec game  "./docker-health.sh"
+          <<: *compose_test
   compose-css:
     <<: *defaults
     steps:
@@ -86,16 +80,9 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.css.yml ./docker-compose.yml
       - run:
-          name: Start container
-          command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up -d
-      - run:
-          name: Delay a little bit
-          command: sleep 60
-      - run:
-          name: "Test Compose"
-          command: |
-            docker-compose -f /tmp/workspace/examples/docker-compose.css.yml exec game  "./docker-health.sh"
+          <<: *compose_test
   compose-gmod:
     <<: *defaults
     steps:
@@ -104,16 +91,9 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.gmod.yml ./docker-compose.yml
       - run:
-          name: Start container
-          command: docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml up -d
-      - run:
-          name: Delay a little bit
-          command: sleep 60
-      - run:
-          name: "Test Compose"
-          command: |
-            docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml exec game  "./docker-health.sh"
+          <<: *compose_test
 workflows:
   version: 2
   build_and_test:
