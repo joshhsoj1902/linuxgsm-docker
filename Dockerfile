@@ -7,7 +7,7 @@ USER steam
 RUN git fetch --all \
  && git reset --hard origin/master
 
-RUN git checkout tags/170926.1
+RUN git checkout tags/180318.1
 
 RUN  mkdir ~/bin \
   && curl -sSLf -z ~/bin/gomplate -o ~/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.2.0/gomplate_linux-amd64-slim \
