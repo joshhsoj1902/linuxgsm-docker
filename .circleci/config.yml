@@ -22,7 +22,7 @@ jobs:
             make build
       - run: docker save joshhsoj1902/linuxgsm-docker -o /tmp/workspace/images.tar
       - persist_to_workspace:
-          root: workspace
+          root: /tmp/workspace
           paths: 
             - images.tar
             - docker-compose.citest.yml
@@ -34,7 +34,7 @@ jobs:
       - setup_remote_docker:
           version: 17.11.0-ce
       - attach_workspace:
-          at: workspace
+          at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run:
           name: Make logs dir
@@ -64,7 +64,7 @@ jobs:
       - setup_remote_docker:
           version: 17.11.0-ce
       - attach_workspace:
-          at: workspace
+          at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run:
           name: Make logs dir
@@ -91,7 +91,7 @@ jobs:
       - setup_remote_docker:
           version: 17.11.0-ce
       - attach_workspace:
-          at: workspace
+          at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run:
           name: Make logs dir
