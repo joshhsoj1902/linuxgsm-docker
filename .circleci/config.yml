@@ -53,9 +53,7 @@ jobs:
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/docker-stack.yml ./docker-stack.yml
       - run:
-          name: Start Stack
-          command: | 
-            <<: *swarm_test
+          <<: *swarm_test
   compose:
     <<: *defaults
     steps:
