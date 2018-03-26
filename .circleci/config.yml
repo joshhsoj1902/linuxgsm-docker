@@ -96,6 +96,24 @@ jobs:
           name: "Test Compose"
           command: |
             docker-compose -f /tmp/workspace/examples/docker-compose.css.yml exec game  "./docker-health.sh"
+  compose-gmod:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run:
+          name: Start container
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml up -d
+      - run:
+          name: Delay a little bit
+          command: sleep 60
+      - run:
+          name: "Test Compose"
+          command: |
+            docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml exec game  "./docker-health.sh"
 workflows:
   version: 2
   build_and_test:
@@ -108,5 +126,8 @@ workflows:
           requires:
             - build
       - compose-css:
+          requires:
+            - build
+      - compose-gmod:
           requires:
             - build
