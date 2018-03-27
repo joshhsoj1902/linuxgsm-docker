@@ -16,7 +16,7 @@ swarm_test: &swarm_test
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -x 120 -t 1000 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      docker exec $(docker ps -q) "./docker-health.sh"
+      retry -v -s 5 -x 120 -t 1000 'docker exec $(docker ps -q) "./docker-health.sh"'
 version: 2
 jobs:
   build:
