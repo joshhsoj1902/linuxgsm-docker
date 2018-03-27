@@ -8,8 +8,8 @@ compose_test: &compose_test
     name: Start container & run tests
     command: | 
       docker-compose up -d
-      sleep 60
-      docker-compose exec game  "./docker-health.sh"
+      retry -v -s 5 -x 120 -t 1000 'docker-compose exec game "./docker-ready.sh"'
+      retry -v -s 5 -x 120 -t 1000 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
