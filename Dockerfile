@@ -78,10 +78,10 @@ RUN chown -R steam:steam /home/steam/linuxgsm \
  && chmod -R 777 /home/steam/linuxgsm \
  && ls -ltr
 
-ADD docker-runner.sh docker-health.sh ./
+ADD docker-runner.sh docker-health.sh docker-ready.sh ./
 
-RUN chown steam:steam docker-runner.sh docker-health.sh \
- && chmod +x docker-runner.sh docker-health.sh
+RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
+ && chmod +x docker-runner.sh docker-health.sh docker-ready.sh
 
 ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
 

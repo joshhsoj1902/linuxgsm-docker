@@ -8,8 +8,15 @@ compose_test: &compose_test
     name: Start container & run tests
     command: | 
       docker-compose up -d
-      sleep 60
-      docker-compose exec game  "./docker-health.sh"
+      retry -v -s 5 -x 120 -t 1000 'docker-compose exec game "./docker-ready.sh"'
+      retry -v -s 5 -x 120 -t 1000 'docker-compose exec game "./docker-health.sh"'
+swarm_test: &swarm_test
+    name: Start container & run tests
+    command: | 
+      docker swarm init
+      docker stack deploy --compose-file ./docker-stack.yml game
+      retry -v -s 5 -x 120 -t 1000 'docker exec $(docker ps -q) "./docker-ready.sh"'
+      retry -v -s 5 -x 120 -t 1000 'docker exec $(docker ps -q) "./docker-health.sh"'
 version: 2
 jobs:
   build:
@@ -43,24 +50,9 @@ jobs:
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/docker-stack.yml ./docker-stack.yml
       - run:
-          name: Start Stack
-          command: | 
-            docker swarm init
-            sleep 10
-            docker stack deploy --compose-file /tmp/workspace/docker-stack.yml game
-      - run:
-          name: Delay a little bit
-          command: sleep 60
-      - run: 
-          name: Inspect things
-          command: |
-            docker ps
-            docker logs $(docker ps -q)
-      - run:
-          name: Test Swarm
-          command: |
-            docker exec $(docker ps -q) "./docker-health.sh"
+          <<: *swarm_test
   compose:
     <<: *defaults
     steps:
@@ -108,6 +100,6 @@ workflows:
       - compose-css:
           requires:
             - build
-      - compose-gmod:
-          requires:
-            - build
+      # - compose-gmod:
+      #     requires:
+      #       - build
