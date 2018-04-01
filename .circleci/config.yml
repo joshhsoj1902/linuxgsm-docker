@@ -97,14 +97,16 @@ workflows:
       - compose:
           requires:
             - build
-      - compose-css:
+      - slow-tests:
           type: approval      
           requires:
             - build
-      - compose-gmod:
-          type: approval
+      - compose-css:
           requires:
-            - build
+            - slow-tests
+      - compose-gmod:
+          requires:
+            - slow-tests
 
 
             #filters:
