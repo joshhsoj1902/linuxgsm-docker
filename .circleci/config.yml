@@ -8,15 +8,15 @@ compose_test: &compose_test
     name: Start container & run tests
     command: | 
       docker-compose up -d
-      retry -v -s 5 -x 120 -t 1000 'docker-compose exec game "./docker-ready.sh"'
-      retry -v -s 5 -x 120 -t 1000 'docker-compose exec game "./docker-health.sh"'
+      retry -v -s 5 -t 30 'docker-compose exec game "./docker-ready.sh"'
+      retry -v -s 5 -t 30 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
-      retry -v -s 5 -x 120 -t 1000 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      retry -v -s 5 -x 120 -t 1000 'docker exec $(docker ps -q) "./docker-health.sh"'
+      retry -v -s 5 -t 30 'docker exec $(docker ps -q) "./docker-ready.sh"'
+      retry -v -s 5 -t 30 'docker exec $(docker ps -q) "./docker-health.sh"'
 version: 2
 jobs:
   build:
