@@ -43,8 +43,8 @@ RUN apt-get -y autoremove && \
     rm -rf /var/tmp/*
 
 RUN  mkdir ~/bin \
-  && curl -sSLf -z ~/bin/gomplate -o ~/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.2.0/gomplate_linux-amd64-slim \
-  && chmod 755 ~/bin/gomplate
+  && curl -sSLf -z /usr/bin/gomplate -o /usr/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.2.0/gomplate_linux-amd64-slim \
+  && chmod 755 /usr/bin/gomplate
 
 # Add the steam user
 RUN adduser \
