@@ -98,8 +98,16 @@ workflows:
           requires:
             - build
       - compose-css:
+          type: approval      
           requires:
             - build
       - compose-gmod:
+          type: approval
           requires:
             - build
+
+
+            #filters:
+            # branches:
+            #   only:
+            #     - master
