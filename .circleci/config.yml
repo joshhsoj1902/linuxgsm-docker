@@ -90,6 +90,21 @@ jobs:
             name: Save logs 
             when: always
             command: docker-compose logs game
+  compose-minecraft:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.minecraft.yml ./docker-compose.yml
+      - run:
+          <<: *compose_test
+      - run:
+            name: Save logs 
+            when: always
+            command: docker-compose logs game
 workflows:
   version: 2
   build_and_test:
@@ -111,7 +126,9 @@ workflows:
       - compose-gmod:
           requires:
             - slow-tests
-
+      - compose-minecraft:
+          requires:
+            - slow-tests
 
             #filters:
             # branches:
