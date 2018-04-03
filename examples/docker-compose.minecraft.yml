@@ -7,5 +7,6 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_DEFAULTMAP=gm_construct
       - LGSM_GAMEMODE=sandbox
+      - LGSM_IP=0.0.0.0
     volumes:
       - "/home/steam/linuxgsm/logs"
