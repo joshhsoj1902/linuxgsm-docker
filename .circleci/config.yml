@@ -134,7 +134,7 @@ workflows:
             - slow-tests
       - compose-minecraft:
           requires:
-            - test-miecraft
+            - test-minecraft
             - build
     #   - compose-gmod:
     #       requires:
