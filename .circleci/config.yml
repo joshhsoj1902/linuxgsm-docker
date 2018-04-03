@@ -103,8 +103,6 @@ workflows:
             - build
       - slow-tests:
           type: approval      
-          requires:
-            - build
     ### CSS ###
       - test-css:
           type: approval      
@@ -113,6 +111,7 @@ workflows:
       - compose-css:
           requires:
             - test-css
+            - build
     #   - compose-gmod:
     #       requires:
     #         - slow-tests
