@@ -10,6 +10,7 @@ ENV TERM xterm
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
     apt-get install -y \
+        bc \
         binutils \
         bsdmainutils \
         bzip2 \
