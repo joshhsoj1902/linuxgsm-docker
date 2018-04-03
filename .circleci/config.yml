@@ -112,10 +112,15 @@ workflows:
           requires:
             - test-css
             - build
-    #   - compose-gmod:
-    #       requires:
-    #         - slow-tests
-
+    ### GMOD ###
+      - test-gmod:
+          type: approval      
+          requires:
+            - slow-tests
+      - compose-gmod:
+          requires:
+            - test-gmod
+            - build
 
             #filters:
             # branches:
