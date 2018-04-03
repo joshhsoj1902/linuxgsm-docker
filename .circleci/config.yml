@@ -8,14 +8,14 @@ compose_test: &compose_test
     name: Start container & run tests
     command: | 
       docker-compose up -d
-      retry -v -s 5 -t 30 'docker-compose exec game "./docker-ready.sh"'
+      retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
       retry -v -s 5 -t 5 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
-      retry -v -s 5 -t 30 'docker exec $(docker ps -q) "./docker-ready.sh"'
+      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
       retry -v -s 5 -t 5 'docker exec $(docker ps -q) "./docker-health.sh"'
 version: 2
 jobs:
@@ -118,17 +118,27 @@ workflows:
             - build
       - slow-tests:
           type: approval      
-          requires:
-            - build
-      - compose-css:
+    ### CSS ###
+      - test-css:
+          type: approval      
           requires:
             - slow-tests
-      - compose-gmod:
+      - compose-css:
+          requires:
+            - test-css
+            - build
+    ### L4D2 ###
+      - test-l4d2:
+          type: approval      
           requires:
             - slow-tests
       - compose-l4d2:
           requires:
-            - slow-tests
+            - test-l4d2
+            - build
+    #   - compose-gmod:
+    #       requires:
+    #         - slow-tests
 
             #filters:
             # branches:
