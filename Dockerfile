@@ -15,6 +15,7 @@ RUN dpkg --add-architecture i386 && \
         bsdmainutils \
         bzip2 \
         curl \
+        default-jre \
         file \
         git \
         gzip \
