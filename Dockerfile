@@ -55,6 +55,8 @@ RUN adduser \
     --gecos "" \
     steam
 
+RUN usermod -G tty steam
+
 RUN chown -R steam:steam /home/steam
 
 # Switch to the user steam
