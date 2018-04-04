@@ -70,6 +70,19 @@ jobs:
           <<: *compose_test
       - run:
           <<: *compose_logs
+  compose-7dtd:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.7dtd.yml ./docker-compose.yml
+      - run:
+          <<: *compose_test
+      - run:
+          <<: *compose_logs
   compose-css:
     <<: *defaults
     steps:
@@ -119,7 +132,14 @@ workflows:
             - build
       - compose:
           requires:
-            - build    
+            - build
+    ### 7dtd ###
+      - test-7dtd:
+          type: approval      
+      - compose-7dtd:
+          requires:
+            - test-7dtd
+            - build   
     ### CSS ###
       - test-css:
           type: approval      
