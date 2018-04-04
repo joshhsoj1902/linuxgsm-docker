@@ -1,0 +1,14 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 64738:64738
+    environment:
+      - LGSM_GAMESERVERNAME=mumbleserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_IP=0.0.0.0
+      - LGSM_PORT=64738
+    volumes:
+      - "/home/steam/linuxgsm/logs"
+      - "/home/steam/linuxgsm/serverfiles"
