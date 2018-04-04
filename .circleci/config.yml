@@ -17,6 +17,10 @@ swarm_test: &swarm_test
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
       retry -v -s 5 -t 5 'docker exec $(docker ps -q) "./docker-health.sh"'
+compose_logs: &compose_logs
+    name: Save logs 
+    when: always
+    command: docker-compose logs game
 version: 2
 jobs:
   build:
@@ -64,6 +68,8 @@ jobs:
       - run: cp /tmp/workspace/docker-compose.citest.yml ./docker-compose.yml
       - run:
           <<: *compose_test
+      - run:
+          <<: *compose_logs
   compose-css:
     <<: *defaults
     steps:
@@ -75,6 +81,8 @@ jobs:
       - run: cp /tmp/workspace/examples/docker-compose.css.yml ./docker-compose.yml
       - run:
           <<: *compose_test
+      - run:
+          <<: *compose_logs
   compose-gmod:
     <<: *defaults
     steps:
@@ -87,9 +95,7 @@ jobs:
       - run:
           <<: *compose_test
       - run:
-            name: Save logs 
-            when: always
-            command: docker-compose logs game
+          <<: *compose_logs
   compose-minecraft:
     <<: *defaults
     steps:
@@ -102,9 +108,7 @@ jobs:
       - run:
           <<: *compose_test
       - run:
-            name: Save logs 
-            when: always
-            command: docker-compose logs game
+          <<: *compose_logs
 workflows:
   version: 2
   build_and_test:
@@ -115,14 +119,10 @@ workflows:
             - build
       - compose:
           requires:
-            - build
-      - slow-tests:
-          type: approval      
+            - build    
     ### CSS ###
       - test-css:
           type: approval      
-          requires:
-            - slow-tests
       - compose-css:
           requires:
             - test-css
@@ -130,17 +130,8 @@ workflows:
     ### Minecraft ###
       - test-minecraft:
           type: approval      
-          requires:
-            - slow-tests
       - compose-minecraft:
           requires:
             - test-minecraft
             - build
-    #   - compose-gmod:
-    #       requires:
-    #         - slow-tests
 
-            #filters:
-            # branches:
-            #   only:
-            #     - master
