@@ -8,14 +8,14 @@ compose_test: &compose_test
     name: Start container & run tests
     command: | 
       docker-compose up -d
-      retry -v -s 5 -t 30 'docker-compose exec game "./docker-ready.sh"'
+      retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
       retry -v -s 5 -t 5 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
-      retry -v -s 5 -t 30 'docker exec $(docker ps -q) "./docker-ready.sh"'
+      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
       retry -v -s 5 -t 5 'docker exec $(docker ps -q) "./docker-health.sh"'
 version: 2
 jobs:
@@ -90,6 +90,21 @@ jobs:
             name: Save logs 
             when: always
             command: docker-compose logs game
+  compose-minecraft:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.minecraft.yml ./docker-compose.yml
+      - run:
+          <<: *compose_test
+      - run:
+            name: Save logs 
+            when: always
+            command: docker-compose logs game
   compose-l4d2:
     <<: *defaults
     steps:
@@ -118,17 +133,37 @@ workflows:
             - build
       - slow-tests:
           type: approval      
-          requires:
-            - build
-      - compose-css:
+    ### CSS ###
+      - test-css:
+          type: approval      
           requires:
             - slow-tests
-      - compose-gmod:
+      - compose-css:
+          requires:
+            - test-css
+            - build
+    ### Minecraft ###
+      - test-minecraft:
+          type: approval      
+          requires:
+            - slow-tests
+      - compose-minecraft:
+          requires:
+            - test-minecraft
+            - build
+    ### L4D2 ###
+      - test-l4d2:
+          type: approval      
           requires:
             - slow-tests
       - compose-l4d2:
           requires:
-            - slow-tests
+            - test-l4d2
+            - build
+    #   - compose-gmod:
+    #       requires:
+    #         - slow-tests
+>>>>>>> origin/master
 
             #filters:
             # branches:
