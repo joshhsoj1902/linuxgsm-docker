@@ -160,12 +160,3 @@ workflows:
           requires:
             - test-l4d2
             - build
-    #   - compose-gmod:
-    #       requires:
-    #         - slow-tests
->>>>>>> origin/master
-
-            #filters:
-            # branches:
-            #   only:
-            #     - master
