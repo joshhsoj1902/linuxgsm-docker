@@ -7,8 +7,6 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=mcserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
-      - LGSM_DEFAULTMAP=gm_construct
-      - LGSM_GAMEMODE=sandbox
       - LGSM_IP=0.0.0.0
       - LGSM_PORT=25565
     volumes:
