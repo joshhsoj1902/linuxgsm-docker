@@ -64,6 +64,17 @@ jobs:
       - run: cp /tmp/workspace/docker-compose.citest.yml ./docker-compose.yml
       - run:
           <<: *compose_test
+  compose-7dtd:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.7dtd.yml ./docker-compose.yml
+      - run:
+          <<: *compose_test
   compose-css:
     <<: *defaults
     steps:
@@ -117,7 +128,16 @@ workflows:
           requires:
             - build
       - slow-tests:
+          type: approval
+    ### 7dtd ###
+      - test-7dtd:
           type: approval      
+          requires:
+            - slow-tests
+      - compose-7dtd:
+          requires:
+            - test-7dtd
+            - build   
     ### CSS ###
       - test-css:
           type: approval      
