@@ -1,7 +1,7 @@
 version: '3.1'
 services:
   game:
-    image: joshhsoj1902/linuxgsm-docker:latest
+    image: joshhsoj1902/linuxgsm-docker:latest@sha256:686fbf75547a1f17e4577eb03bdea391ce469029e0341a153cde78260786a171
     environment:
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
