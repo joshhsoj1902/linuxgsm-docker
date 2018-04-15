@@ -1,5 +1,9 @@
 {
   "extends": [
     "config:base"
+  ],
+  "ignorePaths": [
+    "docker-compose.citest.yml",
+    "docker-compose.yml"    
   ]
 }
