@@ -7,8 +7,8 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=mcserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
-      - LGSM_IP=0.0.0.0
-      - LGSM_PORT=25565
+      - LGSM_JAVA_MEMORY=512
+      # - LGSM_PORT=25565 # CURRENTLY YOU CAN'T OVER RIDE THE PORT, IT HAS TO BE 25565
     volumes:
       - "/home/steam/linuxgsm/logs"
       - "/home/steam/linuxgsm/serverfiles"
