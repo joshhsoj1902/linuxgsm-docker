@@ -63,6 +63,9 @@ USER steam
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm 
 
+# Install GameConfigs
+RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
+
 # RUN git fetch --all \
 #  && git reset --hard origin/master
 
