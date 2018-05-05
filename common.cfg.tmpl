@@ -15,6 +15,9 @@
 {{if (getenv "LGSM_WORKSHOPAUTH")}}workshopauth={{.Env.LGSM_WORKSHOPAUTH}}{{else}}#LGSM_WORKSHOPAUTH{{end}}
 {{if (getenv "LGSM_WORKSHOPCOLLECTIONID")}}workshopcollectionid={{.Env.LGSM_WORKSHOPCOLLECTIONID}}{{else}}#LGSM_WORKSHOPCOLLECTIONID{{end}}
 
+#Minecraft
+{{if (getenv "LGSM_JAVA_MEMORY")}}javaram={{.Env.LGSM_JAVA_MEMORY}}{{else}}#LGSM_JAVA_MEMORY{{end}}
+
 #### LinuxGSM Settings ####
 #
 ## Notification Alerts
