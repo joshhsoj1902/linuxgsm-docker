@@ -90,7 +90,10 @@ RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
 
 ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
 
+ADD custom_configs/ /home/steam/linuxgsm-configs
+
 RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+ && chown -R steam:steam /home/steam/linuxgsm-configs \
  && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
 
 USER steam
