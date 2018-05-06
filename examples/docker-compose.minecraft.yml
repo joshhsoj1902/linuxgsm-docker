@@ -5,10 +5,47 @@ services:
     ports:
       - 25565:25565
     environment:
+      ## Out of the box LGSM
       - LGSM_GAMESERVERNAME=mcserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_JAVA_MEMORY=512
-      # - LGSM_PORT=25565 # CURRENTLY YOU CAN'T OVER RIDE THE PORT, IT HAS TO BE 25565
+
+      ## server.properties https://minecraft.gamepedia.com/Server.properties
+      # - LGSM_ALLOW_FLIGHT
+      # - LGSM_ALLOW_NETHER
+      # - LGSM_ANNOUNCE_PLAYER_ACHIEVEMENTS
+      - LGSM_DIFFICULTY=3
+      # - LGSM_ENABLE_COMMAND_BLOCK
+      # - LGSM_ENABLE_QUERY
+      # - LGSM_ENABLE_RCON
+      # - LGSM_FORCE_GAMEMODE
+      # - LGSM_GAMEMODE
+      # - LGSM_GENERATOR_STRUCTURES
+      # - LGSM_GENERATOR_SETTINGS
+      # - LGSM_HARDCORE
+      # - LGSM_LEVEL_NAME
+      # - LGSM_LEVEL_SEED
+      # - LGSM_LEVEL_TYPE
+      # - LGSM_MAX_BUILD_HEIGHT
+      # - LGSM_MAX_PLAYERS
+      # - LGSM_MAX_TICK_TIME
+      # - LGSM_MAX_WORLD_SIZE
+      - LGSM_MOTD=Minecraft Docker
+      # - LGSM_NETWORK_COMPRESSION_THRESHOLD
+      # - LGSM_ONLINE_MODE
+      # - LGSM_OP_PERMISSION_LEVEL
+      # - LGSM_PLAYER_IDLE_TIMEOUT
+      # - LGSM_PVP
+      # - LGSM_RCON_PASSWORD
+      # - LGSM_RCON_PORT
+      # - LGSM_IP
+      - LGSM_PORT=25565
+      # - LGSM_SNOOPER_ENABLED
+      # - LGSM_SPAWN_ANIMALS
+      # - LGSM_SPAWN_MONSTERS
+      # - LGSM_SPAWN_NPCS
+      # - LGSM_USE_NATIVE_TRANSPORT
+      # - LGSM_VIEW_DISTANCE
     volumes:
       - "/home/steam/linuxgsm/logs"
       - "/home/steam/linuxgsm/serverfiles"
