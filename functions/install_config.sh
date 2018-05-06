@@ -64,9 +64,8 @@ fn_default_config_remote(){
 # PASSWORD to random password
 fn_set_config_vars(){
 	if [ -f "${servercfgfullpath}" ]; then
-        env
         if [ -f "${servercfgfullpath}.tmpl" ]; then 
-            echo "GOMPLATE"
+            echo "Running gomplate"
             gomplate -f ${servercfgfullpath}.tmpl -o ${servercfgfullpath}
         fi
         chmod u+x,g+x ${servercfgfullpath}
