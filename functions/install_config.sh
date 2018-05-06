@@ -27,8 +27,10 @@ fn_fetch_default_config(){
 	mkdir -p "${lgsmdir}/config-default/config-game"
 	# githuburl="https://raw.githubusercontent.com/GameServerManagers/Game-Server-Configs/master"
 	for config in "${array_configs[@]}"; do
-		cp -rp "/home/steam/linuxgsm-configs/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game/${config}"
-		# fn_fetch_file "${githuburl}/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game" "${config}" "nochmodx" "norun" "forcedl" "nomd5"
+		cp -rp "/home/steam/linuxgsm-configs/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game/"
+        if [ -f "/home/steam/linuxgsm-configs/${gamedirname}/${config}.tmpl" ]; then
+		    cp -rp "/home/steam/linuxgsm-configs/${gamedirname}/${config}.tmpl" "${lgsmdir}/config-default/config-game/"
+        fi
 	done
 }
 
@@ -41,6 +43,9 @@ fn_default_config_remote(){
 		if [ "${config}" == "${servercfgdefault}" ]; then
 			mkdir -p "${servercfgdir}"
 			cp -nv "${lgsmdir}/config-default/config-game/${config}" "${servercfgfullpath}"
+            if [ -f "${lgsmdir}/config-default/config-game/${config}.tmpl" ]; then
+		        cp -nv "${lgsmdir}/config-default/config-game/${config}.tmpl" "${servercfgfullpath}.tmpl"
+            fi
 		elif [ "${gamename}" == "ARMA 3" ]&&[ "${config}" == "${networkcfgdefault}" ]; then
 			mkdir -p "${servercfgdir}"
 			cp -nv "${lgsmdir}/config-default/config-game/${config}" "${networkcfgfullpath}"
@@ -59,6 +64,13 @@ fn_default_config_remote(){
 # PASSWORD to random password
 fn_set_config_vars(){
 	if [ -f "${servercfgfullpath}" ]; then
+        env
+        if [ -f "${servercfgfullpath}.tmpl" ]; then 
+            echo "GOMPLATE"
+            gomplate -f ${servercfgfullpath}.tmpl -o ${servercfgfullpath}
+        fi
+        chmod u+x,g+x ${servercfgfullpath}
+
 		random=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c 8 | xargs)
 		servername="LinuxGSM"
 		rconpass="admin$random"
@@ -83,6 +95,7 @@ fn_set_config_vars(){
 
 # Changes some variables within the default Don't Starve Together configs
 fn_set_dst_config_vars(){
+    echo "== FUNCTION CALL fn_set_dst_config_vars"
 	## cluster.ini
 	if grep -Fq "SERVERNAME" "${clustercfgfullpath}"; then
 		echo "changing server name."
