@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <ServerSettings>
-  <property name="ServerPort" 				                value="26900"/>				        <!-- Port you want the server to listen on. -->
+  <property name="ServerPort" 				                value="{{if (getenv "LGSM_SERVER_PORT")}}{{.Env.LGSM_SERVER_PORT}}{{else}}26900{{end}}"/>				        <!-- Port you want the server to listen on. -->
   <property name="ServerIsPublic" 			                value="true"/>				        <!-- Should this server register to master server -->
   <property name="ServerName" 				                value="SERVERNAME"/>		        <!-- Whatever you want the name to be. -->
   <property name="ServerPassword" 			                value=""/>					        <!-- Password to gain entry to the server -->
@@ -14,8 +14,8 @@
   <property name="ServerWebsiteURL" 		                value=""/>					        <!-- Website URL for the server -->
   <property name="ServerDisabledNetworkProtocols"	        value="UNET"/>			            <!-- Networking protocols that should not be used. Separated by comma. Possible values: UNET, RakNet, SteamNetworking. Ex: "unet,steamnetworking" -->
 
-  <property name="GameWorld" 				                value="Navezgane"/>			        <!-- Navezgane, Random Gen -->
-  <property name="GameName" 				                value="My Game"/>			        <!-- Whatever you want the game name to be THIS CONTROLS THE RANDOM GENERATION SEED -->
+  <property name="GameWorld" 				                value="{{if (getenv "LGSM_GAME_WORLD")}}{{.Env.LGSM_GAME_WORLD}}{{else}}Random Gen{{end}}"/>			        <!-- Navezgane, Random Gen -->
+  <property name="GameName" 				                value="{{if (getenv "LGSM_GAME_NAME")}}{{.Env.LGSM_GAME_NAME}}{{else}}ADMINPASSWORD{{end}}"/>			        <!-- Whatever you want the game name to be THIS CONTROLS THE RANDOM GENERATION SEED -->
   <property name="GameDifficulty" 			                value="2"/>  				        <!-- 0 - 5, 0=easiest, 5=hardest -->
   <property name="GameMode"					                value="GameModeSurvivalMP"/>	    <!-- GameModeSurvivalMP, GameModeSurvivalSP (MP has land protection) -->
 
@@ -67,7 +67,7 @@
   area, but if you have lots of players that are all spread out then you may be hitting the limit and can increase it.
   -->
   <property name="MaxSpawnedAnimals"					    value="50"/>
-  <property name="EACEnabled"							    value="true"/>                      <!-- Enables/Disables EasyAntiCheat -->
+  <property name="EACEnabled"							    value="{{if (getenv "LGSM_EAC_ENABLED")}}{{.Env.LGSM_EAC_ENABLED}}{{else}}true{{end}}"/>                      <!-- Enables/Disables EasyAntiCheat -->
   <property name="HideCommandExecutionLog"				    value="0"/>		                    <!-- Hide logging of command execution. 0 = show everything, 1 = hide only from Telnet/ControlPanel, 2 = also hide from remote game clients, 3 = hide everything -->
   <property name="MaxUncoveredMapChunksPerPlayer"		    value="131072"/>	                <!-- Override how many chunks can be uncovered on the ingame map by each player. Resulting max map file size limit per player is (x * 512 Bytes), uncovered area is (x * 256 m²). Default 131072 means max 32 km² can be uncovered at any time -->
   <property name="BedrollDeadZoneSize"		                value="15"/>	                    <!-- Size of bedroll deadzone, no zombies will spawn inside this area, and any cleared sleeper volumes that touch a bedroll deadzone will not spawn after they've been cleared. -->

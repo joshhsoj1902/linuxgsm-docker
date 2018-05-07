@@ -7,8 +7,10 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=sdtdserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
-      - LGSM_IP=0.0.0.0
-      - LGSM_PORT=26900
+      # - LGSM_IP=0.0.0.0
+      - LGSM_SERVER_PORT=26900
+      # - LGSM_EAC_ENABLED=false
+      - LGSM_GAME_NAME=WorldSeed
     volumes:
       - "/home/steam/linuxgsm/logs"
       - "/home/steam/linuxgsm/serverfiles"
