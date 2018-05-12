@@ -46,6 +46,19 @@ jobs:
             - docker-compose.citest.yml
             - docker-stack.yml
             - examples
+  tests:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: 
+          command: |
+            #Custom Configs
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/Minecraft/server.properties.tmpl
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
   swarm:
     <<: *defaults
     steps:
@@ -127,6 +140,9 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - tests:
+          requires:
+            - build
       - swarm:
           requires:
             - build
