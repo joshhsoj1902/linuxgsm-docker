@@ -9,7 +9,16 @@ compose_test: &compose_test
     command: | 
       docker-compose up -d
       retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
+
+      echo "MONITOR 1"
+      retry -v -s 5 -t 5 'docker-compose exec game "lgsm-gameserver monitor"'
+      echo "MONITOR 2"
+      
       retry -v -s 5 -t 10 'docker-compose exec game "./docker-health.sh"'
+
+      echo "MONITOR 3"
+      retry -v -s 1 -t 1 'docker-compose exec game "lgsm-gameserver monitor"'
+      echo "MONITOR 4"
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
