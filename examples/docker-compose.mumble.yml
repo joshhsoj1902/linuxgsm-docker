@@ -7,7 +7,7 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=mumbleserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
-      - LGSM_IP=0.0.0.0
+      # - LGSM_IP=0.0.0.0
       - LGSM_PORT=64738
     volumes:
       - "/home/steam/linuxgsm/logs"

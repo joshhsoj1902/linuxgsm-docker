@@ -26,15 +26,17 @@ RUN dpkg --add-architecture i386 && \
         libstdc++6 \
         libstdc++6:i386 \
         mailutils \
+        net-tools \
         postfix \
         python \
         tmux \
+        telnet \
         util-linux \
         unzip \
         wget
 
 # Debug tools
-RUN apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim 
+RUN apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim
 
 # Cleanup 
 RUN apt-get -y autoremove && \
