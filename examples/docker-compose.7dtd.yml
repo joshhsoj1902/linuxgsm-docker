@@ -22,7 +22,7 @@ services:
       # - LGSM_SERVER_WEBSITE_URL
       # - LGSM_SERVER_DISABLED_NETWORK_PROTOCOLS
 
-      # - LGSM_GAME_WORLD
+      - LGSM_GAME_WORLD="Navezgane"  # "Random Gen" is better, this is for tests :(
       # - LGSM_GAME_NAME
       # - LGSM_GAME_DIFFICULTY
       # - LGSM_GAME_MODE
