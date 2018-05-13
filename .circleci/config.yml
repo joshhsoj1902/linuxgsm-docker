@@ -16,7 +16,7 @@ swarm_test: &swarm_test
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      retry -v -s 5 -t 10 'docker exec $(docker ps -q) "./docker-health.sh"'
+      retry -v -s 10 -t 5 'docker exec $(docker ps -q) "./docker-health.sh"'
 compose_logs: &compose_logs
     name: Save logs 
     when: always
