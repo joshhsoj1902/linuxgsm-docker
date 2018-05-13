@@ -59,9 +59,9 @@ jobs:
             docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ./lgsm/config-default/config-lgsm/common.cfg.tmpl
           
             #Custom Configs
-            echo ">> MINECRAFT"
+            echo "\n=============\n==MINECRAFT==\n============="
             docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/Minecraft/server.properties.tmpl
-            echo ">> 7dtd"            
+            echo "\n========\n==7dtd==\n========"            
             docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
   swarm:
     <<: *defaults
