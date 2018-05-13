@@ -9,14 +9,14 @@ compose_test: &compose_test
     command: | 
       docker-compose up -d
       retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
-      retry -v -s 5 -t 5 'docker-compose exec game "./docker-health.sh"'
+      retry -v -s 5 -t 10 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      retry -v -s 5 -t 5 'docker exec $(docker ps -q) "./docker-health.sh"'
+      retry -v -s 5 -t 10 'docker exec $(docker ps -q) "./docker-health.sh"'
 compose_logs: &compose_logs
     name: Save logs 
     when: always
@@ -46,6 +46,23 @@ jobs:
             - docker-compose.citest.yml
             - docker-stack.yml
             - examples
+  tests:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: 
+          command: |
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ./lgsm/config-default/config-lgsm/common.cfg.tmpl
+          
+            #Custom Configs
+            echo "\n=============\n==MINECRAFT==\n============="
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/Minecraft/server.properties.tmpl
+            echo "\n========\n==7dtd==\n========"            
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
   swarm:
     <<: *defaults
     steps:
@@ -127,6 +144,9 @@ workflows:
   build_and_test:
     jobs:
       - build
+      - tests:
+          requires:
+            - build
       - swarm:
           requires:
             - build
