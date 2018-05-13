@@ -8,8 +8,11 @@ fi
 monitorstring=$(./lgsm-gameserver monitor)
 echo $monitorstring
 failcount=$(echo "$monitorstring" | grep -oh 'FAIL\|ERROR' | wc -w)
+startingcount=$(echo "$monitorstring" | grep -oh 'Starting' | wc -w)
 # okcount=$(echo "$monitorstring" | grep OK | wc -c)
-# echo failcount: $failcount
+
+echo startingcount: $startingcount
+echo failcount: $failcount
 # echo $okcount
 if [ "$failcount" -gt "0" ]
 then
