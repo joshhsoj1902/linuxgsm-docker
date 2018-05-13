@@ -63,6 +63,8 @@ jobs:
             docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/Minecraft/server.properties.tmpl
             echo "\n========\n==7dtd==\n========"            
             docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
+            echo "\n==========\n==Mumble==\n=========="            
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
   swarm:
     <<: *defaults
     steps:
@@ -139,6 +141,19 @@ jobs:
           <<: *compose_test
       - run:
           <<: *compose_logs
+  compose-mumble:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.mumble.yml ./docker-compose.yml
+      - run:
+          <<: *compose_test
+      - run:
+          <<: *compose_logs
 workflows:
   version: 2
   build_and_test:
@@ -173,5 +188,12 @@ workflows:
       - compose-minecraft:
           requires:
             - test-minecraft
+            - build
+    ### Mumble ###
+      - test-mumble:
+          type: approval      
+      - compose-mumble:
+          requires:
+            - test-mumble
             - build
 
