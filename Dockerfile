@@ -65,6 +65,9 @@ USER steam
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm 
 
+# Install GameConfigs
+RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
+
 # RUN git fetch --all \
 #  && git reset --hard origin/master
 
@@ -89,7 +92,10 @@ RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
 
 ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
 
+ADD custom_configs/ /home/steam/linuxgsm-configs
+
 RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+ && chown -R steam:steam /home/steam/linuxgsm-configs \
  && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
 
 USER steam
