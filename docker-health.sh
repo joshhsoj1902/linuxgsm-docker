@@ -6,7 +6,7 @@ if [ -f 'INSTALLING.LOCK' ]; then
 fi
 
 monitorstring=$(./lgsm-gameserver monitor)
-echo $monitorstring
+echo monitorstring: "$monitorstring"
 failcount=$(echo "$monitorstring" | grep -oh 'FAIL\|ERROR' | wc -w)
 startingcount=$(echo "$monitorstring" | grep -oh 'Starting' | wc -w)
 # okcount=$(echo "$monitorstring" | grep OK | wc -c)
