@@ -4,6 +4,11 @@ defaults: &defaults
       - image: joshhsoj1902/circleci-build-image:latest
 remote_docker_version: &remote_docker_version
     version: 17.11.0-ce
+compose_start_background: &compose_start_background
+    name: Start container in background
+    background: true
+    command: | 
+      docker-compose up   
 compose_test: &compose_test
     name: Start container & run tests
     command: | 
@@ -98,6 +103,8 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.7dtd.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
