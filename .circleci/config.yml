@@ -117,6 +117,8 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.css.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
@@ -130,6 +132,8 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.gmod.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
@@ -143,6 +147,8 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.minecraft.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
@@ -156,6 +162,8 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.mumble.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
