@@ -16,6 +16,7 @@ RUN dpkg --add-architecture i386 && \
         bzip2 \
         curl \
         default-jre \
+        expect \
         file \
         git \
         gzip \
