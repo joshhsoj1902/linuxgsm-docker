@@ -89,6 +89,8 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/docker-compose.citest.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
