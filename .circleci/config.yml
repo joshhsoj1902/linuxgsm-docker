@@ -12,6 +12,7 @@ compose_start_background: &compose_start_background
 compose_test: &compose_test
     name: Start container & run tests
     command: | 
+      sleep 5 #need to do this so that the background one has time to finish
       docker-compose up -d
       retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
       retry -v -s 5 -t 10 'docker-compose exec game "./docker-health.sh"'
