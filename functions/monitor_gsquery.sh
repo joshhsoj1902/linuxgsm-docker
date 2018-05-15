@@ -30,7 +30,8 @@ if [ -n "${queryport}" ]; then
 	port="${queryport}"
 fi
 
-hostname=$(hostname)
+# hostname=$(hostname)
+hostname=127.0.0.1
 
 fn_print_info "Querying port: gsquery.py enabled"
 fn_script_log_info "Querying port: gsquery.py enabled"
