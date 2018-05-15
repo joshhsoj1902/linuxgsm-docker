@@ -217,11 +217,10 @@ workflows:
     ### L4D2 ###
       - test-l4d2:
           type: approval      
-          requires:
-            - slow-tests
       - compose-l4d2:
           requires:
             - test-l4d2
+            - build
     ### Minecraft ###
       - test-minecraft:
           type: approval      
