@@ -9,7 +9,8 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
 
       - LGSM_SERVER_PORT=26900
-      - LGSM_SERVER_IS_PUBLIC=false
+      # DO NOT SET LGSM_SERVER_IS_PUBLIC TO FALSE. LGSM uses this to check if server is running
+      - LGSM_SERVER_IS_PUBLIC=true
       - LGSM_SERVER_NAME=WorldSeed
       # - LGSM_SERVER_PASSWORD
       # - LGSM_SERVER_MAX_PLAYER_COUNT
