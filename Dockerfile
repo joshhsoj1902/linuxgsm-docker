@@ -16,6 +16,7 @@ RUN dpkg --add-architecture i386 && \
         bzip2 \
         curl \
         default-jre \
+        expect \
         file \
         git \
         gzip \
@@ -26,15 +27,17 @@ RUN dpkg --add-architecture i386 && \
         libstdc++6 \
         libstdc++6:i386 \
         mailutils \
+        net-tools \
         postfix \
         python \
         tmux \
+        telnet \
         util-linux \
         unzip \
         wget
 
 # Debug tools
-RUN apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim 
+RUN apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim
 
 # Cleanup 
 RUN apt-get -y autoremove && \
@@ -55,6 +58,8 @@ RUN adduser \
     --gecos "" \
     steam
 
+RUN usermod -G tty steam
+
 RUN chown -R steam:steam /home/steam
 
 # Switch to the user steam
@@ -62,6 +67,9 @@ USER steam
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm 
+
+# Install GameConfigs
+RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
 
 # RUN git fetch --all \
 #  && git reset --hard origin/master
@@ -87,7 +95,10 @@ RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
 
 ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
 
+ADD custom_configs/ /home/steam/linuxgsm-configs
+
 RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+ && chown -R steam:steam /home/steam/linuxgsm-configs \
  && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
 
 USER steam
