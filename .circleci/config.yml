@@ -201,8 +201,6 @@ workflows:
     ### GMOD ###
       - test-gmod:
           type: approval      
-          requires:
-            - slow-tests
       - compose-gmod:
           requires:
             - test-gmod
