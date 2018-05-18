@@ -1,7 +1,7 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:latest@sha256:190b1d89018d1613d1d09819477325d80c60f23565aeacad541fdc225ee2e44a
+      - image: joshhsoj1902/circleci-build-image:1.0.3
 remote_docker_version: &remote_docker_version
     version: 17.11.0-ce
 compose_start_background: &compose_start_background
