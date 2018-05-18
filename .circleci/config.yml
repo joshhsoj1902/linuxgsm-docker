@@ -1,22 +1,30 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:latest
+      - image: joshhsoj1902/circleci-build-image:1.0.4@sha256:99c3a6a65301dc1fa16bb5bb9b3633f7d7be5470f258943baf466815f66bc51d
 remote_docker_version: &remote_docker_version
     version: 17.11.0-ce
+compose_start_background: &compose_start_background
+    name: Start container in background
+    background: true
+    command: | 
+      docker-compose up   
 compose_test: &compose_test
     name: Start container & run tests
     command: | 
-      docker-compose up -d
       retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
-      retry -v -s 5 -t 5 'docker-compose exec game "./docker-health.sh"'
+      retry -v -s 120 -t 3 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      retry -v -s 5 -t 5 'docker exec $(docker ps -q) "./docker-health.sh"'
+      retry -v -s 5 -t 10 'docker exec $(docker ps -q) "./docker-health.sh"'
+compose_logs: &compose_logs
+    name: Save logs 
+    when: always
+    command: docker-compose logs game
 version: 2
 jobs:
   build:
@@ -42,6 +50,25 @@ jobs:
             - docker-compose.citest.yml
             - docker-stack.yml
             - examples
+  tests:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: 
+          command: |
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ./lgsm/config-default/config-lgsm/common.cfg.tmpl
+          
+            #Custom Configs
+            echo "\n=============\n==MINECRAFT==\n============="
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/Minecraft/server.properties.tmpl
+            echo "\n========\n==7dtd==\n========"            
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
+            echo "\n==========\n==Mumble==\n=========="            
+            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
   swarm:
     <<: *defaults
     steps:
@@ -62,8 +89,27 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/docker-compose.citest.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
+      - run:
+          <<: *compose_logs
+  compose-7dtd:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.7dtd.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
+      - run:
+          <<: *compose_test
+      - run:
+          <<: *compose_logs
   compose-css:
     <<: *defaults
     steps:
@@ -73,8 +119,12 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.css.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
+      - run:
+          <<: *compose_logs
   compose-gmod:
     <<: *defaults
     steps:
@@ -84,12 +134,12 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.gmod.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
-            name: Save logs 
-            when: always
-            command: docker-compose logs game
+          <<: *compose_logs
   compose-minecraft:
     <<: *defaults
     steps:
@@ -99,30 +149,51 @@ jobs:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/examples/docker-compose.minecraft.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
       - run:
           <<: *compose_test
       - run:
-            name: Save logs 
-            when: always
-            command: docker-compose logs game
+          <<: *compose_logs
+  compose-mumble:
+    <<: *defaults
+    steps:
+      - setup_remote_docker:
+          <<: *remote_docker_version
+      - attach_workspace:
+          at: /tmp/workspace
+      - run: docker load -i /tmp/workspace/images.tar
+      - run: cp /tmp/workspace/examples/docker-compose.mumble.yml ./docker-compose.yml
+      - run: 
+          <<: *compose_start_background
+      - run:
+          <<: *compose_test
+      - run:
+          <<: *compose_logs
 workflows:
   version: 2
   build_and_test:
     jobs:
       - build
+      - tests:
+          requires:
+            - build
       - swarm:
           requires:
             - build
       - compose:
           requires:
             - build
-      - slow-tests:
+    ### 7dtd ###
+      - test-7dtd:
           type: approval      
+      - compose-7dtd:
+          requires:
+            - test-7dtd
+            - build   
     ### CSS ###
       - test-css:
           type: approval      
-          requires:
-            - slow-tests
       - compose-css:
           requires:
             - test-css
@@ -139,14 +210,15 @@ workflows:
     ### Minecraft ###
       - test-minecraft:
           type: approval      
-          requires:
-            - slow-tests
       - compose-minecraft:
           requires:
             - test-minecraft
             - build
+    ### Mumble ###
+      - test-mumble:
+          type: approval      
+      - compose-mumble:
+          requires:
+            - test-mumble
+            - build
 
-            #filters:
-            # branches:
-            #   only:
-            #     - master

@@ -1,0 +1,11 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "ignorePaths": [
+    "docker-compose.yml",
+    "docker-compose.citest.yml",
+    "docker-compose.gmod.yml",
+    "examples"
+  ]
+}
