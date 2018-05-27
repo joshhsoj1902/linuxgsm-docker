@@ -103,7 +103,7 @@ RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
 
 USER steam
 
-RUN mkdir logs serverfiles
+RUN mkdir logs serverfiles serverfiles/Saves
 
 # HEALTHCHECK --start-period=30s CMD ./docker-health.sh
 
