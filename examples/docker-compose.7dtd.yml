@@ -1,4 +1,6 @@
 version: '3.1'
+volumes:
+  saves:
 services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
@@ -75,6 +77,7 @@ services:
       # - LGSM_HIDE_COMMAND_EXECUTION_LOG
       # - LGSM_MAX_UNCOVERED_MAP_CHUNK_PER_PLAYER
       # - LGSM_BEDROLL_DEAD_ZONE_SIZE
+      # - LGSM_SAVE_GAME_FOLDER
     volumes:
-      - "/home/steam/linuxgsm/logs"
-      - "/home/steam/linuxgsm/serverfiles"
+      - /home/steam/linuxgsm/logs
+      - saves:/home/steam/linuxgsm/serverfiles/Saves
