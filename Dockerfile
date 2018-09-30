@@ -74,7 +74,7 @@ RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /h
 # RUN git fetch --all \
 #  && git reset --hard origin/master
 
-RUN git checkout tags/180318.1
+RUN git checkout tags/180908.1
 
 USER root 
  
