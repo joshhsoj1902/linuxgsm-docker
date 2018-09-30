@@ -95,13 +95,13 @@ ADD docker-runner.sh docker-health.sh docker-ready.sh ./
 RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
  && chmod +x docker-runner.sh docker-health.sh docker-ready.sh
 
-ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
+ADD functions/* /home/steam/linuxgsm/lgsm/functions/
 
 ADD custom_configs/ /home/steam/linuxgsm-configs
 
-RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/* \
  && chown -R steam:steam /home/steam/linuxgsm-configs \
- && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
+ && chmod +x /home/steam/linuxgsm/lgsm/functions/* 
 
 USER steam
 
