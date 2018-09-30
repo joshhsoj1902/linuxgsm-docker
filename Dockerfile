@@ -66,7 +66,8 @@ RUN chown -R steam:steam /home/steam
 USER steam
 
 # Install LinuxGSM
-RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm 
+RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm \
+ && git checkout tags/180908.1
 
 # Install GameConfigs
 RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
@@ -74,7 +75,7 @@ RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /h
 # RUN git fetch --all \
 #  && git reset --hard origin/master
 
-RUN git checkout tags/180908.1
+# RUN git checkout tags/180908.1
 
 USER root 
  
