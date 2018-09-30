@@ -20,6 +20,7 @@ RUN dpkg --add-architecture i386 && \
         file \
         git \
         gzip \
+        jq \
         lib32gcc1 \
         lib32ncurses5 \
         lib32z1 \
