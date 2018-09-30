@@ -6,7 +6,7 @@
 # Detects if the server has frozen with the process still running.
 
 local commandname="MONITOR"
-local commandaction="Monitor"
+local commandaction="Monitor"docker-compose exec game "./docker-ready.sh"
 local function_selfname="$(basename "$(readlink -f "${BASH_SOURCE[0]}")")"
 
 # Downloads gsquery.py if missing

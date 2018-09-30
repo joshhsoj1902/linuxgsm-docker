@@ -16,7 +16,8 @@ compose_test: &compose_test
       retry -v -s 120 -t 3 'docker-compose exec game "./docker-health.sh"'
 swarm_test: &swarm_test
     name: Start container & run tests
-    command: | 
+    command: |   compose-mumble:
+
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
