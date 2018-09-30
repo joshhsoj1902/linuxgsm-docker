@@ -31,7 +31,7 @@ for queryattempt in {1..5}; do
 		bash -c 'exec 3<> /dev/tcp/'${ip}'/'${queryport}''
 		querystatus="$?"
 	fi
-
+gsqu
 	if [ "${querystatus}" == "0" ]; then
 		# Server query OK
 		sleep 0.5
