@@ -154,22 +154,7 @@ jobs:
       - run:
           <<: *compose_test
       - run:
-          <<: *compose_logs
-  compose-mumble:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.mumble.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
+          <<: *compose_logs 
 workflows:
   version: 2
   build_and_test:
@@ -204,12 +189,5 @@ workflows:
       - compose-minecraft:
           requires:
             - test-minecraft
-            - build
-    ### Mumble ###
-      - test-mumble:
-          type: approval      
-      - compose-mumble:
-          requires:
-            - test-mumble
             - build
 
