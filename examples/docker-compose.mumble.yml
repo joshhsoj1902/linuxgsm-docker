@@ -12,3 +12,4 @@ services:
     volumes:
       - "/home/steam/linuxgsm/logs"
       - "/home/steam/linuxgsm/serverfiles"
+#This erver doesn't work overly well in docker
