@@ -8,4 +8,7 @@ stackup:
 stackdown:
 	docker stack rm a
 
+test:
+	./scripts/test-gomplate.sh
+
 .PHONY: build
