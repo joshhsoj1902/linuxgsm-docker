@@ -15,8 +15,14 @@
 {{if (getenv "LGSM_WORKSHOPAUTH")}}workshopauth={{.Env.LGSM_WORKSHOPAUTH}}{{else}}#LGSM_WORKSHOPAUTH{{end}}
 {{if (getenv "LGSM_WORKSHOPCOLLECTIONID")}}workshopcollectionid={{.Env.LGSM_WORKSHOPCOLLECTIONID}}{{else}}#LGSM_WORKSHOPCOLLECTIONID{{end}}
 
-#Minecraft
+#Minecra#### LinuxGSM Advanced Settings ####
 {{if (getenv "LGSM_JAVA_MEMORY")}}javaram={{.Env.LGSM_JAVA_MEMORY}}{{else}}#LGSM_JAVA_MEMORY{{end}}
+
+#### LinuxGSM Advanced Settings ####
+
+{{if (getenv "LGSM_ANSI")}}ansi={{.Env.LGSM_ANSI}}{{else}}#LGSM_ANSI{{end}}
+{{if (getenv "LGSM_APPID")}}appid={{.Env.LGSM_APPID}}{{else}}#LGSM_APPID{{end}}
+{{if (getenv "LGSM_BRANCH")}}branch="-beta {{.Env.LGSM_BRANCH}}"{{else}}#LGSM_BRANCH{{end}}
 
 #### LinuxGSM Settings ####
 #
