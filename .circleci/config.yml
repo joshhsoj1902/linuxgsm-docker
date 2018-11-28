@@ -1,20 +1,7 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:latest
-remote_docker_version: &remote_docker_version
-    version: 17.11.0-ce
-compose_start_background: &compose_start_background
-    name: Start container in background
-    background: true
-    command: | 
-      docker-compose up   
-compose_test: &compose_test
-    name: Start container & run tests
-    command: | 
-      retry -v -s 5 -t 60 'docker-compose exec game "./docker-ready.sh"'
-      sleep 15
-      retry -v -s 120 -t 3 'docker-compose exec game "./docker-health.sh"'
+      - image: joshhsoj1902/circleci-build-image:1.0.7@sha256:1090a162859845e7a5168c02b161ddf053b93a1e5a5f26351bbb3b25507a5974
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
@@ -22,217 +9,116 @@ swarm_test: &swarm_test
       docker stack deploy --compose-file ./docker-stack.yml game
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
       retry -v -s 5 -t 10 'docker exec $(docker ps -q) "./docker-health.sh"'
-compose_logs: &compose_logs
-    name: Save logs 
-    when: always
-    command: docker-compose logs game
-version: 2
+version: 2.1
+
+orbs:
+    docker: joshhsoj1902/docker@0.0.1
+
 jobs:
-  build:
+  setup:
     <<: *defaults
     steps:
       - checkout
-      - setup_remote_docker:
-          <<: *remote_docker_version
       - run: 
           name: setup workspace
           background: true
           command: |
-            cp -rp docker-compose.citest.yml docker-stack.yml examples /tmp/workspace
-      - run:
-          name: "Build image"
-          command: |
-            make build
-      - run: docker save joshhsoj1902/linuxgsm-docker -o /tmp/workspace/images.tar
+            cp -rp docker-compose.citest.yml docker-stack.yml Makefile scripts examples /tmp/workspace
+            ls -ltr /tmp/workspace
       - persist_to_workspace:
           root: /tmp/workspace
           paths: 
-            - images.tar
             - docker-compose.citest.yml
             - docker-stack.yml
             - examples
-  tests:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: 
-          command: |
-            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ./lgsm/config-default/config-lgsm/common.cfg.tmpl
-          
-            #Custom Configs
-            echo "\n=============\n==MINECRAFT==\n============="
-            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/Minecraft/server.properties.tmpl
-            echo "\n========\n==7dtd==\n========"            
-            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
-            echo "\n==========\n==Mumble==\n=========="            
-            docker run --rm joshhsoj1902/linuxgsm-docker:latest gomplate -f ../linuxgsm-configs/7DaysToDie/serverconfig.xml.tmpl
+            - Makefile
+            - scripts
+
   swarm:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          <<: *remote_docker_version
+          version: 17.11.0-ce
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
       - run: cp /tmp/workspace/docker-stack.yml ./docker-stack.yml
+      - run: docker tag joshhsoj1902/linuxgsm-docker:latest joshhsoj1902/linuxgsm-docker:local
       - run:
           <<: *swarm_test
-  compose:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/docker-compose.citest.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
-  compose-7dtd:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.7dtd.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
-  compose-css:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.css.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
-  compose-gmod:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.gmod.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
-  compose-l4d2:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.l4d2.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
-  compose-minecraft:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.minecraft.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
-  compose-mumble:
-    <<: *defaults
-    steps:
-      - setup_remote_docker:
-          <<: *remote_docker_version
-      - attach_workspace:
-          at: /tmp/workspace
-      - run: docker load -i /tmp/workspace/images.tar
-      - run: cp /tmp/workspace/examples/docker-compose.mumble.yml ./docker-compose.yml
-      - run: 
-          <<: *compose_start_background
-      - run:
-          <<: *compose_test
-      - run:
-          <<: *compose_logs
 workflows:
   version: 2
   build_and_test:
     jobs:
-      - build
-      - tests:
+      - setup
+      - docker/build:
+          context: org-global
+          tag: latest
+          requires: 
+            - setup
+      - docker/test:
+          name: gomplate tests
           requires:
-            - build
+            - docker/build          
+    #   - tests:
+    #       requires:
+    #         - docker/build
       - swarm:
           requires:
-            - build
-      - compose:
+            - docker/build
+      - docker/compose-test-health:
+          name: compose-test
+          composeFile: docker-compose.citest.yml
+          service: game
           requires:
-            - build
+            - docker/build
     ### 7dtd ###
       - test-7dtd:
           type: approval      
-      - compose-7dtd:
+      - docker/compose-test-health:
+          name: 7dtd-compose
+          composeFile: examples/docker-compose.7dtd.yml
+          service: game
           requires:
             - test-7dtd
-            - build   
+            - docker/build   
     ### CSS ###
       - test-css:
           type: approval      
-      - compose-css:
+      - docker/compose-test-health:
+          name: css-compose
+          composeFile: examples/docker-compose.css.yml
+          service: game
           requires:
             - test-css
-            - build
     ### L4D2 ###
       - test-l4d2:
-          type: approval      
-      - compose-l4d2:
+          type: approval    
+      - docker/compose-test-health:
+          name: l4d2-compose
+          composeFile: examples/docker-compose.l4d2.yml
+          service: game
           requires:
             - test-l4d2
-            - build
+            - docker/build
     ### Minecraft ###
       - test-minecraft:
           type: approval      
-      - compose-minecraft:
+      - docker/compose-test-health:
+          name: minecraft-compose
+          composeFile: examples/docker-compose.minecraft.yml
+          service: game
           requires:
             - test-minecraft
-            - build
+            - docker/build
     ### Mumble ###
       - test-mumble:
           type: approval      
-      - compose-mumble:
+      - docker/compose-test-health:
+          name: mumble-compose
+          composeFile: examples/docker-compose.mumble.yml
+          service: game
           requires:
             - test-mumble
-            - build
+            - docker/build
 
