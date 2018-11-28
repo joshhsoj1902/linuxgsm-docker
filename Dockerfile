@@ -1,4 +1,4 @@
-FROM ubuntu:16.10@sha256:8dc9652808dc091400d7d5983949043a9f9c7132b15c14814275d25f94bca18a
+FROM ubuntu:18.10
 
 WORKDIR /home/steam/linuxgsm
 
