@@ -91,6 +91,7 @@ workflows:
           service: game
           requires:
             - test-css
+            - docker/build
     ### L4D2 ###
       - test-l4d2:
           type: approval    
