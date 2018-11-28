@@ -25,6 +25,7 @@ jobs:
           command: |
             cp -rp docker-compose.citest.yml docker-stack.yml Makefile scripts examples /tmp/workspace
             ls -ltr /tmp/workspace
+            ls -ltr /tmp/workspace/examples
       - persist_to_workspace:
           root: /tmp/workspace
           paths: 
