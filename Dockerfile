@@ -1,4 +1,4 @@
-FROM ubuntu:16.04@sha256:7a3b062531155aa4aee0f0e01a3f4440c86dcf972b1b73ec5d988ae438bb2651
+FROM ubuntu:16.04@sha256:e547ecaba7d078800c358082088e6cc710c3affd1b975601792ec701c80cdd39
 
 WORKDIR /home/steam/linuxgsm
 
@@ -20,6 +20,7 @@ RUN dpkg --add-architecture i386 && \
         file \
         git \
         gzip \
+        jq \
         lib32gcc1 \
         lib32ncurses5 \
         lib32z1 \
@@ -66,7 +67,8 @@ RUN chown -R steam:steam /home/steam
 USER steam
 
 # Install LinuxGSM
-RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm 
+RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm \
+ && git checkout tags/180908.1
 
 # Install GameConfigs
 RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
@@ -74,7 +76,7 @@ RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /h
 # RUN git fetch --all \
 #  && git reset --hard origin/master
 
-RUN git checkout tags/180318.1
+# RUN git checkout tags/180908.1
 
 USER root 
  
@@ -93,17 +95,17 @@ ADD docker-runner.sh docker-health.sh docker-ready.sh ./
 RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
  && chmod +x docker-runner.sh docker-health.sh docker-ready.sh
 
-ADD functions/*.sh /home/steam/linuxgsm/lgsm/functions/
+ADD functions/* /home/steam/linuxgsm/lgsm/functions/
 
 ADD custom_configs/ /home/steam/linuxgsm-configs
 
-RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/*.sh \
+RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/* \
  && chown -R steam:steam /home/steam/linuxgsm-configs \
- && chmod +x /home/steam/linuxgsm/lgsm/functions/*.sh
+ && chmod +x /home/steam/linuxgsm/lgsm/functions/* 
 
 USER steam
 
-RUN mkdir logs serverfiles
+RUN mkdir logs serverfiles serverfiles/Saves
 
 # HEALTHCHECK --start-period=30s CMD ./docker-health.sh
 
