@@ -25,6 +25,7 @@ jobs:
           command: |
             cp -rp docker-compose.citest.yml docker-stack.yml Makefile scripts examples /tmp/workspace
             ls -ltr /tmp/workspace
+            ls -ltr /tmp/workspace/examples
       - persist_to_workspace:
           root: /tmp/workspace
           paths: 
@@ -91,6 +92,16 @@ workflows:
           service: game
           requires:
             - test-css
+            - docker/build
+    ### GMOD ###
+      - test-gmod:
+          type: approval      
+      - docker/compose-test-health:
+          name: gmod-compose
+          composeFile: examples/docker-compose.gmod.yml
+          service: game
+          requires:
+            - test-gmod
             - docker/build
     ### Minecraft ###
       - test-minecraft:
