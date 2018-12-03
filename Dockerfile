@@ -1,4 +1,4 @@
-FROM ubuntu:16.04@sha256:689aa49d87d325f951941d789f7f7c8fae3394490cbcf084144caddba9c1be12
+FROM ubuntu:16.04@sha256:e547ecaba7d078800c358082088e6cc710c3affd1b975601792ec701c80cdd39
 
 WORKDIR /home/steam/linuxgsm
 
@@ -68,7 +68,7 @@ USER steam
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm \
- && git checkout tags/180908.1
+ && git checkout tags/181124
 
 # Install GameConfigs
 RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
