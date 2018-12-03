@@ -68,7 +68,7 @@ USER steam
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm \
- && git checkout tags/180908.1
+ && git checkout tags/181124
 
 # Install GameConfigs
 RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
