@@ -3,6 +3,11 @@
 ##################################
 # PLACE COMMON SETTINGS HERE
 #
+
+{{ range (datasource "env").envs -}}
+{{ .name }}={{ .value }}
+{{ end }}
+
 {{if (getenv "LGSM_IP")}}ip={{.Env.LGSM_IP}}{{else}}#ip{{end}}
 {{if (getenv "LGSM_PORT")}}port={{.Env.LGSM_PORT}}{{else}}#port{{end}}
 {{if (getenv "LGSM_PORT")}}clientport={{math.Sub .Env.LGSM_PORT 10}}{{else}}#clientport{{end}}
