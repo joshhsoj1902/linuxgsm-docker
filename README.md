@@ -2,7 +2,22 @@
 
 # linuxgsm-docker
 
-Dockerized version of the [Linux Game Server Manager][lgsm-home] project
+Unoffical Dockerized version of the [Linux Game Server Manager][lgsm-home] project
+
+## Usage
+
+### Counter strike source
+```
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    environment:
+      - LGSM_GAMESERVERNAME=cssserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+    volumes:
+      - "/home/steam/linuxgsm/logs"
+```
 
 ## Options
 This image uses environment variables for configuration, below is a list of the supported environment variables
@@ -34,21 +49,6 @@ This image uses environment variables for configuration, below is a list of the 
 | LGSM_CONSOLELOGGING    | Not tested |||
 | LGSM_LOGDAYS           | Not tested |||
 
-
-## Usage
-
-### Counter strike source
-```
-version: '3.1'
-services:
-  game:
-    image: joshhsoj1902/linuxgsm-docker:latest
-    environment:
-      - LGSM_GAMESERVERNAME=cssserver
-      - LGSM_UPDATEINSTALLSKIP=UPDATE
-    volumes:
-      - "/home/steam/linuxgsm/logs"
-```
 
 [circle-image]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg
 [circle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
