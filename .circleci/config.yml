@@ -21,7 +21,6 @@ jobs:
       - checkout
       - run: 
           name: setup workspace
-          background: true
           command: |
             cp -rp docker-compose.citest.yml docker-stack.yml Makefile scripts examples /tmp/workspace
             ls -ltr /tmp/workspace
