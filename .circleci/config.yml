@@ -101,6 +101,7 @@ workflows:
           service: game
           requires:
             - test-l4d2
+            - docker/build
     ### GMOD ###
       - test-gmod:
           type: approval      
