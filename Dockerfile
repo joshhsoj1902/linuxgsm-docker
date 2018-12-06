@@ -47,9 +47,9 @@ RUN apt-get -y autoremove && \
     rm -rf /tmp/* && \
     rm -rf /var/tmp/*
 
-RUN  mkdir ~/bin \
-  && curl -sSLf -z /usr/bin/gomplate -o /usr/bin/gomplate https://github.com/hairyhenderson/gomplate/releases/download/v2.2.0/gomplate_linux-amd64-slim \
-  && chmod 755 /usr/bin/gomplate
+RUN ls
+COPY --from=joshhsoj1902/parse-env:1.0.2 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
+COPY --from=hairyhenderson/gomplate:v3.1.0-alpine /bin/gomplate /usr/bin/gomplate
 
 # Add the steam user
 RUN adduser \
@@ -68,7 +68,7 @@ USER steam
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm \
- && git checkout tags/180908.1
+ && git checkout tags/181124
 
 # Install GameConfigs
 RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
