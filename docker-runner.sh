@@ -1,4 +1,20 @@
 #!/bin/bash
+
+#Set ENV defaults
+
+if [ -n "$LGSM_PORT" ]; then
+  if [ -z "$LGSM_CLIENTPORT" ]; then
+    clientport=$(($LGSM_PORT-10))
+    echo "clientPort $clientport"
+    export LGSM_CLIENTPORT=$clientport
+  fi
+  if [ -z "$LGSM_SOURCETVPORT" ]; then
+    sourcetvport=$(($LGSM_PORT+5))
+    echo "sourcetvport $sourcetvport"
+    export LGSM_SOURCETVPORT=$sourcetvport
+  fi
+fi
+
 parse-env --env "LGSM_" >> env.json
 
 rm -f INSTALLING.LOCK
