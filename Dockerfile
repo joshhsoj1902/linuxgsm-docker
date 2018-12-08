@@ -1,4 +1,4 @@
-FROM ubuntu:16.04
+FROM ubuntu:18.04
 
 WORKDIR /home/linuxgsm/linuxgsm
 
@@ -57,9 +57,7 @@ RUN adduser \
     --shell /bin/bash \
     --gecos "" \
     linuxgsm
-
 RUN usermod -G tty linuxgsm
-
 RUN chown -R linuxgsm:linuxgsm /home/linuxgsm
 
 # Switch to the user linuxgsm
@@ -84,26 +82,23 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 
 ADD common.cfg.tmpl ./lgsm/config-default/config-lgsm/
-
 RUN chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm \
  && chmod -R 777 /home/linuxgsm/linuxgsm \
  && ls -ltr
 
 ADD docker-runner.sh docker-health.sh docker-ready.sh ./
-
 RUN chown linuxgsm:linuxgsm docker-runner.sh docker-health.sh docker-ready.sh \
  && chmod +x docker-runner.sh docker-health.sh docker-ready.sh
 
 ADD functions/* /home/linuxgsm/linuxgsm/lgsm/functions/
-
 ADD custom_configs/ /home/linuxgsm/linuxgsm-configs
-
 RUN chown linuxgsm:linuxgsm /home/linuxgsm/linuxgsm/lgsm/functions/* \
  && chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm-configs \
  && chmod +x /home/linuxgsm/linuxgsm/lgsm/functions/* 
 
 USER linuxgsm
 
+# I'm not sure what `serverfiles/Saves` is created here for...
 RUN mkdir logs serverfiles serverfiles/Saves
 
 # HEALTHCHECK --start-period=30s CMD ./docker-health.sh
