@@ -75,7 +75,7 @@ sleep 30s
 sleep 5s
 ./lgsm-gameserver monitor
 
-tail -F /home/steam/linuxgsm/log/console/lgsm-gameserver-console.log -F /home/steam/linuxgsm/log/script/lgsm-gameserver-script.log -F /home/steam/linuxgsm/log/script/lgsm-gameserver-alert.log
+tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log -F ~/linuxgsm/log/script/lgsm-gameserver-script.log -F ~/linuxgsm/log/script/lgsm-gameserver-alert.log
 #
 while :
 do

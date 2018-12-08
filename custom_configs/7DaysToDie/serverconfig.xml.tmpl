@@ -72,5 +72,5 @@
   <property name="MaxUncoveredMapChunksPerPlayer"		      value="{{getenv "LGSM_MAX_UNCOVERED_MAP_CHUNK_PER_PLAYER" "131072"}}"/>	                <!-- Override how many chunks can be uncovered on the ingame map by each player. Resulting max map file size limit per player is (x * 512 Bytes), uncovered area is (x * 256 m²). Default 131072 means max 32 km² can be uncovered at any time -->
   <property name="BedrollDeadZoneSize"		                value="{{getenv "LGSM_BEDROLL_DEAD_ZONE_SIZE" "15"}}"/>	                    <!-- Size of bedroll deadzone, no zombies will spawn inside this area, and any cleared sleeper volumes that touch a bedroll deadzone will not spawn after they've been cleared. -->
 
-  <property name="SaveGameFolder"                        value="{{getenv "LGSM_SAVE_GAME_FOLDER" "/home/steam/linuxgsm/serverfiles/Saves"}}" />	        <!-- use this to override the default save game path -->
+  <property name="SaveGameFolder"                        value="{{getenv "LGSM_SAVE_GAME_FOLDER" "/home/linuxgsm/linuxgsm/serverfiles/Saves"}}" />	        <!-- use this to override the default save game path -->
 </ServerSettings>

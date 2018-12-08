@@ -11,7 +11,7 @@ services:
       # - LGSM_WORKSHOPAUTH
       # - LGSM_WORKSHOPCOLLECTIONID
     volumes:
-      - "/home/steam/linuxgsm/logs"
-      - "/home/steam/linuxgsm/serverfiles/"
+      - "/home/linuxgsm/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/serverfiles/"
 
 

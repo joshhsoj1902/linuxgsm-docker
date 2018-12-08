@@ -11,4 +11,4 @@ services:
       - LGSM_DEFAULTMAP=gm_construct
       - LGSM_GAMEMODE=sandbox
     volumes:
-      - "/home/steam/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/logs"

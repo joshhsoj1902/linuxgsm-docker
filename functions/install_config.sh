@@ -27,9 +27,9 @@ fn_fetch_default_config(){
 	mkdir -p "${lgsmdir}/config-default/config-game"
 	# githuburl="https://raw.githubusercontent.com/GameServerManagers/Game-Server-Configs/master"
 	for config in "${array_configs[@]}"; do
-		cp -rp "/home/steam/linuxgsm-configs/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game/"
-        if [ -f "/home/steam/linuxgsm-configs/${gamedirname}/${config}.tmpl" ]; then
-		    cp -rp "/home/steam/linuxgsm-configs/${gamedirname}/${config}.tmpl" "${lgsmdir}/config-default/config-game/"
+		cp -rp "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game/"
+        if [ -f "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}.tmpl" ]; then
+		    cp -rp "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}.tmpl" "${lgsmdir}/config-default/config-game/"
         fi
 	done
 }

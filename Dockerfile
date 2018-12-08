@@ -1,6 +1,6 @@
-FROM ubuntu:16.04@sha256:e547ecaba7d078800c358082088e6cc710c3affd1b975601792ec701c80cdd39
+FROM ubuntu:16.04
 
-WORKDIR /home/steam/linuxgsm
+WORKDIR /home/linuxgsm/linuxgsm
 
 # Stop apt-get asking to get Dialog frontend
 ENV DEBIAN_FRONTEND noninteractive
@@ -47,31 +47,30 @@ RUN apt-get -y autoremove && \
     rm -rf /tmp/* && \
     rm -rf /var/tmp/*
 
-RUN ls
 COPY --from=joshhsoj1902/parse-env:1.0.2 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.1.0-alpine /bin/gomplate /usr/bin/gomplate
 
-# Add the steam user
+# Add the linuxgsm user
 RUN adduser \
     --disabled-login \
     --disabled-password \
     --shell /bin/bash \
     --gecos "" \
-    steam
+    linuxgsm
 
-RUN usermod -G tty steam
+RUN usermod -G tty linuxgsm
 
-RUN chown -R steam:steam /home/steam
+RUN chown -R linuxgsm:linuxgsm /home/linuxgsm
 
-# Switch to the user steam
-USER steam
+# Switch to the user linuxgsm
+USER linuxgsm
 
 # Install LinuxGSM
-RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/steam/linuxgsm \
+RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
  && git checkout tags/181124
 
 # Install GameConfigs
-RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/steam/linuxgsm-configs
+RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm-configs
 
 # RUN git fetch --all \
 #  && git reset --hard origin/master
@@ -80,30 +79,30 @@ RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /h
 
 USER root 
  
-RUN find /home/steam/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
- && find /home/steam/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
- && chmod u+x /home/steam/linuxgsm/lgsm/functions/README.md
+RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
+ && find /home/linuxgsm/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
+ && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 
 ADD common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 
-RUN chown -R steam:steam /home/steam/linuxgsm \
- && chmod -R 777 /home/steam/linuxgsm \
+RUN chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm \
+ && chmod -R 777 /home/linuxgsm/linuxgsm \
  && ls -ltr
 
 ADD docker-runner.sh docker-health.sh docker-ready.sh ./
 
-RUN chown steam:steam docker-runner.sh docker-health.sh docker-ready.sh \
+RUN chown linuxgsm:linuxgsm docker-runner.sh docker-health.sh docker-ready.sh \
  && chmod +x docker-runner.sh docker-health.sh docker-ready.sh
 
-ADD functions/* /home/steam/linuxgsm/lgsm/functions/
+ADD functions/* /home/linuxgsm/linuxgsm/lgsm/functions/
 
-ADD custom_configs/ /home/steam/linuxgsm-configs
+ADD custom_configs/ /home/linuxgsm/linuxgsm-configs
 
-RUN chown steam:steam /home/steam/linuxgsm/lgsm/functions/* \
- && chown -R steam:steam /home/steam/linuxgsm-configs \
- && chmod +x /home/steam/linuxgsm/lgsm/functions/* 
+RUN chown linuxgsm:linuxgsm /home/linuxgsm/linuxgsm/lgsm/functions/* \
+ && chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm-configs \
+ && chmod +x /home/linuxgsm/linuxgsm/lgsm/functions/* 
 
-USER steam
+USER linuxgsm
 
 RUN mkdir logs serverfiles serverfiles/Saves
 
