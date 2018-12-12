@@ -4,6 +4,16 @@
 # PLACE COMMON SETTINGS HERE
 #
 
+{{if (datasource "env").Envs}}
+
+{{ range (datasource "env").Envs -}}
+{{ .name }}={{ .value }}
+{{ end }}
+
+{{else}}
+
 {{ range (datasource "env").envs -}}
 {{ .name }}={{ .value }}
 {{ end }}
+
+{{end}}
