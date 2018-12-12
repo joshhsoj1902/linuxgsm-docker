@@ -10,6 +10,6 @@ services:
       # - LGSM_IP=0.0.0.0
       - LGSM_PORT=64738
     volumes:
-      - "/home/steam/linuxgsm/logs"
-      - "/home/steam/linuxgsm/serverfiles"
+      - "/home/linuxgsm/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/serverfiles"
 #This erver doesn't work overly well in docker

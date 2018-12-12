@@ -79,5 +79,5 @@ services:
       # - LGSM_BEDROLL_DEAD_ZONE_SIZE
       # - LGSM_SAVE_GAME_FOLDER
     volumes:
-      - /home/steam/linuxgsm/logs
-      - saves:/home/steam/linuxgsm/serverfiles/Saves
+      - /home/linuxgsm/linuxgsm/logs
+      - saves:/home/linuxgsm/linuxgsm/serverfiles/Saves

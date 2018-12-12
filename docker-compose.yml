@@ -6,4 +6,4 @@ services:
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
     volumes:
-      - "/home/steam/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/logs"
