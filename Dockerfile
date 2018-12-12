@@ -35,40 +35,39 @@ RUN dpkg --add-architecture i386 && \
         telnet \
         util-linux \
         unzip \
-        wget
-
-# Debug tools
-RUN apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim
-
-# Cleanup 
-RUN apt-get -y autoremove && \
-    apt-get -y clean && \
-    rm -rf /var/lib/apt/lists/* && \
-    rm -rf /tmp/* && \
-    rm -rf /var/tmp/*
+        wget \
+    # Dubug tools
+    && apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim \ 
+    # Cleanup
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.1.0-alpine /bin/gomplate /usr/bin/gomplate
 
 # Add the linuxgsm user
 RUN adduser \
-    --disabled-login \
-    --disabled-password \
-    --shell /bin/bash \
-    --gecos "" \
-    linuxgsm
-RUN usermod -G tty linuxgsm
-RUN chown -R linuxgsm:linuxgsm /home/linuxgsm
+      --disabled-login \
+      --disabled-password \
+      --shell /bin/bash \
+      --gecos "" \
+      linuxgsm \
+    && usermod -G tty linuxgsm \
+    && chown -R linuxgsm:linuxgsm /home/linuxgsm
 
 # Switch to the user linuxgsm
 USER linuxgsm
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
- && git checkout tags/181124
-
+ && git checkout tags/181124 \
+ && rm -rf /home/linuxgsm/linuxgsm/.git \
 # Install GameConfigs
-RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm-configs
+ && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm-configs \
+ && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
 # RUN git fetch --all \
 #  && git reset --hard origin/master
@@ -83,8 +82,7 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
 
 ADD common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 RUN chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm \
- && chmod -R 777 /home/linuxgsm/linuxgsm \
- && ls -ltr
+ && chmod -R 777 /home/linuxgsm/linuxgsm
 
 ADD docker-runner.sh docker-health.sh docker-ready.sh ./
 RUN chown linuxgsm:linuxgsm docker-runner.sh docker-health.sh docker-ready.sh \
