@@ -7,13 +7,13 @@
 {{if (datasource "env").Envs}}
 
 {{ range (datasource "env").Envs -}}
-{{ .name }}={{ .value }}
+{{ .name }}={{ .value | quote }}
 {{ end }}
 
 {{else}}
 
 {{ range (datasource "env").envs -}}
-{{ .name }}={{ .value }}
+{{ .name }}={{ .value | quote }}
 {{ end }}
 
 {{end}}
