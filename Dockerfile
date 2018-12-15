@@ -97,6 +97,6 @@ USER linuxgsm
 # I'm not sure what `serverfiles/Saves` is created here for...
 RUN mkdir logs serverfiles serverfiles/Saves
 
-# HEALTHCHECK --start-period=30s CMD ./docker-health.sh
+HEALTHCHECK --start-period=30s --timeout=300s --interval=30s --retries=3 CMD ./docker-health.sh
 
 CMD ["bash", "./docker-runner.sh"]
