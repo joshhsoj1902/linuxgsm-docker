@@ -22,7 +22,7 @@ RUN dpkg --add-architecture i386 && \
         gzip \
         jq \
         lib32gcc1 \
-        lib32ncurses5 \
+        # lib32ncurses5 \
         lib32z1 \
         libc6 \
         libstdc++6 \
