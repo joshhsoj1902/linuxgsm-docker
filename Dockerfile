@@ -36,8 +36,6 @@ RUN dpkg --add-architecture i386 && \
         util-linux \
         unzip \
         wget \
-    # Dubug tools
-    && apt-get install -y netcat iputils-ping dnsutils traceroute iptables vim \ 
     # Cleanup
     && apt-get -y autoremove \
     && apt-get -y clean \
