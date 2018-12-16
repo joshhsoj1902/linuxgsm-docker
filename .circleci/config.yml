@@ -12,7 +12,7 @@ swarm_test: &swarm_test
 version: 2.1
 
 orbs:
-    docker: joshhsoj1902/docker@0.0.1
+    docker: joshhsoj1902/docker@0.13.0
 
 jobs:
   setup:
@@ -67,6 +67,7 @@ workflows:
       - docker/container-health:
           name: compose-test
           composeFile: docker-compose.citest.yml
+          command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up
           service: game
           requires:
             - docker/build
@@ -74,6 +75,7 @@ workflows:
       - docker/container-health:
           name: 7dtd-compose
           composeFile: examples/docker-compose.7dtd.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.7dtd.yml up
           service: game
           requires:
             - swarm-test
@@ -82,6 +84,7 @@ workflows:
       # - docker/container-health:
       #     name: ark-compose
       #     composeFile: examples/docker-compose.ark.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.ark.yml up
       #     service: game
       #     requires:
       #       - swarm-test
@@ -91,6 +94,7 @@ workflows:
       # - docker/container-health:
       #     name: csgo-compose
       #     composeFile: examples/docker-compose.csgo.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.csgo.yml up
       #     service: game
       #     requires:
       #       - swarm-test
@@ -99,6 +103,7 @@ workflows:
       - docker/container-health:
           name: css-compose
           composeFile: examples/docker-compose.css.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up
           service: game
           requires:
             - swarm-test
@@ -107,6 +112,7 @@ workflows:
       - docker/container-health:
           name: gmod-compose
           composeFile: examples/docker-compose.gmod.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml up
           service: game
           requires:
             - swarm-test
@@ -115,6 +121,7 @@ workflows:
       - docker/container-health:
           name: inss-compose
           composeFile: examples/docker-compose.inss.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.inss.yml up
           service: game
           requires:
             - swarm-test
@@ -123,6 +130,7 @@ workflows:
       - docker/container-health:
           name: minecraft-compose
           composeFile: examples/docker-compose.minecraft.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.minecraft.yml up
           service: game
           requires:
             - swarm-test
@@ -131,6 +139,7 @@ workflows:
 #      - docker/container-health:
 #          name: mumble-compose
 #          composeFile: examples/docker-compose.mumble.yml
+#          command: docker-compose -f /tmp/workspace/examples/docker-compose.mumble.yml up
 #          service: game
 #          requires:
 #            - swarm-test
@@ -139,6 +148,7 @@ workflows:
       - docker/container-health:
           name: pstbs-compose
           composeFile: examples/docker-compose.pstbs.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.pstbs.yml up
           service: game
           requires:
             - swarm-test
@@ -147,6 +157,7 @@ workflows:
       - docker/container-health:
           name: wet-compose
           composeFile: examples/docker-compose.wet.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.wet.yml up
           service: game
           requires:
             - swarm-test
@@ -155,6 +166,7 @@ workflows:
       # - docker/container-health:
       #     name: wurm-compose
       #     composeFile: examples/docker-compose.wurm.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wurm.yml up
       #     service: game
       #     requires:
       #       - swarm-test
