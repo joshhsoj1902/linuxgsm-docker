@@ -98,6 +98,6 @@ USER linuxgsm
 # I'm not sure what `serverfiles/Saves` is created here for...
 RUN mkdir logs serverfiles serverfiles/Saves
 
-HEALTHCHECK --start-period=60s --timeout=300s --interval=30s --retries=3 CMD ./lgsm-gameserver monitor
+HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD ./lgsm-gameserver monitor
 
 CMD ["bash", "./docker-runner.sh"]
