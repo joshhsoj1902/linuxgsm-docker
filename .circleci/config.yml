@@ -77,7 +77,23 @@ workflows:
           service: game
           requires:
             - swarm-test
-            - compose-test   
+            - compose-test 
+    ### ARK ###    
+      - docker/compose-test-health:
+          name: ark-compose
+          composeFile: examples/docker-compose.ark.yml
+          service: game
+          requires:
+            - swarm-test
+            - compose-test  
+    ### CSGO ###    
+      - docker/compose-test-health:
+          name: csgo-compose
+          composeFile: examples/docker-compose.csgo.yml
+          service: game
+          requires:
+            - swarm-test
+            - compose-test  
     ### CSS ###    
       - docker/compose-test-health:
           name: css-compose
@@ -93,7 +109,15 @@ workflows:
           service: game
           requires:
             - swarm-test
-            - compose-test  
+            - compose-test
+    ### INSS ###     
+      - docker/compose-test-health:
+          name: inss-compose
+          composeFile: examples/docker-compose.inss.yml
+          service: game
+          requires:
+            - swarm-test
+            - compose-test   
     ### Minecraft ###     
       - docker/compose-test-health:
           name: minecraft-compose
@@ -110,4 +134,27 @@ workflows:
           requires:
             - swarm-test
             - compose-test  
-
+    ### Pstb ###   
+      - docker/compose-test-health:
+          name: pstb-compose
+          composeFile: examples/docker-compose.pstb.yml
+          service: game
+          requires:
+            - swarm-test
+            - compose-test
+    ### Wet ###   
+      - docker/compose-test-health:
+          name: wet-compose
+          composeFile: examples/docker-compose.wet.yml
+          service: game
+          requires:
+            - swarm-test
+            - compose-test
+    ### Wurm ###   
+      - docker/compose-test-health:
+          name: wurm-compose
+          composeFile: examples/docker-compose.wurm.yml
+          service: game
+          requires:
+            - swarm-test
+            - compose-test

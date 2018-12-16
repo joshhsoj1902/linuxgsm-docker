@@ -1,0 +1,16 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 10027:10027/tcp
+      - 10027:10027/udp
+    environment:
+      - LGSM_GAMESERVERNAME=pstbserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=10027
+      - LGSM_QUERYPORT=10037
+      - LGSM_MAXPLAYERS=80
+      - LGSM_NUMRESERVEDSLOTS=2
+    volumes:
+      - "/home/linuxgsm/linuxgsm/logs"
