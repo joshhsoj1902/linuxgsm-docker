@@ -25,12 +25,18 @@ fn_fetch_default_config(){
 	echo "default configs from https://github.com/GameServerManagers/Game-Server-Configs"
 	sleep 0.5
 	mkdir -p "${lgsmdir}/config-default/config-game"
-	# githuburl="https://raw.githubusercontent.com/GameServerManagers/Game-Server-Configs/master"
+
+	# When running inside Docker we want to use a local copy of these files.
+	githuburl="https://raw.githubusercontent.com/GameServerManagers/Game-Server-Configs/master"
 	for config in "${array_configs[@]}"; do
-		cp -rp "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game/"
-        if [ -f "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}.tmpl" ]; then
-		    cp -rp "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}.tmpl" "${lgsmdir}/config-default/config-game/"
-        fi
+	cp -rp "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game/"
+		if [ -f /.dockerenv ]; then
+			if [ -f "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}.tmpl" ]; then
+				cp -rp "/home/linuxgsm/linuxgsm-configs/${gamedirname}/${config}.tmpl" "${lgsmdir}/config-default/config-game/"
+			fi
+		else
+			fn_fetch_file "${githuburl}/${gamedirname}/${config}" "${lgsmdir}/config-default/config-game" "${config}" "nochmodx" "norun" "forcedl" "nomd5"
+		fi
 	done
 }
 
@@ -43,9 +49,13 @@ fn_default_config_remote(){
 		if [ "${config}" == "${servercfgdefault}" ]; then
 			mkdir -p "${servercfgdir}"
 			cp -nv "${lgsmdir}/config-default/config-game/${config}" "${servercfgfullpath}"
-            if [ -f "${lgsmdir}/config-default/config-game/${config}.tmpl" ]; then
-		        cp -nv "${lgsmdir}/config-default/config-game/${config}.tmpl" "${servercfgfullpath}.tmpl"
-            fi
+
+			# Allows gomplate templating
+			if [ -f /.dockerenv ]; then
+				if [ -f "${lgsmdir}/config-default/config-game/${config}.tmpl" ]; then
+					cp -nv "${lgsmdir}/config-default/config-game/${config}.tmpl" "${servercfgfullpath}.tmpl"
+				fi
+			fi
 		elif [ "${gamename}" == "ARMA 3" ]&&[ "${config}" == "${networkcfgdefault}" ]; then
 			mkdir -p "${servercfgdir}"
 			cp -nv "${lgsmdir}/config-default/config-game/${config}" "${networkcfgfullpath}"
@@ -64,26 +74,37 @@ fn_default_config_remote(){
 # PASSWORD to random password
 fn_set_config_vars(){
 	if [ -f "${servercfgfullpath}" ]; then
-        if [ -f "${servercfgfullpath}.tmpl" ]; then 
-            echo "Running gomplate"
-            gomplate -f ${servercfgfullpath}.tmpl -o ${servercfgfullpath}
-        fi
-        chmod u+x,g+x ${servercfgfullpath}
+
+		if [ -f /.dockerenv ]; then
+			# Generate the base config using gomplate
+			if [ -f "${servercfgfullpath}.tmpl" ]; then 
+				echo "Running gomplate"
+				gomplate -f ${servercfgfullpath}.tmpl -o ${servercfgfullpath}
+				chmod u+x,g+x ${servercfgfullpath}
+			fi
+		fi
 
 		random=$(tr -dc A-Za-z0-9_ < /dev/urandom | head -c 8 | xargs)
 		servername="LinuxGSM"
-		rconpass="admin$random"
+		rconpass="admin${random}"
 		echo "changing hostname."
 		fn_script_log_info "changing hostname."
 		sleep 0.5
+		# prevents var from being overwritten with the servername
 		if grep -q "SERVERNAME=SERVERNAME" "${lgsmdir}/config-default/config-game/${config}" 2>/dev/null; then
 			sed -i "s/SERVERNAME=SERVERNAME/SERVERNAME=${servername}/g" "${servercfgfullpath}"
+		elif grep -q "SERVERNAME=\"SERVERNAME\"" "${lgsmdir}/config-default/config-game/${config}" 2>/dev/null; then
+			sed -i "s/SERVERNAME=\"SERVERNAME\"/SERVERNAME=\"${servername}\"/g" "${servercfgfullpath}"
 		else
 			sed -i "s/SERVERNAME/${servername}/g" "${servercfgfullpath}"
 		fi
 		echo "changing rcon/admin password."
 		fn_script_log_info "changing rcon/admin password."
-		sed -i "s/ADMINPASSWORD/${rconpass}/g" "${servercfgfullpath}"
+		if [ "${shortname}" == "squad" ]; then
+			sed -i "s/ADMINPASSWORD/${rconpass}/g" "${servercfgdir}/Rcon.cfg"
+		else
+			sed -i "s/ADMINPASSWORD/${rconpass}/g" "${servercfgfullpath}"
+		fi
 		sleep 0.5
 	else
 		fn_script_log_warn "Config file not found, cannot alter it."
@@ -94,7 +115,6 @@ fn_set_config_vars(){
 
 # Changes some variables within the default Don't Starve Together configs
 fn_set_dst_config_vars(){
-    echo "== FUNCTION CALL fn_set_dst_config_vars"
 	## cluster.ini
 	if grep -Fq "SERVERNAME" "${clustercfgfullpath}"; then
 		echo "changing server name."
@@ -190,6 +210,12 @@ elif [ "${gamename}" == "Battlefield: 1942" ]; then
 	fn_set_config_vars
 elif [ "${gamename}" == "Blade Symphony" ]; then
 	gamedirname="BladeSymphony"
+	array_configs+=( server.cfg )
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
+elif [ "${gamename}" == "BrainBread" ]; then
+	gamedirname="BrainBread"
 	array_configs+=( server.cfg )
 	fn_fetch_default_config
 	fn_default_config_remote
@@ -411,6 +437,12 @@ elif [ "${gamename}" == "Minecraft" ]; then
 	fn_fetch_default_config
 	fn_default_config_remote
 	fn_set_config_vars
+elif [ "${gamename}" == "Natural Selection" ]; then
+	gamedirname="NaturalSelection"
+	array_configs+=( server.cfg )
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
 elif [ "${gamename}" == "No More Room in Hell" ]; then
 	gamedirname="NoMoreRoominHell"
 	array_configs+=( server.cfg )
@@ -491,7 +523,7 @@ elif [ "${gamename}" == "Serious Sam 3: BFE" ]; then
 	fn_set_config_vars
 elif [ "${gamename}" == "Squad" ]; then
 	gamedirname="Squad"
-	array_configs+=( Server.cfg )
+	array_configs+=( Server.cfg Rcon.cfg )
 	fn_fetch_default_config
 	fn_default_config_remote
 	fn_set_config_vars
@@ -573,8 +605,20 @@ elif [ "${gamename}" == "Unreal Tournament 99" ]; then
 	fn_fetch_default_config
 	fn_default_config_remote
 	fn_set_config_vars
+elif [ "${gamename}" == "Vampire Slayer" ]; then
+	gamedirname="VampireSlayer"
+	array_configs+=( server.cfg )
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
 elif [ "${gamename}" == "Wolfenstein: Enemy Territory" ]; then
 	gamedirname="WolfensteinEnemyTerritory"
+	array_configs+=( server.cfg )
+	fn_fetch_default_config
+	fn_default_config_remote
+	fn_set_config_vars
+elif [ "${gamename}" == "Wurm Unlimited" ]; then
+	gamedirname="WurmUnlimited"
 	array_configs+=( server.cfg )
 	fn_fetch_default_config
 	fn_default_config_remote
