@@ -79,21 +79,22 @@ workflows:
             - swarm-test
             - compose-test 
     ### ARK ###    
-      - docker/compose-test-health:
-          name: ark-compose
-          composeFile: examples/docker-compose.ark.yml
-          service: game
-          requires:
-            - swarm-test
-            - compose-test  
+      # - docker/compose-test-health:
+      #     name: ark-compose
+      #     composeFile: examples/docker-compose.ark.yml
+      #     service: game
+      #     requires:
+      #       - swarm-test
+      #       - compose-test  
     ### CSGO ###    
-      - docker/compose-test-health:
-          name: csgo-compose
-          composeFile: examples/docker-compose.csgo.yml
-          service: game
-          requires:
-            - swarm-test
-            - compose-test  
+    ## This game is 20GB, that's slow to install every time (and I feel kinda bad using that much so often)
+      # - docker/compose-test-health:
+      #     name: csgo-compose
+      #     composeFile: examples/docker-compose.csgo.yml
+      #     service: game
+      #     requires:
+      #       - swarm-test
+      #       - compose-test  
     ### CSS ###    
       - docker/compose-test-health:
           name: css-compose
@@ -134,10 +135,10 @@ workflows:
 #          requires:
 #            - swarm-test
 #            - compose-test  
-    ### Pstb ###   
+    ### Pstbs ###   
       - docker/compose-test-health:
-          name: pstb-compose
-          composeFile: examples/docker-compose.pstb.yml
+          name: pstbs-compose
+          composeFile: examples/docker-compose.pstbs.yml
           service: game
           requires:
             - swarm-test
@@ -151,11 +152,11 @@ workflows:
             - swarm-test
             - compose-test
     ### Wurm ###   
-      - docker/compose-test-health:
-          name: wurm-compose
-          composeFile: examples/docker-compose.wurm.yml
-          service: game
-          requires:
-            - swarm-test
-            - compose-test
+      # - docker/compose-test-health:
+      #     name: wurm-compose
+      #     composeFile: examples/docker-compose.wurm.yml
+      #     service: game
+      #     requires:
+      #       - swarm-test
+      #       - compose-test
 
