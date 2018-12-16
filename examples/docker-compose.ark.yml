@@ -1,0 +1,17 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 7777:7777/tcp
+      - 7777:7777/udp
+    environment:
+      - LGSM_GAMESERVERNAME=arkserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=7777
+      - LGSM_QUERYPORT=27015
+      - LGSM_RCONPORT=27020
+      - LGSM_DEFAULTMAP=TheIsland
+      - LGSM_MAXPLAYERS=70
+    volumes:
+      - "/home/linuxgsm/linuxgsm/logs"

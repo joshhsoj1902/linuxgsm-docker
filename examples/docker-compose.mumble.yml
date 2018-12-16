@@ -1,3 +1,4 @@
+# THIS DOES NOT WORK
 version: '3.1'
 services:
   game:
@@ -12,4 +13,4 @@ services:
     volumes:
       - "/home/linuxgsm/linuxgsm/logs"
       - "/home/linuxgsm/linuxgsm/serverfiles"
-#This erver doesn't work overly well in docker
+#This server doesn't work overly well in docker

@@ -24,12 +24,22 @@ for queryattempt in {1..5}; do
 		if [ ! -f "${functionsdir}/query_gsquery.py" ]; then
 			fn_fetch_file_github "lgsm/functions" "query_gsquery.py" "${functionsdir}" "chmodx" "norun" "noforce" "nomd5"
 		fi
-        # JB2: The following line is the only line I changed, this might not work for docker swarm
-		"${functionsdir}"/query_gsquery.py -a "$(hostname -i)" -p "${queryport}" -e "${engine}" > /dev/null 2>&1
+		# When running in docker we need to bind to 0.0.0.0. But this test needs to choose an IP to test against
+		# This might not work for docker swarm (this is an old comment, it seems to work fine on docker swarm)
+		if [ -f /.dockerenv ]; then
+			"${functionsdir}"/query_gsquery.py -a "$(hostname -i)" -p "${queryport}" -e "${engine}" > /dev/null 2>&1
+		else
+			"${functionsdir}"/query_gsquery.py -a "${ip}" -p "${queryport}" -e "${engine}" > /dev/null 2>&1
+		fi
 		querystatus="$?"
-	elif [ "${querymethod}" ==  "telnet" ]; then
-		bash -c 'exec 3<> /dev/tcp/'${ip}'/'${queryport}''
-		querystatus="$?"
+	elif [ "${querymethod}" ==  "tcp" ]; then
+		if [ -f /.dockerenv ]; then
+			bash -c 'exec 3<> /dev/tcp/'$(hostname -i)'/'${queryport}''
+			querystatus="$?"
+		else
+			bash -c 'exec 3<> /dev/tcp/'${ip}'/'${queryport}''
+			querystatus="$?"
+		fi
 	fi
 
 	if [ "${querystatus}" == "0" ]; then
@@ -132,7 +142,7 @@ fn_monitor_check_session(){
 fn_monitor_query(){
 	fn_script_log_info "Querying port: query enabled"
 	# engines that work with query
-	local allowed_engines_array=( avalanche2.0 avalanche3.0 goldsource idtech2 idtech3 idtech3_ql iw2.0 iw3.0 madness quake refractor realvirtuality source spark starbound unity3d unreal unreal2 unreal4 )
+	local allowed_engines_array=( avalanche2.0 avalanche3.0 goldsource idtech2 idtech3 idtech3_ql iw2.0 iw3.0 lwjgl2 madness quake refractor realvirtuality source spark starbound unity3d unreal unreal2 unreal4 wurm )
 	for allowed_engine in "${allowed_engines_array[@]}"
 	do
 		if [ "${allowed_engine}" == "${engine}" ]; then
@@ -144,7 +154,11 @@ fn_monitor_query(){
 
 			# will first attempt to use gamedig then gsquery
 			totalseconds=0
-			local query_methods_array=( gamedig gsquery )
+			if [ "${shortname}" == "wurm" ]; then
+				local query_methods_array=( gsquery )
+			else
+				local query_methods_array=( gamedig gsquery )
+			fi
 			for query_method in "${query_methods_array[@]}"
 			do
 				if [ "${query_method}" == "gamedig" ]; then
@@ -166,8 +180,8 @@ fn_monitor_query(){
 	done
 }
 
-fn_monitor_query_telnet(){
-	querymethod="telnet"
+fn_monitor_query_tcp(){
+	querymethod="tcp"
 	fn_monitor_loop
 }
 
@@ -187,8 +201,8 @@ if [ "${gamename}" == "Starbound" ]; then
 	if [ "${queryenabled}" == "true" ]; then
 		fn_monitor_query
 	fi
-elif [ "${gamename}" == "TeamSpeak 3" ]||[ "${gamename}" == "Eco" ]; then
-	fn_monitor_query_telnet
+elif [ "${shortname}" == "ts3" ]||[ "${shortname}" == "eco" ]||[ "${shortname}" == "mumble" ]; then
+	fn_monitor_query_tcp
 else
 	fn_monitor_query
 fi
