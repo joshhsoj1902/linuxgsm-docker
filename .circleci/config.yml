@@ -64,14 +64,14 @@ workflows:
           name: swarm-test
           requires:
             - docker/build
-      - docker/compose-test-health:
+      - docker/container-health:
           name: compose-test
           composeFile: docker-compose.citest.yml
           service: game
           requires:
             - docker/build
     ### 7dtd ###    
-      - docker/compose-test-health:
+      - docker/container-health:
           name: 7dtd-compose
           composeFile: examples/docker-compose.7dtd.yml
           service: game
@@ -79,7 +79,7 @@ workflows:
             - swarm-test
             - compose-test 
     ### ARK ###    
-      # - docker/compose-test-health:
+      # - docker/container-health:
       #     name: ark-compose
       #     composeFile: examples/docker-compose.ark.yml
       #     service: game
@@ -88,7 +88,7 @@ workflows:
       #       - compose-test  
     ### CSGO ###    
     ## This game is 20GB, that's slow to install every time (and I feel kinda bad using that much so often)
-      # - docker/compose-test-health:
+      # - docker/container-health:
       #     name: csgo-compose
       #     composeFile: examples/docker-compose.csgo.yml
       #     service: game
@@ -96,7 +96,7 @@ workflows:
       #       - swarm-test
       #       - compose-test  
     ### CSS ###    
-      - docker/compose-test-health:
+      - docker/container-health:
           name: css-compose
           composeFile: examples/docker-compose.css.yml
           service: game
@@ -104,7 +104,7 @@ workflows:
             - swarm-test
             - compose-test  
     ### GMOD ###    
-      - docker/compose-test-health:
+      - docker/container-health:
           name: gmod-compose
           composeFile: examples/docker-compose.gmod.yml
           service: game
@@ -112,7 +112,7 @@ workflows:
             - swarm-test
             - compose-test
     ### INSS ###     
-      - docker/compose-test-health:
+      - docker/container-health:
           name: inss-compose
           composeFile: examples/docker-compose.inss.yml
           service: game
@@ -120,7 +120,7 @@ workflows:
             - swarm-test
             - compose-test   
     ### Minecraft ###     
-      - docker/compose-test-health:
+      - docker/container-health:
           name: minecraft-compose
           composeFile: examples/docker-compose.minecraft.yml
           service: game
@@ -128,7 +128,7 @@ workflows:
             - swarm-test
             - compose-test  
     ### Mumble ###   
-#      - docker/compose-test-health:
+#      - docker/container-health:
 #          name: mumble-compose
 #          composeFile: examples/docker-compose.mumble.yml
 #          service: game
@@ -136,7 +136,7 @@ workflows:
 #            - swarm-test
 #            - compose-test  
     ### Pstbs ###   
-      - docker/compose-test-health:
+      - docker/container-health:
           name: pstbs-compose
           composeFile: examples/docker-compose.pstbs.yml
           service: game
@@ -144,7 +144,7 @@ workflows:
             - swarm-test
             - compose-test
     ### Wet ###   
-      - docker/compose-test-health:
+      - docker/container-health:
           name: wet-compose
           composeFile: examples/docker-compose.wet.yml
           service: game
@@ -152,7 +152,7 @@ workflows:
             - swarm-test
             - compose-test
     ### Wurm ###   
-      # - docker/compose-test-health:
+      # - docker/container-health:
       #     name: wurm-compose
       #     composeFile: examples/docker-compose.wurm.yml
       #     service: game
