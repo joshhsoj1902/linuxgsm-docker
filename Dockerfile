@@ -36,6 +36,7 @@ RUN dpkg --add-architecture i386 && \
         util-linux \
         unzip \
         wget \
+        xvfb \
     # Cleanup
     && apt-get -y autoremove \
     && apt-get -y clean \
