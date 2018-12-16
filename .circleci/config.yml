@@ -103,11 +103,11 @@ workflows:
             - swarm-test
             - compose-test  
     ### Mumble ###   
-      - docker/compose-test-health:
-          name: mumble-compose
-          composeFile: examples/docker-compose.mumble.yml
-          service: game
-          requires:
-            - swarm-test
-            - compose-test  
+      # - docker/compose-test-health:
+      #     name: mumble-compose
+      #     composeFile: examples/docker-compose.mumble.yml
+      #     service: game
+      #     requires:
+      #       - swarm-test
+      #       - compose-test  
 
