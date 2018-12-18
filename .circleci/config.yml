@@ -88,13 +88,24 @@ workflows:
       #       - compose-test  
     ### CSGO ###    
     ## This game is 20GB, that's slow to install every time (and I feel kinda bad using that much so often)
-      # - docker/compose-test-health:
-      #     name: csgo-compose
-      #     composeFile: examples/docker-compose.csgo.yml
-      #     service: game
-      #     requires:
-      #       - swarm-test
-      #       - compose-test  
+       docker/container-health:
+          name: csgo-compose
+          composeFile: examples/docker-compose.csgo.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.csgo.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 15
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test  
+          # filters:
+          #   branches:
+          #     only: master
     ### CSS ###    
       - docker/compose-test-health:
           name: css-compose
