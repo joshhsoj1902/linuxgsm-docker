@@ -69,6 +69,13 @@ workflows:
           composeFile: docker-compose.citest.yml
           command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/docker-compose.citest.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - docker/build
     ### 7dtd ###    

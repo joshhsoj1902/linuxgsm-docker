@@ -83,9 +83,9 @@ ADD common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 RUN chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm \
  && chmod -R 777 /home/linuxgsm/linuxgsm
 
-ADD docker-runner.sh docker-health.sh docker-ready.sh ./
-RUN chown linuxgsm:linuxgsm docker-runner.sh docker-health.sh docker-ready.sh \
- && chmod +x docker-runner.sh docker-health.sh docker-ready.sh
+ADD docker-runner.sh docker-liveness.sh docker-readiness.sh ./
+RUN chown linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh \
+ && chmod +x docker-runner.sh docker-liveness.sh docker-readiness.sh
 
 ADD functions/* /home/linuxgsm/linuxgsm/lgsm/functions/
 ADD custom_configs/ /home/linuxgsm/linuxgsm-configs
@@ -98,6 +98,6 @@ USER linuxgsm
 # I'm not sure what `serverfiles/Saves` is created here for...
 RUN mkdir logs serverfiles serverfiles/Saves
 
-HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD ./lgsm-gameserver monitor
+HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD ./docker-liveness.sh
 
 CMD ["bash", "./docker-runner.sh"]
