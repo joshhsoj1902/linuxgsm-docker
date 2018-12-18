@@ -84,6 +84,13 @@ workflows:
           composeFile: examples/docker-compose.7dtd.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.7dtd.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test 
@@ -112,6 +119,13 @@ workflows:
           composeFile: examples/docker-compose.css.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.css.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test  
@@ -121,6 +135,13 @@ workflows:
           composeFile: examples/docker-compose.gmod.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test
@@ -130,6 +151,13 @@ workflows:
           composeFile: examples/docker-compose.inss.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.inss.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test   
@@ -139,6 +167,13 @@ workflows:
           composeFile: examples/docker-compose.minecraft.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.minecraft.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.minecraft.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test  
@@ -157,6 +192,13 @@ workflows:
           composeFile: examples/docker-compose.pstbs.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.pstbs.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test
@@ -166,6 +208,13 @@ workflows:
           composeFile: examples/docker-compose.wet.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.wet.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
           requires:
             - swarm-test
             - compose-test
