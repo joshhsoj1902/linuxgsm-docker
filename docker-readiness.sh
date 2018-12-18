@@ -1,8 +1,8 @@
 #!/bin/bash
 
 if [ -f 'INSTALLING.LOCK' ]; then
-   echo "INSTALLING.LOCK found - PASS"
-   exit 0
+   echo "Found INSTALLING.LOCK - still installing - FAIL"
+   exit 1
 fi
 
 ./lgsm-gameserver monitor
