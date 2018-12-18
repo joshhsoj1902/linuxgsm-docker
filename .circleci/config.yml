@@ -7,8 +7,8 @@ swarm_test: &swarm_test
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
-      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      retry -v -s 5 -t 10 'docker exec $(docker ps -q) "./docker-health.sh"'
+      retry -v -s 5 -t 12 'docker exec $(docker ps -q) "./docker-liveness.sh"'
+      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-readiness.sh"'
 version: 2.1
 
 orbs:
@@ -90,7 +90,7 @@ workflows:
                 service: game
                 command: ./docker-readiness.sh
                 sleep: 5
-                tries: 60
+                tries: 80
           requires:
             - swarm-test
             - compose-test 
