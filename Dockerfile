@@ -79,19 +79,10 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && find /home/linuxgsm/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
  && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 
-ADD common.cfg.tmpl ./lgsm/config-default/config-lgsm/
-RUN chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm \
- && chmod -R 777 /home/linuxgsm/linuxgsm
-
-ADD docker-runner.sh docker-liveness.sh docker-readiness.sh ./
-RUN chown linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh \
- && chmod +x docker-runner.sh docker-liveness.sh docker-readiness.sh
-
-ADD functions/* /home/linuxgsm/linuxgsm/lgsm/functions/
-ADD custom_configs/ /home/linuxgsm/linuxgsm-configs
-RUN chown linuxgsm:linuxgsm /home/linuxgsm/linuxgsm/lgsm/functions/* \
- && chown -R linuxgsm:linuxgsm /home/linuxgsm/linuxgsm-configs \
- && chmod +x /home/linuxgsm/linuxgsm/lgsm/functions/* 
+ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
+ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
+ADD --chown=linuxgsm:linuxgsm functions/* /home/linuxgsm/linuxgsm/lgsm/functions/
+ADD --chown=linuxgsm:linuxgsm custom_configs/ /home/linuxgsm/linuxgsm-configs
 
 USER linuxgsm
 
