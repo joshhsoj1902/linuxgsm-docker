@@ -15,7 +15,7 @@ if [ -n "$LGSM_PORT" ]; then
   fi
 fi
 
-parse-env --env "LGSM_" >> env.json
+parse-env --env "LGSM_" > env.json
 
 rm -f INSTALLING.LOCK
 
