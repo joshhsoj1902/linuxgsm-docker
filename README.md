@@ -34,8 +34,8 @@ This image uses environment variables for configuration, below is a list of the 
 | LGSM_JAVARAM           | || Minecraft |
 | LGSM_DEFAULTMAP        | Not tested || Gmod |
 | LGSM_GAMEMODE          | Not tested || Gmod |
-| LGSM_WORKSHOPAUTH      | Not tested || Gmod |
-| LGSM_WORKSHOPCOLLECTIONID | Not tested ||Gmod|
+| LGSM_WSAPIKEY      | Not tested || Gmod |
+| LGSM_WSCOLLECTIONID | Not tested ||Gmod|
 | LGSM_ANSI              | Not tested |||
 | LGSM_BRANCH            | Not tested |||
 | LGSM_EMAILALERT        | Not tested |||
