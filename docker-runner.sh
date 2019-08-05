@@ -1,7 +1,12 @@
 #!/bin/bash
 
-#Set ENV defaults
+function finish {
+  echo "Exit received Stopping server"
+  ./lgsm-gameserver stop
+}
+trap finish EXIT
 
+#Set ENV defaults
 if [ -n "$LGSM_PORT" ]; then
   if [ -z "$LGSM_CLIENTPORT" ]; then
     clientport=$(($LGSM_PORT-10))
