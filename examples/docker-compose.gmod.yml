@@ -10,5 +10,7 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_DEFAULTMAP=gm_construct
       - LGSM_GAMEMODE=sandbox
+      # - LGSM_HOSTNAME=servername
+      # - LGSM_SV_PASSWORD=password
     volumes:
       - "/home/linuxgsm/linuxgsm/logs"
