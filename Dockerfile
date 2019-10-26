@@ -70,8 +70,10 @@ RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linu
  && git checkout joshhsoj1902-changes-4-docker \
  && rm -rf /home/linuxgsm/linuxgsm/.git \
 # Install GameConfigs
- && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm-configs \
+ && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
  && rm -rf /home/linuxgsm/linuxgsm-config/.git
+
+# ADD --chown=linuxgsm:linuxgsm src /home/linuxgsm/linuxgsm
 
 USER root 
  
@@ -81,7 +83,7 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
 
 ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
-ADD --chown=linuxgsm:linuxgsm custom_configs/ /home/linuxgsm/linuxgsm-configs
+ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm/config-default/config-game-template/
 
 USER linuxgsm
 
