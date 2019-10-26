@@ -31,11 +31,25 @@ fi
 
 echo "IP is set to "${LGSM_IP}
 
+echo "Gomplating main config"
 mkdir -p ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME
 gomplate -d env=~/linuxgsm/env.json -f ~/linuxgsm/lgsm/config-default/config-lgsm/common.cfg.tmpl -o ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/common.cfg
 if [ -f ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/$LGSM_GAMESERVERNAME.cfg.tmpl ]; then
   gomplate -d env=~/linuxgsm/env.json -f ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/$LGSM_GAMESERVERNAME.cfg.tmpl -o ~/linuxgsm/lgsm/config-lgsm/$LGSM_GAMESERVERNAME/$LGSM_GAMESERVERNAME.cfg
 fi
+
+echo "Gomplating game configs"
+for d in /home/linuxgsm/linuxgsm/lgsm/config-default/config-game-template/*/ ; do
+    configGameFolder=$(basename $d)
+    for f in $d/*.tmpl ; do
+      configGameFile=$(basename $f)
+      outputConfigGameFile=$(basename $f .tmpl)
+      outputFile="/home/linuxgsm/linuxgsm/lgsm/config-default/config-game/$configGameFolder/$outputConfigGameFile"
+      gomplate -f $f -o $outputFile
+		  chmod u+x,g+x $outputFile
+    done
+done
+
 echo "DONE GOMPLATING"
 
 if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
