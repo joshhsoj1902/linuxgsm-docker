@@ -89,7 +89,7 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 5
+                sleep: 10
                 tries: 80
           requires:
             - swarm-test
