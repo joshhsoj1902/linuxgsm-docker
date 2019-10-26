@@ -20,6 +20,7 @@ RUN dpkg --add-architecture i386 && \
         file \
         git \
         gzip \
+        iproute2 \
         jq \
         lib32gcc1 \
         lib32ncurses5 \
@@ -61,17 +62,16 @@ RUN adduser \
 USER linuxgsm
 
 # Install LinuxGSM
-RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
- && git checkout tags/181124 \
+# RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
+#  && git checkout tags/181124 \
+#  && rm -rf /home/linuxgsm/linuxgsm/.git \
+
+RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linuxgsm \
+ && git checkout joshhsoj1902-changes-4-docker \
  && rm -rf /home/linuxgsm/linuxgsm/.git \
 # Install GameConfigs
  && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm-configs \
  && rm -rf /home/linuxgsm/linuxgsm-config/.git
-
-# RUN git fetch --all \
-#  && git reset --hard origin/master
-
-# RUN git checkout tags/180908.1
 
 USER root 
  
@@ -81,7 +81,6 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
 
 ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
-ADD --chown=linuxgsm:linuxgsm functions/* /home/linuxgsm/linuxgsm/lgsm/functions/
 ADD --chown=linuxgsm:linuxgsm custom_configs/ /home/linuxgsm/linuxgsm-configs
 
 USER linuxgsm
