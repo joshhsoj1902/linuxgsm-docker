@@ -227,13 +227,19 @@ workflows:
           requires:
             - swarm-test
             - compose-test
-    ### Wurm ###   
-      # - docker/container-health:
-      #     name: wurm-compose
-      #     composeFile: examples/docker-compose.wurm.yml
-      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wurm.yml up
-      #     service: game
-      #     requires:
-      #       - swarm-test
-      #       - compose-test
+    ## Wurm ###   
+      - docker/container-health:
+          name: wurm-compose
+          composeFile: examples/docker-compose.wurm.yml
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test
 
