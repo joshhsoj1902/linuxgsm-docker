@@ -61,7 +61,7 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
       ./lgsm-gameserver auto-install
       rm -f INSTALLING.LOCK
       
-      echo "Game has been updaed. Starting"
+      echo "Game has been updated. Starting"
       ;;
   "INSTALL")
       touch INSTALLING.LOCK  
@@ -94,7 +94,10 @@ sleep 30s
 sleep 5s
 ./lgsm-gameserver monitor
 
-tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log -F ~/linuxgsm/log/script/lgsm-gameserver-script.log -F ~/linuxgsm/log/script/lgsm-gameserver-alert.log
+tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log &
+tail -F ~/linuxgsm/log/script/lgsm-gameserver-script.log &
+tail -F ~/linuxgsm/log/script/lgsm-gameserver-alert.log &
+tail -F ~/linuxgsm/log/server/output_log*.txt
 #
 while :
 do

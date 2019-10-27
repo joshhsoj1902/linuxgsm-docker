@@ -74,6 +74,8 @@ RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linu
  && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
 # ADD --chown=linuxgsm:linuxgsm src /home/linuxgsm/linuxgsm
+# RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
+#  && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
 USER root 
  
