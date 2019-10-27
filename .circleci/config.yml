@@ -119,9 +119,9 @@ workflows:
           requires:
             - swarm-test
             - compose-test  
-          filters:
-            branches:
-              only: master
+          # filters:
+          #   branches:
+          #     only: master
     ### CSS ###    
       - docker/container-health:
           name: css-compose
