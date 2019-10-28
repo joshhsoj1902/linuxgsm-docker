@@ -1,6 +1,7 @@
 version: '3.1'
 volumes:
   saves:
+  data:
 services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
@@ -20,3 +21,4 @@ services:
       - LGSM_EAC_ENABLED=false
     volumes:
       - saves:/home/linuxgsm/linuxgsm/serverfiles/Saves
+      - data:/home/linuxgsm/linuxgsm/serverfiles/Data
