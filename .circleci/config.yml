@@ -7,6 +7,7 @@ swarm_test: &swarm_test
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
+      sleep 30
       retry -v -s 5 -t 12 'docker exec $(docker ps -q) "./docker-liveness.sh"'
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-readiness.sh"'
 version: 2.1
