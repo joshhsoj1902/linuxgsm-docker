@@ -116,7 +116,7 @@ workflows:
                 service: game
                 command: ./docker-readiness.sh
                 sleep: 30
-                tries: 30
+                tries: 60
           requires:
             - swarm-test
             - compose-test  
