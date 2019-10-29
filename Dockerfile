@@ -89,8 +89,15 @@ ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm
 
 USER linuxgsm
 
-# I'm not sure what `serverfiles/Saves` is created here for...
-RUN mkdir logs serverfiles serverfiles/Saves
+RUN mkdir logs serverfiles 
+
+# This dir shouldn't be used anymore, use Saves instead
+RUN mkdir serverfiles/Saves
+
+# serverfiles/Saves is meant to be a common place to put save files when a server supports putting the files somewhere.
+# Creating this folder now works around https://github.com/docker/compose/issues/3270
+RUN mkdir Saves
+
 
 HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD ./docker-liveness.sh
 
