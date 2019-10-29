@@ -19,4 +19,4 @@ services:
       - LGSM_GAME_WORLD=RWG
       - LGSM_EAC_ENABLED=false
     volumes:
-      - saves:/home/linuxgsm/linuxgsm/serverfiles/Saves
+      - saves:/home/linuxgsm/linuxgsm/Saves
