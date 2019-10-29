@@ -7,6 +7,7 @@ swarm_test: &swarm_test
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
+      sleep 30
       retry -v -s 5 -t 12 'docker exec $(docker ps -q) "./docker-liveness.sh"'
       retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-readiness.sh"'
 version: 2.1
@@ -89,8 +90,8 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 10
-                tries: 80
+                sleep: 30
+                tries: 30
           requires:
             - swarm-test
             - compose-test 
@@ -120,14 +121,11 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 10
-                tries: 80
+                sleep: 30
+                tries: 60
           requires:
             - swarm-test
             - compose-test  
-          # filters:
-          #   branches:
-          #     only: master
     ### CSS ###    
       - docker/container-health:
           name: css-compose
