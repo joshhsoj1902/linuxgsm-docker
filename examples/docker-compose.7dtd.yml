@@ -1,6 +1,7 @@
 version: '3.1'
 volumes:
   saves:
+  serverfiles:
 services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
@@ -15,8 +16,12 @@ services:
       - LGSM_SERVER_PORT=26900
       # DO NOT SET LGSM_SERVER_VISIBILITY TO 0/1. LGSM uses this to check if server is running
       - LGSM_SERVER_VISIBILITY=2
-      - LGSM_SERVER_NAME=My Server
+
+      - LGSM_SERVER_NAME=LGSM Server
+      - LGSM_GAME_NAME=My Game
+      - LGSM_WORLD_GEN_SEED=ChangeMe
       - LGSM_GAME_WORLD=RWG
-      - LGSM_EAC_ENABLED=false
+      # - LGSM_EAC_ENABLED=false
     volumes:
       - saves:/home/linuxgsm/linuxgsm/Saves
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

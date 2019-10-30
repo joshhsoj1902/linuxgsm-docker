@@ -10,7 +10,11 @@
 	<property name="ServerLoginConfirmationText"	value="" />					                                            <!-- If set the user will see the message during joining the server and has to confirm it before continuing. For more complex changes to this window you can change the "serverjoinrulesdialog" window in XUi -->
 
 	<!-- Networking -->
+	{{if (getenv "LGSM_SERVER_PORT")}}
     <property name="ServerPort" 				    value="{{getenv "LGSM_SERVER_PORT" "26900"}}"/>	                        <!-- Port you want the server to listen on. -->
+	{{else}}
+    <property name="ServerPort" 				    value="{{getenv "LGSM_PORT" "26900"}}"/>	                        <!-- Port you want the server to listen on. -->
+	{{end}}
 	<property name="ServerVisibility"				value="{{getenv "LGSM_SERVER_VISIBILITY" "2"}}"/>			            <!-- Visibility of this server: 2 = public, 1 = only shown to friends, 0 = not listed. As you are never friend of a dedicated server setting this to "1" will only work when the first player connects manually by IP. -->
     <property name="ServerDisabledNetworkProtocols"	value="{{getenv "LGSM_SERVER_DISABLED_NETWORK_PROTOCOLS" "UNET"}}"/>	<!-- Networking protocols that should not be used. Separated by comma. Possible values: UNET, RakNet, SteamNetworking. Ex: "unet,steamnetworking" -->
 	<property name="ServerMaxWorldTransferSpeedKiBs" value="{{getenv "LGSM_SERVER_MAX_WORLD_TRANSFER_SPEED_KIBS" "512"}}"/>	<!-- Maximum (!) speed in kiB/s the world is transferred at to a client on first connect if it does not have the world yet. Maximum is about 1300 kiB/s, even if you set a higher value. -->
@@ -37,8 +41,8 @@
 
 	<!-- Folder and file locations -->
 	<property name="AdminFileName"			        value="{{getenv "LGSM_ADMIN_FILE_NAME" "serveradmin.xml"}}"/>	                <!-- Server admin file name. Path relative to the SaveGameFolder -->
-  <property name="UserDataFolder"             value="{{getenv "LGSM_USER_DATA_FOLDER" "/home/linuxgsm/linuxgsm/serverfiles/Data"}}" />	        <!-- Use this to override where the server stores all generated data, including RWG generated worlds. Do not forget to uncomment the entry! -->
-  <property name="SaveGameFolder"             value="{{getenv "LGSM_SAVE_GAME_FOLDER" "/home/linuxgsm/linuxgsm/serverfiles/Saves"}}" />	        <!-- Use this to only override the save game path. Do not forget to uncomment the entry! -->
+  <property name="UserDataFolder"             value="{{getenv "LGSM_USER_DATA_FOLDER" "/home/linuxgsm/linuxgsm/Saves/Data"}}" />	        <!-- Use this to override where the server stores all generated data, including RWG generated worlds. Do not forget to uncomment the entry! -->
+  <property name="SaveGameFolder"             value="{{getenv "LGSM_SAVE_GAME_FOLDER" "/home/linuxgsm/linuxgsm/Saves/Saves"}}" />	        <!-- Use this to only override the save game path. Do not forget to uncomment the entry! -->
 
 
 	<!-- Other technical settings -->
