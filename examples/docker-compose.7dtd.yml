@@ -17,8 +17,8 @@ services:
       - LGSM_SERVER_VISIBILITY=2
 
       - LGSM_SERVER_NAME=LGSM Server
-      - LGSM_GAME_NAME=My Server
-      - LGSM_WORLD_GEN_SEED=random
+      - LGSM_GAME_NAME=My Game
+      - LGSM_WORLD_GEN_SEED=ChangeMe
       - LGSM_GAME_WORLD=RWG
       # - LGSM_EAC_ENABLED=false
     volumes:
