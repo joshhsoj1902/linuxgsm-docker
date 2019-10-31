@@ -1,4 +1,8 @@
+# I don't own Ark, The server seems to start.
+# TODO: Does anyone know where files are saved to? (and can it be configured)
 version: '3.1'
+volumes:
+  serverfiles:
 services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
@@ -9,9 +13,7 @@ services:
       - LGSM_GAMESERVERNAME=arkserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_PORT=7777
-      - LGSM_QUERYPORT=27015
-      - LGSM_RCONPORT=27020
       - LGSM_DEFAULTMAP=TheIsland
       - LGSM_MAXPLAYERS=70
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

@@ -1,5 +1,8 @@
-# This hasn't been tested, Setting the config is'nt overly clear https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wurmserver/_default.cfg
+# This hasn't been tested, Setting the config isn't overly clear https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wurmserver/_default.cfg
 version: '3.1'
+volumes:
+  # saves:
+  serverfiles:
 services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
@@ -10,4 +13,5 @@ services:
       - LGSM_GAMESERVERNAME=wurmserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
+      
