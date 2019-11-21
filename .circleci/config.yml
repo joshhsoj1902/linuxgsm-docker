@@ -57,10 +57,10 @@ workflows:
           tag: latest
           requires: 
             - setup
-      - docker/test:
-          name: gomplate tests
-          requires:
-            - docker/build          
+      # - docker/test:
+      #     name: gomplate tests
+      #     requires:
+      #       - docker/build          
       - swarm:
           name: swarm-test
           requires:
