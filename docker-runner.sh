@@ -1,10 +1,19 @@
 #!/bin/bash
 
-function finish {
-  echo "Exit received Stopping server"
+set -e
+
+cleanup() {
+  echo "Exit received"
+
+  echo "Stopping server"
   ./lgsm-gameserver stop
+  echo "Server Stopped"
+
+  echo "Shutting down"
+  exit 0
 }
-trap finish EXIT
+
+trap 'cleanup' SIGINT SIGTERM
 
 #Set ENV defaults
 if [ -n "$LGSM_PORT" ]; then
@@ -97,10 +106,6 @@ sleep 5s
 tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log &
 tail -F ~/linuxgsm/log/script/lgsm-gameserver-script.log &
 tail -F ~/linuxgsm/log/script/lgsm-gameserver-alert.log &
-tail -F ~/linuxgsm/log/server/output_log*.txt
-#
-while :
-do
-./lgsm-gameserver monitor
-sleep 30s
-done
+tail -F ~/linuxgsm/log/server/output_log*.txt &
+
+wait $!

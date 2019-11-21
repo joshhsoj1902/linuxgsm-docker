@@ -101,4 +101,4 @@ RUN mkdir Saves
 
 HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD ./docker-liveness.sh
 
-CMD ["bash", "./docker-runner.sh"]
+ENTRYPOINT ["bash", "./docker-runner.sh"]
