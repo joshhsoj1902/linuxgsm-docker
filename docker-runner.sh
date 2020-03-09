@@ -15,6 +15,10 @@ cleanup() {
 
 trap 'cleanup' SIGINT SIGTERM
 
+for f in startup-scripts/*.sh; do
+  bash "$f" -H || break
+done
+
 #Set ENV defaults
 if [ -n "$LGSM_PORT" ]; then
   if [ -z "$LGSM_CLIENTPORT" ]; then
