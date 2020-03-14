@@ -95,15 +95,21 @@ workflows:
           requires:
             - swarm-test
             - compose-test 
-    ### ARK ###    
-      # - docker/container-health:
-      #     name: ark-compose
-      #     composeFile: examples/docker-compose.ark.yml
-      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.ark.yml up
-      #     service: game
-      #     requires:
-      #       - swarm-test
-      #       - compose-test  
+    ## ARK ###    
+      - docker/container-health:
+          name: ark-compose
+          composeFile: examples/docker-compose.ark.yml
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test  
     ### CSGO ###    
       - docker/container-health:
           name: csgo-compose
@@ -193,7 +199,7 @@ workflows:
 #          requires:
 #            - swarm-test
 #            - compose-test  
-    ### Pstbs ###   
+    ## Pstbs ###   
       # - docker/container-health:
       #     name: pstbs-compose
       #     composeFile: examples/docker-compose.pstbs.yml
@@ -225,12 +231,18 @@ workflows:
           requires:
             - swarm-test
             - compose-test
-    ### Wurm ###   
+    ## Wurm ###   
       # - docker/container-health:
       #     name: wurm-compose
       #     composeFile: examples/docker-compose.wurm.yml
-      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wurm.yml up
       #     service: game
+      #     after_test: 
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
+      #           service: game
+      #           command: ./docker-readiness.sh
+      #           sleep: 5
+      #           tries: 60
       #     requires:
       #       - swarm-test
       #       - compose-test

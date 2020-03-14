@@ -26,6 +26,7 @@ RUN dpkg --add-architecture i386 && \
         lib32ncurses5 \
         lib32z1 \
         libc6 \
+        libgconf-2-4 \
         libstdc++6 \
         libstdc++6:i386 \
         mailutils \
