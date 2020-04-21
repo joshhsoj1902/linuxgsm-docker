@@ -85,6 +85,7 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
 
 ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
+ADD --chown=linuxgsm:linuxgsm lgsm/ /home/linuxgsm/linuxgsm/lgsm/
 ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm/config-default/config-game-template/
 
 USER linuxgsm
