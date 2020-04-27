@@ -6,6 +6,11 @@ WORKDIR /home/linuxgsm/linuxgsm
 ENV DEBIAN_FRONTEND noninteractive
 ENV TERM xterm
 
+ENV LGSM_CONSOLE_STDOUT=true
+ENV LGSM_SCRIPT_STDOUT=true
+ENV LGSM_ALERT_STDOUT=true
+ENV LGSM_GAME_STDOUT=true
+
 # Install dependencies and clean
 RUN dpkg --add-architecture i386 && \
     apt-get update && \
@@ -87,6 +92,9 @@ ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
 ADD --chown=linuxgsm:linuxgsm lgsm/ /home/linuxgsm/linuxgsm/lgsm/
 ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm/config-default/config-game-template/
+
+# This file isn't always created when running in docker. Ideally we shouldn't need it.
+RUN touch /.dockerenv
 
 USER linuxgsm
 
