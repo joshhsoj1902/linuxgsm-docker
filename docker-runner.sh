@@ -107,9 +107,20 @@ sleep 30s
 sleep 5s
 ./lgsm-gameserver monitor
 
-tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log &
-tail -F ~/linuxgsm/log/script/lgsm-gameserver-script.log &
-tail -F ~/linuxgsm/log/script/lgsm-gameserver-alert.log &
-tail -F ~/linuxgsm/log/server/output_log*.txt &
+if [ "$LGSM_CONSOLE_STDOUT" == "true" ]; then
+  tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log &
+fi
+
+if [ "$LGSM_SCRIPT_STDOUT" == "true" ]; then
+  tail -F ~/linuxgsm/log/script/lgsm-gameserver-script.log &
+fi
+
+if [ "$LGSM_ALERT_STDOUT" == "true" ]; then
+  tail -F ~/linuxgsm/log/script/lgsm-gameserver-alert.log &
+fi
+
+if [ "$LGSM_GAME_STDOUT" == "true" ]; then
+  tail -F ~/linuxgsm/log/server/output_log*.txt &
+fi
 
 wait $!
