@@ -25,6 +25,7 @@
 {{if eq (getenv "LGSM_GAMESERVERNAME") "fctrserver"}}
 ## Server Start Command | https://docs.linuxgsm.com/configuration/start-parameters#additional-parameters
 fn_parms(){
-parms="--start-server ${serverfiles}/Saves/save1.zip --server-settings ${servercfgfullpath} --port ${port} --rcon-port ${rconport} --rcon-password ${rconpassword}"
+savepath="${LGSM_SAVE_PATH:-${serverfiles}/save1.zip}"
+parms="--start-server ${savepath} --server-settings ${servercfgfullpath} --port ${port} --rcon-port ${rconport} --rcon-password ${rconpassword}"
 }
 {{end}}
