@@ -1,8 +1,8 @@
 {
     {{if (getenv "LGSM_SERVER_NAME")}}
-    "name": "{{getenv "LGSM_SERVER_NAME" "SERVERNAME"}}"
+    "name": "{{getenv "LGSM_SERVER_NAME" "SERVERNAME"}}",
     {{else}}
-    "name": "{{getenv "LGSM_HOSTNAME" "SERVERNAME"}}"
+    "name": "{{getenv "LGSM_HOSTNAME" "SERVERNAME"}}",
     {{end}}
     "description": "Description of the game that will appear in the listing",
     "tags": {{getenv "LGSM_TAGS" "[\"game\", \"tags\"]"}},
@@ -40,7 +40,7 @@
     "ignore_player_limit_for_returning_players": {{getenv "LGSM_IGNORE_PLAYER_LIMIT_FOR_RETURNING_PLAYERS" "false"}},
   
     "_comment_allow_commands": "possible values are, true, false and admins-only",
-    "allow_commands": {{getenv "LGSM_ALLOW_COMMANDS" "admins-only"}},
+    "allow_commands": "{{getenv "LGSM_ALLOW_COMMANDS" "admins-only" }}",
   
     "_comment_autosave_interval": "Autosave interval in minutes",
     "autosave_interval": {{getenv "LGSM_AUTOSAVE_INTERVAL" "10"}},
@@ -60,7 +60,7 @@
     "autosave_only_on_server": {{getenv "LGSM_AUTOSAVE_ONLY_ON_SERVER" "true"}},
   
     "_comment_admins": "List of case insensitive usernames, that will be promoted immediately",
-    "admins": {{getenv "LGSM_ADMINS" "[]"}},
+    "admins": {{getenv "LGSM_ADMINS" "[]"}}
 
   }
   

@@ -9,6 +9,7 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       # If LGSM_SAVE_PATH is set, a world file MUST already exist at that path.
       - LGSM_SAVE_PATH=/home/linuxgsm/linuxgsm/serverfiles/saves/save1.zip
+      - LGSM_SERVER_NAME="my server"
 
       # - LGSM_MAX_PLAYERS="0"
       # - LGSM_PUBLIC="true"
