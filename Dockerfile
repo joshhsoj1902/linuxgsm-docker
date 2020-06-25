@@ -12,7 +12,8 @@ ENV LGSM_ALERT_STDOUT=true
 ENV LGSM_GAME_STDOUT=true
 
 # Install dependencies and clean
-RUN apt-get update && \
+RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
+    apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository multiverse && \
     dpkg --add-architecture i386 && \
@@ -42,20 +43,19 @@ RUN apt-get update && \
         netcat \
         postfix \
         python \
+        steamcmd \
         tmux \
         telnet \
         util-linux \
         unzip \
         wget \
-        xvfb 
+        xvfb \
     # Cleanup
-    # && apt-get -y autoremove \
-    # && apt-get -y clean \
-    # && rm -rf /var/lib/apt/lists/* \
-    # && rm -rf /tmp/* \
-    # && rm -rf /var/tmp/*
-
-# RUN apt-get install steamcmd
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.1.0-alpine /bin/gomplate /usr/bin/gomplate
@@ -73,12 +73,11 @@ RUN adduser \
 # Switch to the user linuxgsm
 USER linuxgsm
 
-# Install steamcmd
+# Install steamcmd.sh
 RUN mkdir -p /home/linuxgsm/steamcmd \
     && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar xvzf - -C /home/linuxgsm/steamcmd \
-    && mkdir -p /home/linuxgsm/.steam/sdk32 \
-    && ln -s /home/linuxgsm/steamcmd/linux32/steamclient.so /home/linuxgsm/.steam/sdk32/steamclient.so \
-    && ln -s /home/linuxgsm/steamcmd/steamcmd.sh /home/linuxgsm/steamcmd.sh 
+    && ln -s /home/linuxgsm/steamcmd/steamcmd.sh /home/linuxgsm/linuxgsm/steamcmd.sh 
+
 
 # Install LinuxGSM
 # RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
@@ -106,7 +105,7 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
 
 ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
-ADD --chown=linuxgsm:linuxgsm lgsm/ /home/linuxgsm/linuxgsm/lgsm/
+# ADD --chown=linuxgsm:linuxgsm lgsm/ /home/linuxgsm/linuxgsm/lgsm/
 ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm/config-default/config-game-template/
 
 # This file isn't always created when running in docker. Ideally we shouldn't need it.
