@@ -1,4 +1,4 @@
-FROM ubuntu:20.04
+FROM ubuntu:18.04
 
 WORKDIR /home/linuxgsm/linuxgsm
 
@@ -38,6 +38,7 @@ RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
         libstdc++6:i386 \
         lib32stdc++6 \
         libtinfo5:i386 \
+        libsdl2-2.0-0:i386 \
         mailutils \
         net-tools \
         netcat \
@@ -72,12 +73,6 @@ RUN adduser \
 
 # Switch to the user linuxgsm
 USER linuxgsm
-
-# Install steamcmd.sh
-RUN mkdir -p /home/linuxgsm/steamcmd \
-    && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar xvzf - -C /home/linuxgsm/steamcmd \
-    && ln -s /home/linuxgsm/steamcmd/steamcmd.sh /home/linuxgsm/linuxgsm/steamcmd.sh 
-
 
 # Install LinuxGSM
 # RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
