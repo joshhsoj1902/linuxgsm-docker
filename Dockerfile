@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 WORKDIR /home/linuxgsm/linuxgsm
 
@@ -12,7 +12,10 @@ ENV LGSM_ALERT_STDOUT=true
 ENV LGSM_GAME_STDOUT=true
 
 # Install dependencies and clean
-RUN dpkg --add-architecture i386 && \
+RUN apt-get update && \
+    apt-get install -y software-properties-common && \
+    add-apt-repository multiverse && \
+    dpkg --add-architecture i386 && \
     apt-get update && \
     apt-get install -y \
         bc \
@@ -28,13 +31,15 @@ RUN dpkg --add-architecture i386 && \
         iproute2 \
         jq \
         lib32gcc1 \
-        lib32ncurses5 \
         lib32z1 \
         libc6 \
         libstdc++6 \
         libstdc++6:i386 \
+        lib32stdc++6 \
+        libtinfo5:i386 \
         mailutils \
         net-tools \
+        netcat \
         postfix \
         python \
         tmux \
@@ -42,13 +47,15 @@ RUN dpkg --add-architecture i386 && \
         util-linux \
         unzip \
         wget \
-        xvfb \
+        xvfb 
     # Cleanup
-    && apt-get -y autoremove \
-    && apt-get -y clean \
-    && rm -rf /var/lib/apt/lists/* \
-    && rm -rf /tmp/* \
-    && rm -rf /var/tmp/*
+    # && apt-get -y autoremove \
+    # && apt-get -y clean \
+    # && rm -rf /var/lib/apt/lists/* \
+    # && rm -rf /tmp/* \
+    # && rm -rf /var/tmp/*
+
+# RUN apt-get install steamcmd
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.1.0-alpine /bin/gomplate /usr/bin/gomplate
@@ -66,16 +73,19 @@ RUN adduser \
 # Switch to the user linuxgsm
 USER linuxgsm
 
+# Install steamcmd
+RUN mkdir -p /home/linuxgsm/steamcmd \
+    && wget -qO- 'https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz' | tar xvzf - -C /home/linuxgsm/steamcmd \
+    && mkdir -p /home/linuxgsm/.steam/sdk32 \
+    && ln -s /home/linuxgsm/steamcmd/linux32/steamclient.so /home/linuxgsm/.steam/sdk32/steamclient.so \
+    && ln -s /home/linuxgsm/steamcmd/steamcmd.sh /home/linuxgsm/steamcmd.sh 
+
 # Install LinuxGSM
 # RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
 #  && git checkout tags/181124 \
 #  && rm -rf /home/linuxgsm/linuxgsm/.git \
 
 ADD --chown=linuxgsm:linuxgsm LinuxGSM/ /home/linuxgsm/linuxgsm
-
-RUN ls -ltr /home/linuxgsm/linuxgsm
-
-RUN ls -ltr /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 
 # RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linuxgsm \
 #  && git checkout joshhsoj1902-changes-4-docker \
@@ -89,7 +99,7 @@ RUN ls -ltr /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 #  && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
 USER root 
- 
+
 RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && find /home/linuxgsm/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
  && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
