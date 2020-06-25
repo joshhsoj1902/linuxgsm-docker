@@ -1,4 +1,4 @@
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 WORKDIR /home/linuxgsm/linuxgsm
 
@@ -28,7 +28,6 @@ RUN dpkg --add-architecture i386 && \
         iproute2 \
         jq \
         lib32gcc1 \
-        lib32ncurses5 \
         lib32z1 \
         libc6 \
         libstdc++6 \
