@@ -1,7 +1,7 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:1.0.8@sha256:87c9fcce5f5474f34407f12640fd89903070e4de467724294e687a4442d2fe0c
+      - image: joshhsoj1902/circleci-build-image:2.1.0
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
@@ -39,7 +39,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.11.0-ce
+          version: 19.03.8
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
