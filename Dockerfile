@@ -42,21 +42,26 @@ RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
         mailutils \
         net-tools \
         netcat \
+        nodejs \
         postfix \
         python \
-        steamcmd \
+        # steamcmd \
         tmux \
         telnet \
         util-linux \
         unzip \
         wget \
         xvfb \
+        npm \
     # Cleanup
     && apt-get -y autoremove \
     && apt-get -y clean \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/*
+
+# Install Gamedig https://docs.linuxgsm.com/requirements/gamedig
+RUN npm install -g gamedig
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.1.0-alpine /bin/gomplate /usr/bin/gomplate
