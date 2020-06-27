@@ -7,7 +7,6 @@ else
    echo "Installing done, checking game status"
 fi
 
-
 coproc MONITOR { ./lgsm-gameserver monitor; }
 MONITOR_PID_=$MONITOR_PID
 while IFS= read -r line
@@ -20,13 +19,3 @@ do
    # echo "$i";
 done <&"$MONITOR"
 wait "$MONITOR_PID_"; exit $?
-
-
-# ./lgsm-gameserver monitor || true && exitcode="$?" |
-# while IFS= read -r line
-# do
-
-# done
-
-# echo "Exit code: $exitcode"
-# exit exitcode

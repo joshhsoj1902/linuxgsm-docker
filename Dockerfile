@@ -12,8 +12,8 @@ ENV LGSM_ALERT_STDOUT=true
 ENV LGSM_GAME_STDOUT=true
 
 # Install dependencies and clean
-RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
-    apt-get update && \
+# RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
+RUN apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository multiverse && \
     dpkg --add-architecture i386 && \
@@ -83,14 +83,14 @@ USER linuxgsm
 # RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
 #  && git checkout tags/181124 \
 #  && rm -rf /home/linuxgsm/linuxgsm/.git \
+# ADD --chown=linuxgsm:linuxgsm LinuxGSM/ /home/linuxgsm/linuxgsm
 
-ADD --chown=linuxgsm:linuxgsm LinuxGSM/ /home/linuxgsm/linuxgsm
-
-# RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linuxgsm \
-#  && git checkout joshhsoj1902-changes-4-docker \
-#  && rm -rf /home/linuxgsm/linuxgsm/.git \
+# Install LinuxGSM
+RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linuxgsm \
+ && git checkout joshhsoj1902-changes-4-docker \
+ && rm -rf /home/linuxgsm/linuxgsm/.git \
 # Install GameConfigs
- RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
+ && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
  && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
 # ADD --chown=linuxgsm:linuxgsm src /home/linuxgsm/linuxgsm

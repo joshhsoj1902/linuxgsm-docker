@@ -75,7 +75,7 @@ workflows:
                 composeFilePath: /tmp/workspace/docker-compose.citest.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 5
+                sleep: 15
                 tries: 60
           requires:
             - docker/build
@@ -147,7 +147,7 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 5
+                sleep: 15
                 tries: 60
           requires:
             - swarm-test
@@ -163,7 +163,7 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 5
+                sleep: 30
                 tries: 60
           requires:
             - swarm-test

@@ -73,9 +73,17 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
       mv $LGSM_GAMESERVERNAME lgsm-gameserver
       ./lgsm-gameserver auto-install || true
       exitcode="$?"
+
+      if [ "$exitcode" -gt "0" ] && [ "$exitcode" != "3" ]; then
+        # Retry once 
+        echo "Unexpected error when updating ($exitcode). Trying again."
+        ./lgsm-gameserver auto-install || true
+        exitcode="$?"
+      fi
+
       rm -f INSTALLING.LOCK
       
-      if [ "$exitcode" != "0" ] && [ "$exitcode" == "3" ]; then
+      if [ "$exitcode" != "0" ] && [ "$exitcode" != "3" ]; then
         # exitcode 3 is a warning, in this case the warning we don't care about is steam not being installed
         # any other thing not being installed is an issue, but steam will be installed if it's missing.
         # we can't use the one in apt-get for some reason (it installs but it always hangs installing games) 
@@ -93,10 +101,17 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
       ./lgsm-gameserver auto-install
       exitcode="$?"
 
+      if [ "$exitcode" -gt "0" ] && [ "$exitcode" != "3" ]; then
+        # Retry once 
+        echo "Unexpected error when installing ($exitcode). Trying again."
+        ./lgsm-gameserver auto-install || true
+        exitcode="$?"
+      fi
+
       echo "Install returned code $exitcode"
       rm -f INSTALLING.LOCK
        
-      if [ "$exitcode" != "0" ] && [ "$exitcode" == "3" ]; then
+      if [ "$exitcode" != "0" ] && [ "$exitcode" != "3" ]; then
         # exitcode 3 is a warning, in this case the warning we don't care about is steam not being installed
         # any other thing not being installed is an issue, but steam will be installed if it's missing.
         # we can't use the one in apt-get for some reason (it installs but it always hangs installing games) 
