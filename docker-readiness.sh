@@ -7,7 +7,26 @@ else
    echo "Installing done, checking game status"
 fi
 
-exec 5>&1
-monitor_output=$(./lgsm-gameserver monitor|tee /dev/fd/5)
 
-echo $monitor_output
+coproc MONITOR { ./lgsm-gameserver monitor; }
+MONITOR_PID_=$MONITOR_PID
+while IFS= read -r line
+do 
+   echo $line
+   if [[ $line =~ "DELAY" ]]; then
+      echo "Inside start delay - FAIL"
+      exit 1
+   fi
+   # echo "$i";
+done <&"$MONITOR"
+wait "$MONITOR_PID_"; exit $?
+
+
+# ./lgsm-gameserver monitor || true && exitcode="$?" |
+# while IFS= read -r line
+# do
+
+# done
+
+# echo "Exit code: $exitcode"
+# exit exitcode
