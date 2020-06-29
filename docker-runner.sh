@@ -98,7 +98,7 @@ if [ -n "$LGSM_UPDATEINSTALLSKIP" ]; then
       ./linuxgsm.sh $LGSM_GAMESERVERNAME
       mv $LGSM_GAMESERVERNAME lgsm-gameserver || true
       ls -ltr
-      ./lgsm-gameserver auto-install
+      ./lgsm-gameserver auto-install || true
       exitcode="$?"
 
       if [ "$exitcode" -gt "0" ] && [ "$exitcode" != "3" ]; then
