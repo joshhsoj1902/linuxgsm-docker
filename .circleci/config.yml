@@ -1,7 +1,7 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:1.0.8@sha256:87c9fcce5f5474f34407f12640fd89903070e4de467724294e687a4442d2fe0c
+      - image: joshhsoj1902/circleci-build-image:2.1.0
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
@@ -39,7 +39,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.11.0-ce
+          version: 19.03.8
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
@@ -75,7 +75,7 @@ workflows:
                 composeFilePath: /tmp/workspace/docker-compose.citest.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 5
+                sleep: 15
                 tries: 60
           requires:
             - docker/build
@@ -96,14 +96,21 @@ workflows:
             - swarm-test
             - compose-test 
     ### ARK ###    
-      # - docker/container-health:
-      #     name: ark-compose
-      #     composeFile: examples/docker-compose.ark.yml
-      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.ark.yml up
-      #     service: game
-      #     requires:
-      #       - swarm-test
-      #       - compose-test  
+      - docker/container-health:
+          name: ark-compose
+          composeFile: examples/docker-compose.ark.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.ark.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 30
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test  
     ### CSGO ###    
       - docker/container-health:
           name: csgo-compose
@@ -147,27 +154,27 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
                 service: game
                 command: ./docker-readiness.sh
-                sleep: 5
+                sleep: 15
                 tries: 60
           requires:
             - swarm-test
             - compose-test
     ### INSS ###     
-      - docker/container-health:
-          name: inss-compose
-          composeFile: examples/docker-compose.inss.yml
-          command: docker-compose -f /tmp/workspace/examples/docker-compose.inss.yml up
-          service: game
-          after_test: 
-            - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
-                service: game
-                command: ./docker-readiness.sh
-                sleep: 5
-                tries: 60
-          requires:
-            - swarm-test
-            - compose-test   
+      # - docker/container-health:
+      #     name: inss-compose
+      #     composeFile: examples/docker-compose.inss.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.inss.yml up
+      #     service: game
+      #     after_test: 
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
+      #           service: game
+      #           command: ./docker-readiness.sh
+      #           sleep: 30
+      #           tries: 60
+      #     requires:
+      #       - swarm-test
+      #       - compose-test   
     ### Minecraft ###     
       - docker/container-health:
           name: minecraft-compose
@@ -183,16 +190,7 @@ workflows:
                 tries: 60
           requires:
             - swarm-test
-            - compose-test  
-    ### Mumble ###   
-#      - docker/container-health:
-#          name: mumble-compose
-#          composeFile: examples/docker-compose.mumble.yml
-#          command: docker-compose -f /tmp/workspace/examples/docker-compose.mumble.yml up
-#          service: game
-#          requires:
-#            - swarm-test
-#            - compose-test  
+            - compose-test   
     ### Pstbs ###   
       # - docker/container-health:
       #     name: pstbs-compose
@@ -212,27 +210,34 @@ workflows:
     ### Wet ###   
 
     # TODO Disabled until base LGSM src is updated
-      # - docker/container-health:
-      #     name: wet-compose
-      #     composeFile: examples/docker-compose.wet.yml
-      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wet.yml up
-      #     service: game
-      #     after_test: 
-      #       - docker/compose-exec-retry:
-      #           composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
-      #           service: game
-      #           command: ./docker-readiness.sh
-      #           sleep: 5
-      #           tries: 60
-      #     requires:
-      #       - swarm-test
-      #       - compose-test
+      - docker/container-health:
+          name: wet-compose
+          composeFile: examples/docker-compose.wet.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.wet.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
+                service: game
+                command: ./docker-readiness.sh
+                sleep: 5
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test
     ### Wurm ###   
       # - docker/container-health:
       #     name: wurm-compose
       #     composeFile: examples/docker-compose.wurm.yml
       #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wurm.yml up
       #     service: game
+      #     after_test: 
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
+      #           service: game
+      #           command: ./docker-readiness.sh
+      #           sleep: 5
+      #           tries: 60
       #     requires:
       #       - swarm-test
       #       - compose-test
