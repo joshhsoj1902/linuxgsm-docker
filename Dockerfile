@@ -65,7 +65,7 @@ RUN apt-get update && \
 RUN npm install -g gamedig
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
-COPY --from=hairyhenderson/gomplate:v3.6.0-alpine /bin/gomplate /usr/bin/gomplate
+COPY --from=hairyhenderson/gomplate:v3.7.0-alpine /bin/gomplate /usr/bin/gomplate
 
 # Add the linuxgsm user
 RUN adduser \
