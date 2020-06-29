@@ -39,6 +39,7 @@ RUN apt-get update && \
         lib32stdc++6 \
         libtinfo5:i386 \
         libsdl2-2.0-0:i386 \
+        libgconf-2-4 \
         mailutils \
         net-tools \
         netcat \
