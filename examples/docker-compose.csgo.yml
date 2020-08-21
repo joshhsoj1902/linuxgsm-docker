@@ -8,5 +8,6 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=csgoserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=27015
     volumes:
       - "/home/linuxgsm/linuxgsm/logs"

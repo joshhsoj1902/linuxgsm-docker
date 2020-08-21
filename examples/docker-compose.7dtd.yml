@@ -13,7 +13,8 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
 
       # See /config-game-template/7DaysToDie/serverconfig.xml.tmpl for all config options
-      - LGSM_SERVER_PORT=26900
+      - LGSM_PORT=26900
+
       # DO NOT SET LGSM_SERVER_VISIBILITY TO 0/1. LGSM uses this to check if server is running
       - LGSM_SERVER_VISIBILITY=2
 

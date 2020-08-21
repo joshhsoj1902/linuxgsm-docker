@@ -8,8 +8,8 @@ swarm_test: &swarm_test
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       sleep 30
-      retry -v -s 5 -t 12 'docker exec $(docker ps -q) "./docker-liveness.sh"'
-      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-readiness.sh"'
+      retry -v -s 5 -t 12 'docker exec $(docker ps -q) "curl -f http://localhost:28080/live || exit 1"'
+      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "curl -f http://localhost:28080/ready || exit 1"'
 version: 2.1
 
 orbs:
@@ -74,7 +74,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/docker-compose.citest.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready 
                 sleep: 15
                 tries: 60
           requires:
@@ -89,7 +89,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 30
                 tries: 30
           requires:
@@ -105,7 +105,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 30
                 tries: 60
           requires:
@@ -121,7 +121,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 30
                 tries: 60
           requires:
@@ -137,7 +137,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.css.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
           requires:
@@ -153,7 +153,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 15
                 tries: 60
           requires:
@@ -169,7 +169,7 @@ workflows:
       #       - docker/compose-exec-retry:
       #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
       #           service: game
-      #           command: ./docker-readiness.sh
+      #           command: curl -f http://localhost:28080/ready
       #           sleep: 30
       #           tries: 60
       #     requires:
@@ -185,7 +185,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.minecraft.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
           requires:
@@ -201,7 +201,7 @@ workflows:
       #       - docker/compose-exec-retry:
       #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml
       #           service: game
-      #           command: ./docker-readiness.sh
+      #           command: curl -f http://localhost:28080/ready
       #           sleep: 5
       #           tries: 60
       #     requires:
@@ -219,7 +219,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
                 service: game
-                command: ./docker-readiness.sh
+                command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
           requires:
@@ -235,7 +235,7 @@ workflows:
       #       - docker/compose-exec-retry:
       #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
       #           service: game
-      #           command: ./docker-readiness.sh
+      #           command: curl -f http://localhost:28080/ready
       #           sleep: 5
       #           tries: 60
       #     requires:

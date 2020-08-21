@@ -9,6 +9,7 @@ services:
       ## Out of the box LGSM
       - LGSM_GAMESERVERNAME=mcserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=25565
       - LGSM_JAVARAM=512 # previously LGSM_JAVA_MEMORY
 
       ## server.properties https://minecraft.gamepedia.com/Server.properties
@@ -40,7 +41,6 @@ services:
       # - LGSM_RCON_PASSWORD
       # - LGSM_RCON_PORT
       - LGSM_IP=0.0.0.0
-      # - LGSM_PORT=25565
       # - LGSM_SNOOPER_ENABLED
       # - LGSM_SPAWN_ANIMALS
       # - LGSM_SPAWN_MONSTERS
