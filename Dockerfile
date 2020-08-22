@@ -8,7 +8,6 @@ WORKDIR /
 
 RUN make build-monitor
 
-
 FROM ubuntu:18.04
 
 WORKDIR /home/linuxgsm/linuxgsm
@@ -24,7 +23,8 @@ ENV LGSM_GAME_STDOUT=true
 
 # Install dependencies and clean
 # RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
-RUN apt-get update && \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository multiverse && \
     dpkg --add-architecture i386 && \
@@ -54,7 +54,6 @@ RUN apt-get update && \
         mailutils \
         net-tools \
         netcat \
-        nodejs \
         postfix \
         python \
         # steamcmd \
@@ -64,7 +63,6 @@ RUN apt-get update && \
         unzip \
         wget \
         xvfb \
-        npm \
     # Cleanup
     && apt-get -y autoremove \
     && apt-get -y clean \
@@ -73,7 +71,15 @@ RUN apt-get update && \
     && rm -rf /var/tmp/*
 
 # Install Gamedig https://docs.linuxgsm.com/requirements/gamedig
-RUN npm install -g gamedig
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get update && apt-get install -y nodejs \
+    && npm install -g gamedig \
+    # Cleanup
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.6.0-alpine /bin/gomplate /usr/bin/gomplate
