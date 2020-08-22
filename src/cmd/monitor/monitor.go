@@ -11,15 +11,11 @@ import (
 
 func main() {
 	httpServer := newHttpTransport()
-	http.HandleFunc("/", helloServer)
 	http.HandleFunc("/live", httpServer.liveServer)
 	http.HandleFunc("/ready", httpServer.readyServer)
+	http.HandleFunc("/gamedig", httpServer.gamedigServer)
 	fmt.Printf("Listening on port 28080\n")
 	http.ListenAndServe(":28080", nil)
-}
-
-func helloServer(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "Hello, %s!", r.URL.Path[1:])
 }
 
 func newHttpTransport() *httpTransport {
@@ -36,14 +32,6 @@ type httpTransport struct {
 }
 
 func (h httpTransport) liveServer(w http.ResponseWriter, r *http.Request) {
-
-	// result, err := h.gamedig.query()
-
-	// if err != nil || result["error"] != "" {
-	// 	w.WriteHeader(http.StatusServiceUnavailable)
-	// 	return
-	// }
-
 	w.WriteHeader(http.StatusOK)
 }
 
@@ -57,23 +45,51 @@ func (h httpTransport) readyServer(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	result, err := h.gamedig.query()
+	if h.gamedig.gameType != "" {
+		result, err := h.gamedig.query()
 
-	if err != nil {
-		w.WriteHeader(http.StatusServiceUnavailable)
-		fmt.Fprintf(w, "Error querying\n")
-		return
+		if err != nil {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			fmt.Fprintf(w, "Error querying\n")
+			return
+		}
+
+		if result["error"] != nil {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			fmt.Fprintf(w, "Query returned error\n")
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+		// fmt.Fprintf(w, "Ready, %+v!", result)
+		fmt.Fprintf(w, "Ready")
+	} else {
+		// If game doesn't support gamedig, fallback on monitor
+		result, reason := lgsmMonitor()
+		if result == false {
+			w.WriteHeader(http.StatusServiceUnavailable)
+			fmt.Fprintf(w, "%s\n", reason)
+			return
+		} else {
+			w.WriteHeader(http.StatusOK)
+			fmt.Fprintf(w, "%s\n", reason)
+			return
+		}
+	}
+}
+
+func (h httpTransport) gamedigServer(w http.ResponseWriter, r *http.Request) {
+
+	if h.gamedig.gameType != "" {
+		result, _ := h.gamedig.query()
+
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "%+v!", result)
+	} else {
+		w.WriteHeader(http.StatusOK)
+		fmt.Fprintf(w, "Gameserver doesn't support gamedig.")
 	}
 
-	if result["error"] != nil {
-		w.WriteHeader(http.StatusServiceUnavailable)
-		fmt.Fprintf(w, "Query returned error\n")
-		return
-	}
-
-	w.WriteHeader(http.StatusOK)
-	// fmt.Fprintf(w, "Ready, %+v!", result)
-	fmt.Fprintf(w, "Ready")
 }
 
 // Gamedig service
@@ -90,7 +106,11 @@ func newGamedig() *gamedig {
 	}
 
 	gamedigType := getGamedigType(os.Getenv("LGSM_GAMESERVERNAME"))
-	serverPort := os.Getenv("LGSM_PORT")
+
+	serverPort := os.Getenv("LGSM_QUERY_PORT")
+	if serverPort == "" {
+		serverPort = os.Getenv("LGSM_PORT")
+	}
 
 	return &gamedig{
 		serverIP:   serverIP,
@@ -114,18 +134,13 @@ func (g *gamedig) query() (map[string]interface{}, error) {
 		return nil, err
 	}
 
-	// Declared an empty interface
 	var result map[string]interface{}
-
-	// Unmarshal or Decode the JSON to the interface.
 	json.Unmarshal(stdout, &result)
 
 	// fmt.Printf("The results %+v\n", result)
-
 	return result, nil
 }
 
-// This should only happen once
 func getHostname() string {
 	app := "hostname"
 	arg0 := "-i"
@@ -149,9 +164,41 @@ func getGamedigType(code string) string {
 	// https://github.com/gamedig/node-gamedig#supported
 
 	switch shortCode {
-	case "foo":
-		return "foo"
+	case "ark":
+		return "arkse"
+	case "css":
+		return "css"
+	case "gmod":
+		return "garrysmod"
+	case "mc":
+		return "minecraft"
+	case "sdtd":
+		return "7d2d"
+	case "wet":
+		return "wolfensteinet"
 	default:
-		return shortCode
+		return ""
 	}
+}
+
+func lgsmMonitor() (bool, string) {
+	app := "./lgsm-gameserver"
+	arg0 := "monitor"
+
+	cmd := exec.Command(app, arg0)
+	stdout, err := cmd.Output()
+
+	if err != nil {
+		return false, "Error querying"
+	}
+
+	if strings.Contains(string(stdout), "DELAY") {
+		return false, "Starting"
+	}
+
+	if cmd.ProcessState.ExitCode() > 0 {
+		return false, "Query returned error"
+	}
+
+	return true, "Ready"
 }
