@@ -8,8 +8,8 @@ swarm_test: &swarm_test
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
       sleep 30
-      retry -v -s 5 -t 12 'docker exec $(docker ps -q) "curl -f http://localhost:28080/live || exit 1"'
-      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "curl -f http://localhost:28080/ready || exit 1"'
+      retry -v -s 5 -t 12 'docker exec $(docker ps -q) curl -f http://localhost:28080/live || exit 1'
+      retry -v -s 5 -t 60 'docker exec $(docker ps -q) curl -f http://localhost:28080/ready || exit 1'
 version: 2.1
 
 orbs:
@@ -74,7 +74,7 @@ workflows:
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/docker-compose.citest.yml
                 service: game
-                command: curl -f http://localhost:28080/ready 
+                command: curl -f http://localhost:28080/ready || true
                 sleep: 15
                 tries: 60
           requires:
