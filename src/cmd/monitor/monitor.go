@@ -14,6 +14,8 @@ func main() {
 	http.HandleFunc("/live", httpServer.liveServer)
 	http.HandleFunc("/ready", httpServer.readyServer)
 	http.HandleFunc("/gamedig", httpServer.gamedigServer)
+
+	// 28080 is my attempt to not collide with any gameserver ports
 	fmt.Printf("Listening on port 28080\n")
 	http.ListenAndServe(":28080", nil)
 }

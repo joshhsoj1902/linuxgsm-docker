@@ -4,7 +4,6 @@ services:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 34197:34197/udp
-      - 28080:28080
     environment:
       - LGSM_GAMESERVERNAME=fctrserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
