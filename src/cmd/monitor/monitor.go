@@ -144,6 +144,10 @@ func getHostname() string {
 func getGamedigType(code string) string {
 	shortCode := strings.Replace(code, "server", "", -1)
 
+	// TODO: combare the lists and add any exceiptions that are missing:
+	// https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/data/serverlist.csv
+	// https://github.com/gamedig/node-gamedig#supported
+
 	switch shortCode {
 	case "foo":
 		return "foo"
