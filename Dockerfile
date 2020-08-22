@@ -1,3 +1,13 @@
+# Operator
+FROM golang:1.15.0 AS builder
+RUN mkdir -p /src
+ADD Makefile /
+
+COPY src/ /src/
+WORKDIR /
+
+RUN make build-monitor
+
 FROM ubuntu:18.04
 
 WORKDIR /home/linuxgsm/linuxgsm
@@ -13,7 +23,8 @@ ENV LGSM_GAME_STDOUT=true
 
 # Install dependencies and clean
 # RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
-RUN apt-get update && \
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
+    apt-get update && \
     apt-get install -y software-properties-common && \
     add-apt-repository multiverse && \
     dpkg --add-architecture i386 && \
@@ -43,7 +54,6 @@ RUN apt-get update && \
         mailutils \
         net-tools \
         netcat \
-        nodejs \
         postfix \
         python \
         # steamcmd \
@@ -53,7 +63,6 @@ RUN apt-get update && \
         unzip \
         wget \
         xvfb \
-        npm \
     # Cleanup
     && apt-get -y autoremove \
     && apt-get -y clean \
@@ -61,8 +70,33 @@ RUN apt-get update && \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/*
 
+# Install steamcmd
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
+    && echo steam steam/license note '' | debconf-set-selections \
+    && dpkg --add-architecture i386 \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends ca-certificates locales steamcmd \
+    # Cleanup
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/* \
+    # Final setup
+    && ln -s /usr/games/steamcmd /usr/bin/steamcmd \
+    && steamcmd +quit
+
 # Install Gamedig https://docs.linuxgsm.com/requirements/gamedig
-RUN npm install -g gamedig
+RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
+    && apt-get update && apt-get install -y nodejs \
+    && npm install -g gamedig \
+    # Cleanup
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/*
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
 COPY --from=hairyhenderson/gomplate:v3.6.0-alpine /bin/gomplate /usr/bin/gomplate
@@ -105,7 +139,7 @@ RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
  && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 
 ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
-ADD --chown=linuxgsm:linuxgsm docker-runner.sh docker-liveness.sh docker-readiness.sh ./
+ADD --chown=linuxgsm:linuxgsm docker-runner.sh ./
 # ADD --chown=linuxgsm:linuxgsm lgsm/ /home/linuxgsm/linuxgsm/lgsm/
 ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm/config-default/config-game-template/
 
@@ -113,6 +147,8 @@ ADD --chown=linuxgsm:linuxgsm config-game-template/ /home/linuxgsm/linuxgsm/lgsm
 RUN touch /.dockerenv
 
 USER linuxgsm
+
+COPY --chown=linuxgsm:linuxgsm --from=builder /monitor monitor
 
 RUN mkdir logs serverfiles 
 
@@ -123,7 +159,15 @@ RUN mkdir serverfiles/Saves
 # Creating this folder now works around https://github.com/docker/compose/issues/3270
 RUN mkdir Saves
 
+ARG BUILD_DATE
+ARG VCS_REF
+ARG OS=linux
+ARG ARCH=amd64
 
-HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD ./docker-liveness.sh
+LABEL org.opencontainers.image.created=$BUILD_DATE \
+      org.opencontainers.image.revision=$VCS_REF \
+      org.opencontainers.image.source="https://github.com/joshhsoj1902/linuxgsm-docker"
+
+HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD curl -f http://localhost:28080/live || exit 1
 
 ENTRYPOINT ["bash", "./docker-runner.sh"]

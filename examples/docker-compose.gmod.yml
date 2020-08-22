@@ -8,6 +8,7 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=gmodserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=27015
       - LGSM_DEFAULTMAP=gm_construct
       - LGSM_GAMEMODE=sandbox
       # - LGSM_HOSTNAME=servername
