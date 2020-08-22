@@ -70,6 +70,23 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     && rm -rf /tmp/* \
     && rm -rf /var/tmp/*
 
+# Install steamcmd
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+RUN echo steam steam/question select "I AGREE" | debconf-set-selections \
+    && echo steam steam/license note '' | debconf-set-selections \
+    && dpkg --add-architecture i386 \
+    && apt-get update -y \
+    && apt-get install -y --no-install-recommends ca-certificates locales steamcmd \
+    # Cleanup
+    && apt-get -y autoremove \
+    && apt-get -y clean \
+    && rm -rf /var/lib/apt/lists/* \
+    && rm -rf /tmp/* \
+    && rm -rf /var/tmp/* \
+    # Final setup
+    && ln -s /usr/games/steamcmd /usr/bin/steamcmd \
+    && steamcmd +quit
+
 # Install Gamedig https://docs.linuxgsm.com/requirements/gamedig
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && apt-get update && apt-get install -y nodejs \
