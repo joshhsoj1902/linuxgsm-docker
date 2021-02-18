@@ -141,8 +141,8 @@ workflows:
                 sleep: 5
                 tries: 60
           requires:
-            - test-css
-            - docker/build
+            - swarm-test
+            - compose-test
     ### GMOD ####
       - docker/container-health:
           name: gmod-compose
