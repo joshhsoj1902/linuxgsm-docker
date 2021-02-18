@@ -225,6 +225,22 @@ workflows:
           requires:
             - swarm-test
             - compose-test
+    ### VALHEIM ###
+      - docker/container-health:
+          name: valheim-compose
+          composeFile: examples/docker-compose.valheim.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.valheim.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.valheim.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test
     ### Wurm ###   
       # - docker/container-health:
       #     name: wurm-compose

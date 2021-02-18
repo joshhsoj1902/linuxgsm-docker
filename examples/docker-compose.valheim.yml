@@ -1,0 +1,19 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 2456:2456/tcp
+      - 2456:2456/udp
+    environment:
+      - LGSM_GAMESERVERNAME=vhserver
+      - LGSM_SERVERNAME="My Game Name"
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=2456
+      # World Name
+      - LGSM_GAMEWORLD
+      # Private=0 Public=1
+      - LGSM_PUBLIC=1
+    volumes:
+      - "/home/linuxgsm/linuxgsm/logs"
+      # - "/home/linuxgsm/linuxgsm/serverfiles/valheim_server_Data"
