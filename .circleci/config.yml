@@ -1,18 +1,19 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:1.0.7@sha256:1090a162859845e7a5168c02b161ddf053b93a1e5a5f26351bbb3b25507a5974
+      - image: joshhsoj1902/circleci-build-image:2.1.0
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
       docker swarm init
       docker stack deploy --compose-file ./docker-stack.yml game
-      retry -v -s 5 -t 60 'docker exec $(docker ps -q) "./docker-ready.sh"'
-      retry -v -s 5 -t 10 'docker exec $(docker ps -q) "./docker-health.sh"'
+      sleep 30
+      retry -v -s 5 -t 12 'docker exec $(docker ps -q) curl -f http://localhost:28080/live || exit 1'
+      retry -v -s 5 -t 60 'docker exec $(docker ps -q) curl -f http://localhost:28080/ready || exit 1'
 version: 2.1
 
 orbs:
-    docker: joshhsoj1902/docker@0.0.1
+    docker: joshhsoj1902/docker@0.20.0
 
 jobs:
   setup:
@@ -38,7 +39,7 @@ jobs:
     <<: *defaults
     steps:
       - setup_remote_docker:
-          version: 17.11.0-ce
+          version: 19.03.8
       - attach_workspace:
           at: /tmp/workspace
       - run: docker load -i /tmp/workspace/images.tar
@@ -56,80 +57,205 @@ workflows:
           tag: latest
           requires: 
             - setup
-      - docker/test:
-          name: gomplate tests
-          requires:
-            - docker/build          
-    #   - tests:
-    #       requires:
-    #         - docker/build
+      # - docker/test:
+      #     name: gomplate tests
+      #     requires:
+      #       - docker/build          
       - swarm:
+          name: swarm-test
           requires:
             - docker/build
-      - docker/compose-test-health:
+      - docker/container-health:
           name: compose-test
           composeFile: docker-compose.citest.yml
+          command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/docker-compose.citest.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 15
+                tries: 60
           requires:
             - docker/build
-    ### 7dtd ###
-      - test-7dtd:
-          type: approval      
-      - docker/compose-test-health:
+    ### 7dtd ###    
+      - docker/container-health:
           name: 7dtd-compose
           composeFile: examples/docker-compose.7dtd.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.7dtd.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 30
           requires:
-            - test-7dtd
-            - docker/build   
-    ### CSS ###
-      - test-css:
-          type: approval      
-      - docker/compose-test-health:
+            - swarm-test
+            - compose-test 
+    ### ARK ###    
+      - docker/container-health:
+          name: ark-compose
+          composeFile: examples/docker-compose.ark.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.ark.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test  
+    ### CSGO ###    
+      - docker/container-health:
+          name: csgo-compose
+          composeFile: examples/docker-compose.csgo.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.csgo.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test  
+    ### CSS ###    
+      - docker/container-health:
           name: css-compose
           composeFile: examples/docker-compose.css.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.css.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
           requires:
             - test-css
             - docker/build
-    ### L4D2 ###
-      - test-l4d2:
-          type: approval    
-      - docker/compose-test-health:
-          name: l4d2-compose
-          composeFile: examples/docker-compose.l4d2.yml
-          service: game
-          requires:
-            - test-l4d2
-            - docker/build
-    ### GMOD ###
-      - test-gmod:
-          type: approval      
-      - docker/compose-test-health:
+    ### GMOD ####
+      - docker/container-health:
           name: gmod-compose
           composeFile: examples/docker-compose.gmod.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 15
+                tries: 60
           requires:
-            - test-gmod
-            - docker/build
-    ### Minecraft ###
-      - test-minecraft:
-          type: approval      
-      - docker/compose-test-health:
+            - swarm-test
+            - compose-test
+    ### L4D2 ###
+      - docker/container-health:
+          name: l4d2-compose
+          composeFile: examples/docker-compose.l4d2.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.l4d2.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.l4d2.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test
+
+    ### INSS ###     
+      # - docker/container-health:
+      #     name: inss-compose
+      #     composeFile: examples/docker-compose.inss.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.inss.yml up
+      #     service: game
+      #     after_test: 
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
+      #           service: game
+      #           command: curl -f http://localhost:28080/ready
+      #           sleep: 30
+      #           tries: 60
+      #     requires:
+      #       - swarm-test
+      #       - compose-test   
+    ### Minecraft ###     
+      - docker/container-health:
           name: minecraft-compose
           composeFile: examples/docker-compose.minecraft.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.minecraft.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.minecraft.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
           requires:
-            - test-minecraft
-            - docker/build
-    ### Mumble ###
-      - test-mumble:
-          type: approval      
-      - docker/compose-test-health:
-          name: mumble-compose
-          composeFile: examples/docker-compose.mumble.yml
+            - swarm-test
+            - compose-test   
+    ### Pstbs ###   
+      # - docker/container-health:
+      #     name: pstbs-compose
+      #     composeFile: examples/docker-compose.pstbs.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.pstbs.yml up
+      #     service: game
+      #     after_test: 
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml
+      #           service: game
+      #           command: curl -f http://localhost:28080/ready
+      #           sleep: 5
+      #           tries: 60
+      #     requires:
+      #       - swarm-test
+      #       - compose-test
+    ### Wet ###   
+
+    # TODO Disabled until base LGSM src is updated
+      - docker/container-health:
+          name: wet-compose
+          composeFile: examples/docker-compose.wet.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.wet.yml up
           service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
           requires:
-            - test-mumble
-            - docker/build
+            - swarm-test
+            - compose-test
+    ### Wurm ###   
+      # - docker/container-health:
+      #     name: wurm-compose
+      #     composeFile: examples/docker-compose.wurm.yml
+      #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wurm.yml up
+      #     service: game
+      #     after_test: 
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
+      #           service: game
+      #           command: curl -f http://localhost:28080/ready
+      #           sleep: 5
+      #           tries: 60
+      #     requires:
+      #       - swarm-test
+      #       - compose-test
 

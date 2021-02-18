@@ -1,3 +1,4 @@
+# THIS DOES NOT WORK
 version: '3.1'
 services:
   game:
@@ -10,6 +11,6 @@ services:
       # - LGSM_IP=0.0.0.0
       - LGSM_PORT=64738
     volumes:
-      - "/home/steam/linuxgsm/logs"
-      - "/home/steam/linuxgsm/serverfiles"
-#This erver doesn't work overly well in docker
+      - "/home/linuxgsm/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/serverfiles"
+#This server doesn't work overly well in docker

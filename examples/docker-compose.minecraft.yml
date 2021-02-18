@@ -2,12 +2,15 @@ version: '3.1'
 services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
+    # image: joshhsoj1902/linuxgsm-docker:0.2.0
     ports:
       - 25565:25565
+      - 28080:28080
     environment:
       ## Out of the box LGSM
       - LGSM_GAMESERVERNAME=mcserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=25565
       - LGSM_JAVARAM=512 # previously LGSM_JAVA_MEMORY
 
       ## server.properties https://minecraft.gamepedia.com/Server.properties
@@ -38,8 +41,7 @@ services:
       # - LGSM_PVP
       # - LGSM_RCON_PASSWORD
       # - LGSM_RCON_PORT
-      # - LGSM_IP
-      - LGSM_PORT=25565
+      - LGSM_IP=0.0.0.0
       # - LGSM_SNOOPER_ENABLED
       # - LGSM_SPAWN_ANIMALS
       # - LGSM_SPAWN_MONSTERS
@@ -47,5 +49,5 @@ services:
       # - LGSM_USE_NATIVE_TRANSPORT
       # - LGSM_VIEW_DISTANCE
     volumes:
-      - "/home/steam/linuxgsm/logs"
-      - "/home/steam/linuxgsm/serverfiles"
+      - "/home/linuxgsm/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/serverfiles"

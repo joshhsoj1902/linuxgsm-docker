@@ -1,0 +1,36 @@
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 34197:34197/udp
+    environment:
+      - LGSM_GAMESERVERNAME=fctrserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=34197
+
+      # If LGSM_SAVE_PATH is set, a world file MUST already exist at that path.
+      - LGSM_SAVE_PATH=/home/linuxgsm/linuxgsm/serverfiles/saves/save1.zip
+      - LGSM_SERVER_NAME="my server"
+
+      # - LGSM_MAX_PLAYERS="0"
+      # - LGSM_PUBLIC="true"
+      # - LGSM_LAN="true"
+      # # factorio.com Authentication token
+      # - LGSM_TOKEN=""
+      # - LGSM_GAME_PASSWORD=""
+      # - LGSM_REQUIRE_USER_VERIFICATION="true"
+      # - LGSM_MAX_UPLOAD_IN_KILOBYTES_PER_SECOND="0"
+      # - LGSM_MINIMUM_LATENCY_IN_TICKS="0"
+      # - LGSM_IGNORE_PLAYER_LIMIT_FOR_RETURNING_PLAYERS="false"
+      # - LGSM_ALLOW_COMMANDS="admins-only"
+      # - LGSM_AUTOSAVE_INTERVAL="10"
+      # - LGSM_AUTOSAVE_SLOTS="5"
+      # - LGSM_AFK_AUTOKICK_INTERVAL="0"
+      # - LGSM_AUTO_PAUSE="true"
+      # - LGSM_ONLY_ADMINS_CAN_PAUSE_THE_GAME="true"
+      # - LGSM_AUTOSAVE_ONLY_ON_SERVER="true"
+
+    volumes:
+      - "/home/linuxgsm/linuxgsm/logs"
+      # - "/home/linuxgsm/linuxgsm/serverfiles/saves"

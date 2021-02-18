@@ -3,10 +3,11 @@ services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
-      - 27102:27102/udp
-      - 27131:27131/udp
+      - 27015:27015/tcp
+      - 27015:27015/udp
     environment:
-      - LGSM_GAMESERVERNAME=inssserver
+      - LGSM_GAMESERVERNAME=csgoserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=27015
     volumes:
       - "/home/linuxgsm/linuxgsm/logs"

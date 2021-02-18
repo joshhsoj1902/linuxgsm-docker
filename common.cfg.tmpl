@@ -4,6 +4,28 @@
 # PLACE COMMON SETTINGS HERE
 #
 
-{{ range (datasource "env").envs -}}
-{{ .name }}={{ .value }}
+{{if (datasource "env").Envs}}
+
+{{ range (datasource "env").Envs -}}
+{{ .name }}={{ .value | quote }}
 {{ end }}
+
+{{else}}
+
+{{ range (datasource "env").envs -}}
+{{ .name }}={{ .value | quote }}
+{{ end }}
+
+{{end}}
+
+# TODO This handles reading the save from the right place, It doesn't handle creation
+# https://github.com/GameServerManagers/LinuxGSM/blob/3f1f2aa2d8ab5e2d2b6ecb4af795b287e06b46ff/lgsm/functions/install_factorio_save.sh
+# Can that ^ be done in an override? likely not if the server hasn't been installed yet...
+
+{{if eq (getenv "LGSM_GAMESERVERNAME") "fctrserver"}}
+## Server Start Command | https://docs.linuxgsm.com/configuration/start-parameters#additional-parameters
+fn_parms(){
+savepath="${LGSM_SAVE_PATH:-${serverfiles}/save1.zip}"
+parms="--start-server ${savepath} --server-settings ${servercfgfullpath} --port ${port} --rcon-port ${rconport} --rcon-password ${rconpassword}"
+}
+{{end}}

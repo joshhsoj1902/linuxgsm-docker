@@ -3,14 +3,14 @@ services:
   game:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
-      - "27015:27015/tcp"
-      - "27015:27015/udp"
-      - "27020:27020/udp"
-      - "27005:27005/udp"
+      - "30015:30015/tcp"
+      - "30015:30015/udp"
+      - "30020:30020/udp"
+      - "30005:30005/udp"
     environment:
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_IP=0.0.0.0
-      - LGSM_PORT=27015
+      - LGSM_PORT=30015
     volumes:
-      - "./logs:/home/steam/linuxgsm/logs"
+      - "./logs:/home/linuxgsm/linuxgsm/logs"

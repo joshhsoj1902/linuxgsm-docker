@@ -1,13 +1,14 @@
-[![CircleCI][circle-image]][circle-url]
-
 # linuxgsm-docker
+
+[![CircleCI][circle-image]][circle-url]
 
 Unoffical Dockerized version of the [Linux Game Server Manager][lgsm-home] project
 
 ## Usage
 
 ### Counter strike source
-```
+
+```yaml
 version: '3.1'
 services:
   game:
@@ -16,10 +17,11 @@ services:
       - LGSM_GAMESERVERNAME=cssserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
     volumes:
-      - "/home/steam/linuxgsm/logs"
+      - "/home/linuxgsm/linuxgsm/logs"
 ```
 
 ## Options
+
 This image uses environment variables for configuration, below is a list of the supported environment variables
 
 | Environment Variable   | Description                            | Options                     | Supported Games  |
@@ -32,8 +34,8 @@ This image uses environment variables for configuration, below is a list of the 
 | LGSM_JAVARAM           | || Minecraft |
 | LGSM_DEFAULTMAP        | Not tested || Gmod |
 | LGSM_GAMEMODE          | Not tested || Gmod |
-| LGSM_WORKSHOPAUTH      | Not tested || Gmod |
-| LGSM_WORKSHOPCOLLECTIONID | Not tested ||Gmod|
+| LGSM_WSAPIKEY      | Not tested || Gmod |
+| LGSM_WSCOLLECTIONID | Not tested ||Gmod|
 | LGSM_ANSI              | Not tested |||
 | LGSM_BRANCH            | Not tested |||
 | LGSM_EMAILALERT        | Not tested |||
@@ -48,7 +50,6 @@ This image uses environment variables for configuration, below is a list of the 
 | LGSM_STOPONBACKUP      | Not tested |||
 | LGSM_CONSOLELOGGING    | Not tested |||
 | LGSM_LOGDAYS           | Not tested |||
-
 
 [circle-image]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg
 [circle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
