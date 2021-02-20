@@ -4,7 +4,7 @@
 
 version: '3.1'
 services:
-  game:
+  arma3:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 2302:2302/tcp
@@ -31,7 +31,7 @@ services:
       # Leave empty for default
       - LGSM_BEPATH=""
 
-
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
 
