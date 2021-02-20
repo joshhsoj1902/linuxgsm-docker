@@ -1,7 +1,7 @@
 # This hasn't been tested, Setting the config is'nt overly clear https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wurmserver/_default.cfg
 version: '3.1'
 services:
-  game:
+  wurm:
     image: joshhsoj1902/linuxgsm-docker:latest
     # ports:
     #   - 10027:10027/tcp

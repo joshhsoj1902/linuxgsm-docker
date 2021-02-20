@@ -2,7 +2,7 @@
 # Does this game support Save files?
 version: '3.1'
 services:
-  game:
+  mohaa:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 12203:12203/tcp

@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  game:
+  ark:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 7777:7777/tcp

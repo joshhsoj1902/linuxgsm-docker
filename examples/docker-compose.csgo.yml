@@ -1,6 +1,6 @@
 version: '3.1'
 services:
-  game:
+  csgo:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 27015:27015/tcp

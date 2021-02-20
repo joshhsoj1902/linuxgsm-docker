@@ -1,7 +1,7 @@
 # THIS DOES NOT WORK
 version: '3.1'
 services:
-  game:
+  mumble:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 64738:64738

@@ -100,11 +100,11 @@ workflows:
           name: ark-compose
           composeFile: examples/docker-compose.ark.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.ark.yml up
-          service: game
+          service: ark
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml
-                service: game
+                service: ark
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
                 tries: 60
@@ -116,11 +116,11 @@ workflows:
           name: csgo-compose
           composeFile: examples/docker-compose.csgo.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.csgo.yml up
-          service: game
+          service: csgo
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml
-                service: game
+                service: csgo
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
                 tries: 60
@@ -148,11 +148,11 @@ workflows:
           name: gmod-compose
           composeFile: examples/docker-compose.gmod.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.gmod.yml up
-          service: game
+          service: gmod
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
-                service: game
+                service: gmod
                 command: curl -f http://localhost:28080/ready
                 sleep: 15
                 tries: 60
@@ -164,11 +164,11 @@ workflows:
       #     name: inss-compose
       #     composeFile: examples/docker-compose.inss.yml
       #     command: docker-compose -f /tmp/workspace/examples/docker-compose.inss.yml up
-      #     service: game
+      #     service: inss
       #     after_test: 
       #       - docker/compose-exec-retry:
       #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
-      #           service: game
+      #           service: inss
       #           command: curl -f http://localhost:28080/ready
       #           sleep: 30
       #           tries: 60
@@ -180,11 +180,11 @@ workflows:
           name: minecraft-compose
           composeFile: examples/docker-compose.minecraft.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.minecraft.yml up
-          service: game
+          service: minecraft
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.minecraft.yml
-                service: game
+                service: minecraft
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
@@ -196,11 +196,11 @@ workflows:
           name: mohaa-compose
           composeFile: examples/docker-compose.mohaa.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.mohaa.yml up
-          service: game
+          service: mohaa
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml
-                service: game
+                service: mohaa
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
@@ -212,29 +212,29 @@ workflows:
       #     name: pstbs-compose
       #     composeFile: examples/docker-compose.pstbs.yml
       #     command: docker-compose -f /tmp/workspace/examples/docker-compose.pstbs.yml up
-      #     service: game
+      #     service: pstbs
       #     after_test: 
       #       - docker/compose-exec-retry:
       #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml
-      #           service: game
+      #           service: pstbs
       #           command: curl -f http://localhost:28080/ready
       #           sleep: 5
       #           tries: 60
       #     requires:
       #       - swarm-test
       #       - compose-test
-    ### Wet ###   
 
-    # TODO Disabled until base LGSM src is updated
+
+    ### Wet ###   
       - docker/container-health:
           name: wet-compose
           composeFile: examples/docker-compose.wet.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.wet.yml up
-          service: game
+          service: wet
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
-                service: game
+                service: wet
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
@@ -246,11 +246,11 @@ workflows:
           name: valheim-compose
           composeFile: examples/docker-compose.valheim.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.valheim.yml up
-          service: game
+          service: valheim
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.valheim.yml
-                service: game
+                service: valheim
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
@@ -262,11 +262,11 @@ workflows:
       #     name: wurm-compose
       #     composeFile: examples/docker-compose.wurm.yml
       #     command: docker-compose -f /tmp/workspace/examples/docker-compose.wurm.yml up
-      #     service: game
+      #     service: wurm
       #     after_test: 
       #       - docker/compose-exec-retry:
       #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
-      #           service: game
+      #           service: wurm
       #           command: curl -f http://localhost:28080/ready
       #           sleep: 5
       #           tries: 60
