@@ -1,5 +1,5 @@
 # Operator
-FROM golang:1.15.0 AS builder
+FROM golang:1.16.0 AS builder
 RUN mkdir -p /src
 ADD Makefile /
 
@@ -100,7 +100,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - \
     && rm -rf /var/tmp/*
 
 COPY --from=joshhsoj1902/parse-env:1.0.3 /go/src/github.com/joshhsoj1902/parse-env/main /usr/bin/parse-env
-COPY --from=hairyhenderson/gomplate:v3.6.0-alpine /bin/gomplate /usr/bin/gomplate
+COPY --from=hairyhenderson/gomplate:v3.9.0-alpine /bin/gomplate /usr/bin/gomplate
 
 # Add the linuxgsm user
 RUN adduser \
