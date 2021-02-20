@@ -191,6 +191,22 @@ workflows:
           requires:
             - swarm-test
             - compose-test   
+    ### Medal of Honor: Allied Assault ###     
+      - docker/container-health:
+          name: mohaa-compose
+          composeFile: examples/docker-compose.mohaa.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.mohaa.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test   
     ### Pstbs ###   
       # - docker/container-health:
       #     name: pstbs-compose
