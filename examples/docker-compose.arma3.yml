@@ -1,0 +1,37 @@
+# This is not tested.
+
+# I don't own ARMA and because of that I can't even install the game server
+
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 2302:2302/tcp
+      - 2302:2302/udp
+    environment:
+      - LGSM_GAMESERVERNAME=arma3server
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=2302
+      # - LGSM_STEAMUSER="username"
+      # - LGSM_STEAMPASS="password"
+
+      ## ARMA 3 Modules
+      # Add mods with relative paths:
+      # mods/@cba_a3
+      # To load the "Community Base Addons v3" module found in the
+      # directory serverfiles/mods/@cba_a3.  Load several mods as:
+      # mods="mods/@ace\;mods/@acex\;mods/@cba_a3"
+      - LGSM_MODS=""
+  
+      ## Server-side Mods
+      - LGSM_SERVERMODS=""
+
+      ## Path to BattlEye
+      # Leave empty for default
+      - LGSM_BEPATH=""
+
+
+    volumes:
+      - "/home/linuxgsm/linuxgsm/logs"
+
