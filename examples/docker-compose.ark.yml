@@ -13,5 +13,7 @@ services:
       - LGSM_RCONPORT=27020
       - LGSM_DEFAULTMAP=TheIsland
       - LGSM_MAXPLAYERS=70
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

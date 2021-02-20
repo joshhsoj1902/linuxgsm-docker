@@ -15,5 +15,7 @@ services:
       - LGSM_GAMEWORLD
       # Private=0 Public=1
       - LGSM_PUBLIC=1
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

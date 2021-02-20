@@ -23,6 +23,8 @@ services:
       - LGSM_WORLD_GEN_SEED=ChangeMe
       - LGSM_GAME_WORLD=RWG
       # - LGSM_EAC_ENABLED=false
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - saves:/home/linuxgsm/linuxgsm/Saves
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

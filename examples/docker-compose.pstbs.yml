@@ -12,5 +12,7 @@ services:
       - LGSM_QUERYPORT=10037
       - LGSM_MAXPLAYERS=80
       - LGSM_NUMRESERVEDSLOTS=2
+    
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

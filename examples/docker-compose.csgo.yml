@@ -9,5 +9,7 @@ services:
       - LGSM_GAMESERVERNAME=csgoserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_PORT=27015
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

@@ -48,6 +48,8 @@ services:
       # - LGSM_SPAWN_NPCS
       # - LGSM_USE_NATIVE_TRANSPORT
       # - LGSM_VIEW_DISTANCE
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
 

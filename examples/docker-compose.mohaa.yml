@@ -12,5 +12,7 @@ services:
       - LGSM_UPDATEINSTALLSKIP=UPDATE
       - LGSM_PORT=12203
       - LGSM_DEFAULTMAP="dm/mohdm1"
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

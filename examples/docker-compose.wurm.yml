@@ -9,5 +9,7 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=wurmserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

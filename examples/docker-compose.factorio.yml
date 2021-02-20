@@ -31,6 +31,7 @@ services:
       # - LGSM_ONLY_ADMINS_CAN_PAUSE_THE_GAME="true"
       # - LGSM_AUTOSAVE_ONLY_ON_SERVER="true"
 
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - "/home/linuxgsm/linuxgsm/logs"
       # - "/home/linuxgsm/linuxgsm/serverfiles/saves"
