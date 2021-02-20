@@ -13,4 +13,4 @@ services:
       - LGSM_PORT=12203
       - LGSM_DEFAULTMAP="dm/mohdm1"
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

@@ -49,5 +49,5 @@ services:
       # - LGSM_USE_NATIVE_TRANSPORT
       # - LGSM_VIEW_DISTANCE
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
-      - "/home/linuxgsm/linuxgsm/serverfiles"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
+

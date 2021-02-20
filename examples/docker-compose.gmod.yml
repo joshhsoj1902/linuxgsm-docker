@@ -14,4 +14,4 @@ services:
       # - LGSM_HOSTNAME=servername
       # - LGSM_SV_PASSWORD=password
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

@@ -13,4 +13,4 @@ services:
       - LGSM_MAXPLAYERS=80
       - LGSM_NUMRESERVEDSLOTS=2
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

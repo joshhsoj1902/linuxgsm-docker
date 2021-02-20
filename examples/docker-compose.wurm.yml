@@ -10,4 +10,4 @@ services:
       - LGSM_GAMESERVERNAME=wurmserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
