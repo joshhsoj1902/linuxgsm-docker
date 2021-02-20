@@ -3,7 +3,7 @@ volumes:
   saves:
   serverfiles:
 services:
-  game:
+  7dtd:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 26900:26900

@@ -69,11 +69,11 @@ workflows:
           name: compose-test
           composeFile: docker-compose.citest.yml
           command: docker-compose -f /tmp/workspace/docker-compose.citest.yml up
-          service: game
+          service: css
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/docker-compose.citest.yml
-                service: game
+                service: css
                 command: curl -f http://localhost:28080/ready
                 sleep: 15
                 tries: 60
@@ -84,11 +84,11 @@ workflows:
           name: 7dtd-compose
           composeFile: examples/docker-compose.7dtd.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.7dtd.yml up
-          service: game
+          service: 7dtd
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
-                service: game
+                service: 7dtd
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
                 tries: 30
@@ -132,11 +132,11 @@ workflows:
           name: css-compose
           composeFile: examples/docker-compose.css.yml
           command: docker-compose -f /tmp/workspace/examples/docker-compose.css.yml up
-          service: game
+          service: css
           after_test: 
             - docker/compose-exec-retry:
                 composeFilePath: /tmp/workspace/examples/docker-compose.css.yml
-                service: game
+                service: css
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
                 tries: 60
