@@ -1,5 +1,5 @@
 # This is not fully tested
-# valheim_server_Data appears to be wher ethe save data is, but I don't own this game and haven't tested that it's the only save dir
+# valheim_server_Data appears to be where the save data is, but I don't own this game and haven't tested that it's the only save dir
 version: '3.1'
 services:
   game:
