@@ -202,7 +202,7 @@ workflows:
                 composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml
                 service: game
                 command: curl -f http://localhost:28080/ready
-                sleep: 5
+                sleep: 30
                 tries: 60
           requires:
             - swarm-test
