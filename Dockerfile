@@ -50,6 +50,7 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
         lib32stdc++6 \
         libtinfo5:i386 \
         libsdl2-2.0-0:i386 \
+        libstdc++5:i386 \
         libgconf-2-4 \
         mailutils \
         net-tools \

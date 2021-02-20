@@ -1,0 +1,16 @@
+# This is not fully tested
+# Does this game support Save files?
+version: '3.1'
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 12203:12203/tcp
+      - 12203:12203/udp
+    environment:
+      - LGSM_GAMESERVERNAME=mohaaserver
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=12203
+      - LGSM_DEFAULTMAP="dm/mohdm1"
+    volumes:
+      - "/home/linuxgsm/linuxgsm/logs"
