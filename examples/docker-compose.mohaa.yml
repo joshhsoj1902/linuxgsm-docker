@@ -1,5 +1,18 @@
-# This is not fully tested
-# Does this game support Save files?
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Unsure
+# Tested in CI: Yes
+#
+# Does this server have save files: Unsure
+# Where are save files saved: Unsure, somewhere in `serverfiles`
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/mohaaserver/_default.cfg
+#
+############################
+
 version: '3.3'
 volumes:
   serverfiles:

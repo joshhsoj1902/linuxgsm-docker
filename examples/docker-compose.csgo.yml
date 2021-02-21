@@ -1,3 +1,17 @@
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Unsure
+# Tested in CI: Yes
+#
+# Does this server have save files: No
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/csgoserver/_default.cfg
+#
+############################
+
 version: '3.3'
 volumes:
   serverfiles:

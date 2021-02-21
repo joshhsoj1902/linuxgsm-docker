@@ -1,3 +1,19 @@
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Yes
+# Tested in CI: Yes
+#
+# Does this server have save files: Yes
+# Where are save files saved: See the `saves` volume
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/sdtdserver/_default.cfg
+#  - https://github.com/joshhsoj1902/linuxgsm-docker/blob/master/config-game-template/7DaysToDie/serverconfig.xml.tmpl
+#
+############################
+
 version: '3.3'
 volumes:
   saves:
