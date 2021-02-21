@@ -72,7 +72,7 @@ workflows:
           service: css
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/docker-compose.citest.yml
+                composeFilePath: /tmp/workspace/docker-compose.citest.yml -p citest
                 service: css
                 command: curl -f http://localhost:28080/ready
                 sleep: 15
@@ -87,7 +87,7 @@ workflows:
           service: 7dtd
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml -p 7dtd
                 service: 7dtd
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
@@ -103,7 +103,7 @@ workflows:
           service: ark
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml -p ark
                 service: ark
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
@@ -119,7 +119,7 @@ workflows:
           service: csgo
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml -p csgo
                 service: csgo
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
@@ -135,7 +135,7 @@ workflows:
           service: css
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.css.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.css.yml -p css
                 service: css
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
@@ -151,7 +151,7 @@ workflows:
           service: gmod
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml -p gmod
                 service: gmod
                 command: curl -f http://localhost:28080/ready
                 sleep: 15
@@ -167,8 +167,8 @@ workflows:
       #     service: inss
       #     after_test: 
       #       - docker/compose-exec-retry:
-      #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml
-      #           service: inss
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml -p inss
+      #           service: inss 
       #           command: curl -f http://localhost:28080/ready
       #           sleep: 30
       #           tries: 60
@@ -183,7 +183,7 @@ workflows:
           service: minecraft
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.minecraft.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.minecraft.yml -p minecraft
                 service: minecraft
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
@@ -199,7 +199,7 @@ workflows:
           service: mohaa
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml -p mohaa
                 service: mohaa
                 command: curl -f http://localhost:28080/ready
                 sleep: 30
@@ -215,7 +215,7 @@ workflows:
       #     service: pstbs
       #     after_test: 
       #       - docker/compose-exec-retry:
-      #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml -p pstbs 
       #           service: pstbs
       #           command: curl -f http://localhost:28080/ready
       #           sleep: 5
@@ -233,7 +233,7 @@ workflows:
           service: wet
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml -p wet 
                 service: wet
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
@@ -249,7 +249,7 @@ workflows:
           service: valheim
           after_test: 
             - docker/compose-exec-retry:
-                composeFilePath: /tmp/workspace/examples/docker-compose.valheim.yml
+                composeFilePath: /tmp/workspace/examples/docker-compose.valheim.yml -p valheim
                 service: valheim
                 command: curl -f http://localhost:28080/ready
                 sleep: 5
@@ -265,7 +265,7 @@ workflows:
       #     service: wurm
       #     after_test: 
       #       - docker/compose-exec-retry:
-      #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml -p wurm
       #           service: wurm
       #           command: curl -f http://localhost:28080/ready
       #           sleep: 5
