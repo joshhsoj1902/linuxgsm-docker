@@ -17,13 +17,15 @@ docker-compose -p css -f examples/docker-compose.css.yml  up
 
 ## Examples
 
-In the examples folder there a sample setups for many game servers. Each compose file has a status section that describes the current state of that server. If I know the server is in a working state it'll say it there. There will also be links to find what config options exist for that server and some details on save files.
+In the examples folder there are sample setups for many game servers. Each compose file has a status section that describes the current state of that server. If I know the server is in a working state it'll say it there. There are many popular games that I don't own so can't properly test, if you are able to confirm that a server is working please let me know and I'll update the status section.
+
+There will also be links to find what config options exist for that server and some details on save files.
 
 ## Configuration
 
-All configuration is done via envrionment variables. All servers will reference a config file in the main linuxGSM project. For css that file is [here](https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/cssserver/_default.cfg). All settings in those `_default.cfg` can be set by prepending `LGSM_` onto the name of the config, everything should be captilized.
+All configuration is done via environment variables. All servers will reference a config file in the main linuxGSM project. For css that file is [here](https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/cssserver/_default.cfg). All settings in those `_default.cfg` can be set by prepending `LGSM_` onto the name of the config, everything should be capitalized.
 
-For example, if you wanted to set the css "gslt" value the enviroment variable it would look like:
+For example, if you wanted to set the css "gslt" value the environment variable it would look like:
 
 ```yaml
     environment:
@@ -33,7 +35,7 @@ For example, if you wanted to set the css "gslt" value the enviroment variable i
       - LGSM_GSLT=myValue
 ```
 
-Some games also support a config file. The config files currently supported are found [here](https://github.com/joshhsoj1902/linuxgsm-docker/tree/master/config-game-template). The configs in that folder are templated so that the environment vairables can be injected more easily. If the game you're looking to play needs a custom config file I will need to manually add it, If the config file is out of date I'll need to manually update it. If this happens please open an issue and I'll get around to it ASAP.
+Some games also support a config file. The config files currently supported are found [here](https://github.com/joshhsoj1902/linuxgsm-docker/tree/master/config-game-template). The configs in that folder are templated so that the environment variables can be injected more easily. If the game you're looking to play needs a custom config file I will need to manually add it, If the config file is out of date I'll need to manually update it. If this happens please open an issue and I'll get around to it ASAP.
 
 To set one of these configs you just need to use the same variable you see in the config file. For example, if you wanted to change the default max players allowed on a minecraft server, you can see the config for that [here](https://github.com/joshhsoj1902/linuxgsm-docker/blob/master/config-game-template/Minecraft/server.properties.tmpl#L20), the config in this case would be `LGSM_MAX_PLAYERS`, So to change that in the docker-compose file you would want to set it like this:
 
@@ -48,7 +50,7 @@ To set one of these configs you just need to use the same variable you see in th
 
 ## Save files
 
-Many gameservers save files. By default all the compose files create a volume called `[project]_serverfiles`. The files in the volume are preserved across container restarts, but if you were to accidently delete that volume the files would be gone.
+Many gameservers save files. By default all the compose files create a volume called `[project]_serverfiles`. The files in the volume are preserved across container restarts, but if you were to accidentally delete that volume the files would be gone.
 
 Another option is to change how the files are saved. In the compose file if you update the `volumes` section to look like this
 
@@ -57,7 +59,8 @@ Another option is to change how the files are saved. In the compose file if you 
       - /local/path/where/you/want/to/save:/home/linuxgsm/linuxgsm/serverfiles
 ```
 
-The "left" side of that can be updated to a local folder on your computer. The files that the server write will now tbe saved there instead. Since the data is now stored outside of docker it's a little easier to manage and backup.
+The "left" side of that can be updated to a local folder on your computer. The files that the server writes will now be saved there instead. Since the data is now stored outside of docker it's a little easier to manage and backup.
+
 
 [circle-image]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg
 [circle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
