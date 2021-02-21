@@ -1,9 +1,25 @@
-version: '3.1'
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Yes
+# Tested in CI: Yes
+#
+# Does this server have save files: Yes
+# Where are save files saved: See the `saves` volume
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/sdtdserver/_default.cfg
+#  - https://github.com/joshhsoj1902/linuxgsm-docker/blob/master/config-game-template/7DaysToDie/serverconfig.xml.tmpl
+#
+############################
+
+version: '3.3'
 volumes:
   saves:
   serverfiles:
 services:
-  game:
+  7dtd:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 26900:26900
@@ -23,6 +39,8 @@ services:
       - LGSM_WORLD_GEN_SEED=ChangeMe
       - LGSM_GAME_WORLD=RWG
       # - LGSM_EAC_ENABLED=false
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - saves:/home/linuxgsm/linuxgsm/Saves
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

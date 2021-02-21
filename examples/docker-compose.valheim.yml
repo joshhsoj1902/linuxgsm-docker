@@ -1,8 +1,23 @@
-# This is not fully tested
-# valheim_server_Data appears to be where the save data is, but I don't own this game and haven't tested that it's the only save dir
-version: '3.1'
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Unsure
+# Tested in CI: Yes
+#
+# Does this server have save files: Yes
+# Where are save files saved: Unsure, somewhere in `serverfiles`
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/vhserver/_default.cfg
+#
+############################
+
+version: '3.3'
+volumes:
+  serverfiles:
 services:
-  game:
+  valheim:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 2456:2456/tcp
@@ -16,6 +31,7 @@ services:
       - LGSM_GAMEWORLD
       # Private=0 Public=1
       - LGSM_PUBLIC=1
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
-      # - "/home/linuxgsm/linuxgsm/serverfiles/valheim_server_Data"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

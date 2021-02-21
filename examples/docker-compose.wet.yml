@@ -1,7 +1,23 @@
-# This hasn't been tested, Setting the config is'nt overly clear https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wetserver/_default.cfg
-version: '3.1'
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Unsure
+# Tested in CI: Yes
+#
+# Does this server have save files: Unsure
+# Where are save files saved: Unsure, somewhere in `serverfiles`
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wetserver/_default.cfg
+#
+############################
+
+version: '3.3'
+volumes:
+  serverfiles:
 services:
-  game:
+  wet:
     image: joshhsoj1902/linuxgsm-docker:latest
     # ports:
     #   - 10027:10027/tcp
@@ -9,5 +25,7 @@ services:
     environment:
       - LGSM_GAMESERVERNAME=wetserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

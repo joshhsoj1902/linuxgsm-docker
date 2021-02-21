@@ -1,6 +1,23 @@
-version: '3.1'
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Yes
+# Tested in CI: Yes
+#
+# Does this server have save files: No
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/gmodserver/_default.cfg
+#  - https://github.com/joshhsoj1902/linuxgsm-docker/blob/master/config-game-template/GarrysMod/server.cfg.tmpl
+#
+############################
+
+version: '3.3'
+volumes:
+  serverfiles:
 services:
-  game:
+  gmod:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 27015:27015/tcp
@@ -13,5 +30,7 @@ services:
       - LGSM_GAMEMODE=sandbox
       # - LGSM_HOSTNAME=servername
       # - LGSM_SV_PASSWORD=password
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles

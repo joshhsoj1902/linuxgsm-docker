@@ -1,6 +1,17 @@
-# This is not tested.
-
-# I don't own ARMA and because of that I can't even install the game server
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: No Clue (I can't even install it)
+# Tested in CI: No
+#
+# Does this server have save files: Unsure
+# Where are save files saved: Unsure, somewhere in `serverfiles`
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/arma3server/_default.cfg
+#
+############################
 
 version: '3.1'
 services:
