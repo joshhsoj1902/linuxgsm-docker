@@ -1,5 +1,7 @@
 # This is not fully tested
-version: '3.1'
+version: '3.3'
+volumes:
+  serverfiles:
 services:
   valheim:
     image: joshhsoj1902/linuxgsm-docker:latest

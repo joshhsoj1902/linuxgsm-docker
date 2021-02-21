@@ -1,5 +1,7 @@
 # This hasn't been tested, Setting the config is'nt overly clear https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wurmserver/_default.cfg
-version: '3.1'
+version: '3.9'
+volumes:
+  serverfiles:
 services:
   wurm:
     image: joshhsoj1902/linuxgsm-docker:latest

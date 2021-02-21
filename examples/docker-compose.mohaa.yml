@@ -1,6 +1,8 @@
 # This is not fully tested
 # Does this game support Save files?
-version: '3.1'
+version: '3.3'
+volumes:
+  serverfiles:
 services:
   mohaa:
     image: joshhsoj1902/linuxgsm-docker:latest
