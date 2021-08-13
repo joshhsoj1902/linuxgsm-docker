@@ -1,0 +1,48 @@
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: No Clue (I can't even install it)
+# Tested in CI: No
+#
+# Does this server have save files: Unsure
+# Where are save files saved: Unsure, somewhere in `serverfiles`
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/arma3server/_default.cfg
+#
+############################
+
+version: '3.1'
+services:
+  arma3:
+    image: joshhsoj1902/linuxgsm-docker:latest
+    ports:
+      - 2302:2302/tcp
+      - 2302:2302/udp
+    environment:
+      - LGSM_GAMESERVERNAME=arma3server
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=2302
+      # - LGSM_STEAMUSER="username"
+      # - LGSM_STEAMPASS="password"
+
+      ## ARMA 3 Modules
+      # Add mods with relative paths:
+      # mods/@cba_a3
+      # To load the "Community Base Addons v3" module found in the
+      # directory serverfiles/mods/@cba_a3.  Load several mods as:
+      # mods="mods/@ace\;mods/@acex\;mods/@cba_a3"
+      - LGSM_MODS=""
+  
+      ## Server-side Mods
+      - LGSM_SERVERMODS=""
+
+      ## Path to BattlEye
+      # Leave empty for default
+      - LGSM_BEPATH=""
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
+    volumes:
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
+

@@ -3,13 +3,13 @@
 #############################
 #
 # Working: Unsure
-# Tested in CI: No
+# Tested in CI: Yes
 #
-# Does this server have save files: Unsure
+# Does this server have save files: Yes
 # Where are save files saved: Unsure, somewhere in `serverfiles`
 #
 # Configuration:
-#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/wurmserver/_default.cfg
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/vhserver/_default.cfg
 #
 ############################
 
@@ -17,14 +17,20 @@ version: '3.3'
 volumes:
   serverfiles:
 services:
-  wurm:
+  valheim:
     image: joshhsoj1902/linuxgsm-docker:latest
-    # ports:
-    #   - 10027:10027/tcp
-    #   - 10027:10027/udp
+    ports:
+      - 2456:2456/tcp
+      - 2456:2456/udp
     environment:
-      - LGSM_GAMESERVERNAME=wurmserver
+      - LGSM_GAMESERVERNAME=vhserver
+      - LGSM_SERVERNAME="My Game Name"
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=2456
+      # World Name
+      - LGSM_GAMEWORLD
+      # Private=0 Public=1
+      - LGSM_PUBLIC=1
 
     # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:

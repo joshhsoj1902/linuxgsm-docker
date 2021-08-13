@@ -1,14 +1,34 @@
-version: '3.1'
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Yes
+# Tested in CI: Yes
+#
+# Does this server have save files: Yes
+# Where are save files saved: In the `serverfiles` volume, 3 main folders `world`, `world_nether`, `world_the_end`
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/mcserver/_default.cfg
+#  - https://github.com/joshhsoj1902/linuxgsm-docker/blob/master/config-game-template/Minecraft/server.properties.tmpl
+#
+############################
+
+version: '3.3'
+volumes:
+  serverfiles:
 services:
-  game:
+  minecraft:
     image: joshhsoj1902/linuxgsm-docker:latest
     # image: joshhsoj1902/linuxgsm-docker:0.2.0
     ports:
       - 25565:25565
+      - 28080:28080
     environment:
       ## Out of the box LGSM
       - LGSM_GAMESERVERNAME=mcserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=25565
       - LGSM_JAVARAM=512 # previously LGSM_JAVA_MEMORY
 
       ## server.properties https://minecraft.gamepedia.com/Server.properties
@@ -40,13 +60,14 @@ services:
       # - LGSM_RCON_PASSWORD
       # - LGSM_RCON_PORT
       - LGSM_IP=0.0.0.0
-      # - LGSM_PORT=25565
       # - LGSM_SNOOPER_ENABLED
       # - LGSM_SPAWN_ANIMALS
       # - LGSM_SPAWN_MONSTERS
       # - LGSM_SPAWN_NPCS
       # - LGSM_USE_NATIVE_TRANSPORT
       # - LGSM_VIEW_DISTANCE
+
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
-      - "/home/linuxgsm/linuxgsm/serverfiles"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
+

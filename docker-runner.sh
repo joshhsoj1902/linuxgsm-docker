@@ -33,12 +33,13 @@ if [ -n "$LGSM_PORT" ]; then
   fi
 fi
 
+./monitor &
+
 parse-env --env "LGSM_" > env.json
 
 rm -f INSTALLING.LOCK
 
-if [ -z "$LGSM_GAMESERVERNAME" ]; then
-  echo "Need to set LGSM_GAMESERVERNAME environment"
+if [ -z "$LGSM_GAMESERVERNAME" ]; then  echo "Need to set LGSM_GAMESERVERNAME environment"
   exit 1
 fi
 
@@ -139,8 +140,6 @@ sleep 30s
 #
 
 ./lgsm-gameserver details
-sleep 5s
-./lgsm-gameserver monitor
 
 if [ "$LGSM_CONSOLE_STDOUT" == "true" ]; then
   tail -F ~/linuxgsm/log/console/lgsm-gameserver-console.log &

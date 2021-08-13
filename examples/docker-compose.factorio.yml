@@ -1,12 +1,35 @@
-version: '3.1'
+#############################
+# SERVER STATUS
+#############################
+#
+# Working: Yes
+# Tested in CI: No
+#
+# Does this server have save files: Yes
+# Where are save files saved: LGSM_SAVE_PATH environment config. 
+#    I highly recommend commenting out the `serverfiles` volume, then uncommenting out the localpath mount.
+#    You'll need to update the path to a folder that exists on your local machine. Then you'll need to use single player 
+#    factorio to generate a world and then copy it to that folder.  
+#
+# Configuration:
+#  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/factserver/_default.cfg
+#  - https://github.com/joshhsoj1902/linuxgsm-docker/blob/master/config-game-template/Factorio/server-settings.json.tmpl
+#
+############################
+
+version: '3.3'
+volumes:
+  serverfiles:
 services:
-  game:
+  factorio:
     image: joshhsoj1902/linuxgsm-docker:latest
     ports:
       - 34197:34197/udp
     environment:
       - LGSM_GAMESERVERNAME=fctrserver
       - LGSM_UPDATEINSTALLSKIP=UPDATE
+      - LGSM_PORT=34197
+
       # If LGSM_SAVE_PATH is set, a world file MUST already exist at that path.
       - LGSM_SAVE_PATH=/home/linuxgsm/linuxgsm/serverfiles/saves/save1.zip
       - LGSM_SERVER_NAME="my server"
@@ -29,6 +52,7 @@ services:
       # - LGSM_ONLY_ADMINS_CAN_PAUSE_THE_GAME="true"
       # - LGSM_AUTOSAVE_ONLY_ON_SERVER="true"
 
+    # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
-      - "/home/linuxgsm/linuxgsm/logs"
-      # - "/home/linuxgsm/linuxgsm/serverfiles/saves"
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
+      # - /local/path:/home/linuxgsm/linuxgsm/serverfiles/saves
