@@ -14,8 +14,6 @@ GOARCH ?= $(shell go version | sed 's/^.*\ \([a-z0-9]*\)\/\([a-z0-9]*\)/\2/')
 build:
 	@docker build \
 		--compress \
-		--build-arg BUILD_DATE=$(BUILD_DATE) \
-		--build-arg VCS_REF=$(COMMIT) \
 		-f Dockerfile \
 		-t joshhsoj1902/linuxgsm-docker \
 		.
