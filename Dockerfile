@@ -174,14 +174,8 @@ RUN mkdir serverfiles/Saves
 # Creating this folder now works around https://github.com/docker/compose/issues/3270
 RUN mkdir Saves
 
-ARG BUILD_DATE
-ARG VCS_REF
 ARG OS=linux
 ARG ARCH=amd64
-
-LABEL org.opencontainers.image.created=$BUILD_DATE \
-    org.opencontainers.image.revision=$VCS_REF \
-    org.opencontainers.image.source="https://github.com/joshhsoj1902/linuxgsm-docker"
 
 HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD curl -f http://localhost:28080/live || exit 1
 
