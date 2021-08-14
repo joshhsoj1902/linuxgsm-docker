@@ -126,7 +126,7 @@ USER linuxgsm
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
-    && git checkout tags/v21.2.2 \
+    && git checkout tags/v21.2.5 \
     && rm -rf /home/linuxgsm/linuxgsm/.git \
     # Install GameConfigs
     && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
