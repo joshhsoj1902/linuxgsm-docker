@@ -67,6 +67,9 @@ services:
       # - LGSM_USE_NATIVE_TRANSPORT
       # - LGSM_VIEW_DISTANCE
 
+      ## extra configs
+      # - LGSM_STOP_ON_FAILURE=false # Useful for debugging
+
     # https://docs.docker.com/compose/compose-file/compose-file-v3/#volumes
     volumes:
       - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
