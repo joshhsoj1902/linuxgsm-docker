@@ -21,6 +21,16 @@ ENV LGSM_SCRIPT_STDOUT=true
 ENV LGSM_ALERT_STDOUT=true
 ENV LGSM_GAME_STDOUT=true
 
+RUN apt-get update && \
+    apt-get install -y \
+    curl
+
+# https://adoptium.net/releases.html?variant=openjdk16&jvmVariant=hotspot
+RUN mkdir -p /bin/java && \
+    curl -sL 'https://github.com/adoptium/temurin16-binaries/releases/download/jdk-16.0.2%2B7/OpenJDK16U-jdk_x64_linux_hotspot_16.0.2_7.tar.gz' | tar zxvf - -C /bin/java
+
+ENV PATH="/bin/jdk-16.0.2+7/bin:${PATH}"
+
 # Install dependencies and clean
 # RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
 RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
@@ -30,40 +40,39 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     dpkg --add-architecture i386 && \
     apt-get update && \
     apt-get install -y \
-        bc \
-        binutils \
-        bsdmainutils \
-        bzip2 \
-        curl \
-        default-jre \
-        expect \
-        file \
-        git \
-        gzip \
-        iproute2 \
-        jq \
-        lib32gcc1 \
-        lib32z1 \
-        libc6 \
-        libstdc++6 \
-        libstdc++6:i386 \
-        lib32stdc++6 \
-        libtinfo5:i386 \
-        libsdl2-2.0-0:i386 \
-        libstdc++5:i386 \
-        libgconf-2-4 \
-        mailutils \
-        net-tools \
-        netcat \
-        postfix \
-        python \
-        # steamcmd \
-        tmux \
-        telnet \
-        util-linux \
-        unzip \
-        wget \
-        xvfb \
+    bc \
+    binutils \
+    bsdmainutils \
+    bzip2 \
+    # openjdk-17-jdk \
+    expect \
+    file \
+    git \
+    gzip \
+    iproute2 \
+    jq \
+    lib32gcc1 \
+    lib32z1 \
+    libc6 \
+    libstdc++6 \
+    libstdc++6:i386 \
+    lib32stdc++6 \
+    libtinfo5:i386 \
+    libsdl2-2.0-0:i386 \
+    libstdc++5:i386 \
+    libgconf-2-4 \
+    mailutils \
+    net-tools \
+    netcat \
+    postfix \
+    python \
+    # steamcmd \
+    tmux \
+    telnet \
+    util-linux \
+    unzip \
+    wget \
+    xvfb \
     # Cleanup
     && apt-get -y autoremove \
     && apt-get -y clean \
@@ -104,11 +113,11 @@ COPY --from=hairyhenderson/gomplate:v3.9.0-alpine /bin/gomplate /usr/bin/gomplat
 
 # Add the linuxgsm user
 RUN adduser \
-      --disabled-login \
-      --disabled-password \
-      --shell /bin/bash \
-      --gecos "" \
-      linuxgsm \
+    --disabled-login \
+    --disabled-password \
+    --shell /bin/bash \
+    --gecos "" \
+    linuxgsm \
     && usermod -G tty linuxgsm \
     && chown -R linuxgsm:linuxgsm /home/linuxgsm
 
@@ -117,11 +126,11 @@ USER linuxgsm
 
 # Install LinuxGSM
 RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgsm/linuxgsm \
- && git checkout tags/v21.2.2 \
- && rm -rf /home/linuxgsm/linuxgsm/.git \
- # Install GameConfigs
- && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
- && rm -rf /home/linuxgsm/linuxgsm-config/.git
+    && git checkout tags/v21.2.2 \
+    && rm -rf /home/linuxgsm/linuxgsm/.git \
+    # Install GameConfigs
+    && git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
+    && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
 # Install LinuxGSM
 # RUN git clone "https://github.com/joshhsoj1902/LinuxGSM.git" /home/linuxgsm/linuxgsm \
@@ -135,11 +144,11 @@ RUN git clone "https://github.com/GameServerManagers/LinuxGSM.git" /home/linuxgs
 # RUN git clone "https://github.com/GameServerManagers/Game-Server-Configs.git" /home/linuxgsm/linuxgsm/lgsm/config-default/config-game/ \
 #  && rm -rf /home/linuxgsm/linuxgsm-config/.git
 
-USER root 
+USER root
 
 RUN find /home/linuxgsm/linuxgsm -type f -name "*.sh" -exec chmod u+x {} \; \
- && find /home/linuxgsm/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
- && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
+    && find /home/linuxgsm/linuxgsm -type f -name "*.py" -exec chmod u+x {} \; \
+    && chmod u+x /home/linuxgsm/linuxgsm/lgsm/functions/README.md
 
 ADD --chown=linuxgsm:linuxgsm common.cfg.tmpl ./lgsm/config-default/config-lgsm/
 ADD --chown=linuxgsm:linuxgsm docker-runner.sh ./
@@ -153,7 +162,7 @@ USER linuxgsm
 
 COPY --chown=linuxgsm:linuxgsm --from=builder /monitor monitor
 
-RUN mkdir logs serverfiles 
+RUN mkdir logs serverfiles
 
 # This dir shouldn't be used anymore, use Saves instead
 RUN mkdir serverfiles/Saves
@@ -168,8 +177,8 @@ ARG OS=linux
 ARG ARCH=amd64
 
 LABEL org.opencontainers.image.created=$BUILD_DATE \
-      org.opencontainers.image.revision=$VCS_REF \
-      org.opencontainers.image.source="https://github.com/joshhsoj1902/linuxgsm-docker"
+    org.opencontainers.image.revision=$VCS_REF \
+    org.opencontainers.image.source="https://github.com/joshhsoj1902/linuxgsm-docker"
 
 HEALTHCHECK --start-period=60s --timeout=300s --interval=60s --retries=3 CMD curl -f http://localhost:28080/live || exit 1
 
