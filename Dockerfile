@@ -29,7 +29,7 @@ RUN apt-get update && \
 RUN mkdir -p /bin/java && \
     curl -sL 'https://github.com/adoptium/temurin16-binaries/releases/download/jdk-16.0.2%2B7/OpenJDK16U-jdk_x64_linux_hotspot_16.0.2_7.tar.gz' | tar zxvf - -C /bin/java
 
-ENV PATH="/bin/jdk-16.0.2+7/bin:${PATH}"
+ENV PATH="/bin/java/jdk-16.0.2+7/bin:${PATH}"
 
 # Install dependencies and clean
 # RUN echo steam steam/question select "I AGREE" | debconf-set-selections && \
@@ -44,7 +44,8 @@ RUN curl -sL https://deb.nodesource.com/setup_12.x | bash - && \
     binutils \
     bsdmainutils \
     bzip2 \
-    # openjdk-17-jdk \
+    # This default-jre isn't used, The above jdk is used instead. linuxGSM still looks for this to be installed
+    default-jre \
     expect \
     file \
     git \
