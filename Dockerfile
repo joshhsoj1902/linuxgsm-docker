@@ -21,6 +21,8 @@ ENV LGSM_SCRIPT_STDOUT=true
 ENV LGSM_ALERT_STDOUT=true
 ENV LGSM_GAME_STDOUT=true
 
+ENV LGSM_STOP_ON_FAILURE=true
+
 RUN apt-get update && \
     apt-get install -y \
     curl
