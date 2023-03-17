@@ -62,6 +62,7 @@ Another option is to change how the files are saved. In the compose file if you 
 The "left" side of that can be updated to a local folder on your computer. The files that the server writes will now be saved there instead. Since the data is now stored outside of docker it's a little easier to manage and backup.
 
 
+
 [circle-image]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master.svg?style=svg
 [circle-url]: https://circleci.com/gh/joshhsoj1902/linuxgsm-docker/tree/master
 [lgsm-config]: https://github.com/GameServerManagers/LinuxGSM/tree/master/lgsm/config-default/config-lgsm
