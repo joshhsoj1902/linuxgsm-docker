@@ -3,7 +3,7 @@ version: 2.1
 executors:
   docker-publisher:
     environment:
-      IMAGE_NAME: joshhsoj1902/circleci-build-image
+      IMAGE_NAME: joshhsoj1902/linuxgsm-docker
     docker:
       - image: joshhsoj1902/circleci-build-image:latest
 
@@ -31,20 +31,53 @@ jobs:
             - Makefile
             - scripts
 
+  legacy-publish-latest:
+    executor: docker-publisher
+    steps:
+      - attach_workspace:
+          at: /tmp/workspace
+      - setup_remote_docker
+      - run:
+          name: Load archived Docker image
+          command: docker load -i /tmp/workspace/legacy-images.tar
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            IMAGE_TAG="0.0.${CIRCLE_BUILD_NUM}"
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
+            docker push $IMAGE_NAME:latest
+            docker push $IMAGE_NAME:$IMAGE_TAG
+  legacy-publish-tag:
+    executor: docker-publisher
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: "Build image"
+          command: |
+            docker pull $IMAGE_NAME:latest
+            make build
+      - run:
+          name: Publish Docker Image to Docker Hub
+          command: |
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+            IMAGE_TAG=${CIRCLE_TAG/v/''}
+            docker tag $IMAGE_NAME:latest $IMAGE_NAME:$IMAGE_TAG
+            docker push $IMAGE_NAME:latest
+            docker push $IMAGE_NAME:$IMAGE_TAG
+
 workflows:
   version: 2
   build_and_test_legacy:
     jobs:
       - legacy-setup
-      # - docker/build:
-      #     context: org-global
-      #     tag: latest
-      #     requires:
-      #       - setup
       - ccidocker/publish:
           name: legacy-build
           executor:  docker-publisher
-          image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
+          image: $IMAGE_NAME
+          tag: latest
+          cache_from: $IMAGE_NAME:latest
           dockerfile: legacy.Dockerfile
           remote-docker-version: 20.10.12
           use-buildkit: true
@@ -52,7 +85,8 @@ workflows:
           deploy: false
           after_build:
             - run: mkdir -p /tmp/docker
-            - run: docker save $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -o /tmp/workspace/legacy-images.tar
+            - run: docker image ls
+            - run: docker save $IMAGE_NAME:latest -o /tmp/workspace/legacy-images.tar
             - persist_to_workspace:
                 root: /tmp/workspace
                 paths:
@@ -265,4 +299,24 @@ workflows:
       #           tries: 60
       #     requires:
       #       - compose-test
+
+      - legacy-publish-latest:
+          requires:
+            - legacy-valheim-compose
+            - legacy-wet-compose
+            - legacy-mohaa-compose
+            - legacy-gmod-compose
+            - legacy-css-compose
+            - legacy-csgo-compose
+            - legacy-ark-compose
+            - legacy-7dtd-compose
+          filters:
+            branches:
+              only: master
+      - legacy-publish-tag:
+          filters:
+            tags:
+              only: /^v.*/
+            branches:
+              ignore: /.*/
 
