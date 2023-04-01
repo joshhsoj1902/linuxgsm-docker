@@ -77,97 +77,97 @@ workflows:
           requires:
             - setup
             - build
-    # ### 7dtd ###
-    #   - docker/container-health:
-    #       name: 7dtd-compose
-    #       composeFile: examples/docker-compose.7dtd.yml
-    #       command: docker-compose -p 7dtd -f /tmp/workspace/examples/docker-compose.7dtd.yml up
-    #       service: 7dtd
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml -p 7dtd
-    #             service: 7dtd
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 30
-    #             tries: 30
-    #       requires:
-    #         - compose-test
-    # ### ARK ###
-    #   - docker/container-health:
-    #       name: ark-compose
-    #       composeFile: examples/docker-compose.ark.yml
-    #       command: docker-compose -p ark -f /tmp/workspace/examples/docker-compose.ark.yml up
-    #       service: ark
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml -p ark
-    #             service: ark
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 30
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### CSGO ###
-    #   - docker/container-health:
-    #       name: csgo-compose
-    #       composeFile: examples/docker-compose.csgo.yml
-    #       command: docker-compose -p csgo -f /tmp/workspace/examples/docker-compose.csgo.yml up
-    #       service: csgo
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml -p csgo
-    #             service: csgo
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 30
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### CSS ###
-    #   - docker/container-health:
-    #       name: css-compose
-    #       composeFile: examples/docker-compose.css.yml
-    #       command: docker-compose -p css -f /tmp/workspace/examples/docker-compose.css.yml up
-    #       service: css
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.css.yml -p css
-    #             service: css
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 5
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### GMOD ###
-    #   - docker/container-health:
-    #       name: gmod-compose
-    #       composeFile: examples/docker-compose.gmod.yml
-    #       command: docker-compose -p gmod -f /tmp/workspace/examples/docker-compose.gmod.yml up
-    #       service: gmod
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml -p gmod
-    #             service: gmod
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 15
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### INSS ###
-    #   # - docker/container-health:
-    #   #     name: inss-compose
-    #   #     composeFile: examples/docker-compose.inss.yml
-    #   #     command: docker-compose -p inss -f /tmp/workspace/examples/docker-compose.inss.yml up
-    #   #     service: inss
-    #   #     after_test:
-    #   #       - docker/compose-exec-retry:
-    #   #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml -p inss
-    #   #           service: inss
-    #   #           command: curl -f http://localhost:28080/ready
-    #   #           sleep: 30
-    #   #           tries: 60
-    #   #     requires:
-    #   #       - swarm-test
-    #   #       - compose-test
+    ### 7dtd ###
+      - docker/container-health:
+          name: 7dtd-compose
+          composeFile: examples/docker-compose.7dtd.yml
+          command: docker-compose -p 7dtd -f /tmp/workspace/examples/docker-compose.7dtd.yml up
+          service: 7dtd
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.7dtd.yml -p 7dtd
+                service: 7dtd
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 30
+          requires:
+            - compose-test
+    ### ARK ###
+      - docker/container-health:
+          name: ark-compose
+          composeFile: examples/docker-compose.ark.yml
+          command: docker-compose -p ark -f /tmp/workspace/examples/docker-compose.ark.yml up
+          service: ark
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.ark.yml -p ark
+                service: ark
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - compose-test
+    ### CSGO ###
+      - docker/container-health:
+          name: csgo-compose
+          composeFile: examples/docker-compose.csgo.yml
+          command: docker-compose -p csgo -f /tmp/workspace/examples/docker-compose.csgo.yml up
+          service: csgo
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.csgo.yml -p csgo
+                service: csgo
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - compose-test
+    ### CSS ###
+      - docker/container-health:
+          name: css-compose
+          composeFile: examples/docker-compose.css.yml
+          command: docker-compose -p css -f /tmp/workspace/examples/docker-compose.css.yml up
+          service: css
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.css.yml -p css
+                service: css
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
+          requires:
+            - compose-test
+    ### GMOD ###
+      - docker/container-health:
+          name: gmod-compose
+          composeFile: examples/docker-compose.gmod.yml
+          command: docker-compose -p gmod -f /tmp/workspace/examples/docker-compose.gmod.yml up
+          service: gmod
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.gmod.yml -p gmod
+                service: gmod
+                command: curl -f http://localhost:28080/ready
+                sleep: 15
+                tries: 60
+          requires:
+            - compose-test
+    ### INSS ###
+      # - docker/container-health:
+      #     name: inss-compose
+      #     composeFile: examples/docker-compose.inss.yml
+      #     command: docker-compose -p inss -f /tmp/workspace/examples/docker-compose.inss.yml up
+      #     service: inss
+      #     after_test:
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.inss.yml -p inss
+      #           service: inss
+      #           command: curl -f http://localhost:28080/ready
+      #           sleep: 30
+      #           tries: 60
+      #     requires:
+      #       - swarm-test
+      #       - compose-test
     # ### Minecraft ###
     #   - docker/container-health:
     #       name: minecraft-compose
@@ -183,81 +183,81 @@ workflows:
     #             tries: 60
     #       requires:
     #         - compose-test
-    # ### Medal of Honor: Allied Assault ###
-    #   - docker/container-health:
-    #       name: mohaa-compose
-    #       composeFile: examples/docker-compose.mohaa.yml
-    #       command: docker-compose -p mohaa -f /tmp/workspace/examples/docker-compose.mohaa.yml up
-    #       service: mohaa
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml -p mohaa
-    #             service: mohaa
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 30
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### Pstbs ###
-    #   # - docker/container-health:
-    #   #     name: pstbs-compose
-    #   #     composeFile: examples/docker-compose.pstbs.yml
-    #   #     command: docker-compose -p pstbs -f /tmp/workspace/examples/docker-compose.pstbs.yml up
-    #   #     service: pstbs
-    #   #     after_test:
-    #   #       - docker/compose-exec-retry:
-    #   #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml -p pstbs
-    #   #           service: pstbs
-    #   #           command: curl -f http://localhost:28080/ready
-    #   #           sleep: 5
-    #   #           tries: 60
-    #   #     requires:
-    #   #       - compose-test
+    ### Medal of Honor: Allied Assault ###
+      - docker/container-health:
+          name: mohaa-compose
+          composeFile: examples/docker-compose.mohaa.yml
+          command: docker-compose -p mohaa -f /tmp/workspace/examples/docker-compose.mohaa.yml up
+          service: mohaa
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.mohaa.yml -p mohaa
+                service: mohaa
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - compose-test
+    ### Pstbs ###
+      # - docker/container-health:
+      #     name: pstbs-compose
+      #     composeFile: examples/docker-compose.pstbs.yml
+      #     command: docker-compose -p pstbs -f /tmp/workspace/examples/docker-compose.pstbs.yml up
+      #     service: pstbs
+      #     after_test:
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.pstbs.yml -p pstbs
+      #           service: pstbs
+      #           command: curl -f http://localhost:28080/ready
+      #           sleep: 5
+      #           tries: 60
+      #     requires:
+      #       - compose-test
 
 
-    # ### Wet ###
-    #   - docker/container-health:
-    #       name: wet-compose
-    #       composeFile: examples/docker-compose.wet.yml
-    #       command: docker-compose -p wet -f /tmp/workspace/examples/docker-compose.wet.yml up
-    #       service: wet
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml -p wet
-    #             service: wet
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 5
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### VALHEIM ###
-    #   - docker/container-health:
-    #       name: valheim-compose
-    #       composeFile: examples/docker-compose.valheim.yml
-    #       command: docker-compose -p valheim -f /tmp/workspace/examples/docker-compose.valheim.yml up
-    #       service: valheim
-    #       after_test:
-    #         - docker/compose-exec-retry:
-    #             composeFilePath: /tmp/workspace/examples/docker-compose.valheim.yml -p valheim
-    #             service: valheim
-    #             command: curl -f http://localhost:28080/ready
-    #             sleep: 5
-    #             tries: 60
-    #       requires:
-    #         - compose-test
-    # ### Wurm ###
-    #   # - docker/container-health:
-    #   #     name: wurm-compose
-    #   #     composeFile: examples/docker-compose.wurm.yml
-    #   #     command: docker-compose -p wurm -f /tmp/workspace/examples/docker-compose.wurm.yml up
-    #   #     service: wurm
-    #   #     after_test:
-    #   #       - docker/compose-exec-retry:
-    #   #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml -p wurm
-    #   #           service: wurm
-    #   #           command: curl -f http://localhost:28080/ready
-    #   #           sleep: 5
-    #   #           tries: 60
-    #   #     requires:
-    #   #       - compose-test
+    ### Wet ###
+      - docker/container-health:
+          name: wet-compose
+          composeFile: examples/docker-compose.wet.yml
+          command: docker-compose -p wet -f /tmp/workspace/examples/docker-compose.wet.yml up
+          service: wet
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.wet.yml -p wet
+                service: wet
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
+          requires:
+            - compose-test
+    ### VALHEIM ###
+      - docker/container-health:
+          name: valheim-compose
+          composeFile: examples/docker-compose.valheim.yml
+          command: docker-compose -p valheim -f /tmp/workspace/examples/docker-compose.valheim.yml up
+          service: valheim
+          after_test:
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.valheim.yml -p valheim
+                service: valheim
+                command: curl -f http://localhost:28080/ready
+                sleep: 5
+                tries: 60
+          requires:
+            - compose-test
+    ### Wurm ###
+      # - docker/container-health:
+      #     name: wurm-compose
+      #     composeFile: examples/docker-compose.wurm.yml
+      #     command: docker-compose -p wurm -f /tmp/workspace/examples/docker-compose.wurm.yml up
+      #     service: wurm
+      #     after_test:
+      #       - docker/compose-exec-retry:
+      #           composeFilePath: /tmp/workspace/examples/docker-compose.wurm.yml -p wurm
+      #           service: wurm
+      #           command: curl -f http://localhost:28080/ready
+      #           sleep: 5
+      #           tries: 60
+      #     requires:
+      #       - compose-test
 
