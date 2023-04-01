@@ -1,7 +1,3 @@
-defaults: &defaults
-    working_directory: ~/build
-    docker:
-      - image: joshhsoj1902/circleci-build-image:3.0.121
 version: 2.1
 
 executors:
@@ -16,8 +12,8 @@ orbs:
     ccidocker: circleci/docker@2.2.0
 
 jobs:
-  setup:
-    <<: *defaults
+  legacy-setup:
+    executor: docker-publisher
     steps:
       - checkout
       - run:
@@ -37,16 +33,16 @@ jobs:
 
 workflows:
   version: 2
-  build_and_test:
+  build_and_test_legacy:
     jobs:
-      - setup
+      - legacy-setup
       # - docker/build:
       #     context: org-global
       #     tag: latest
       #     requires:
       #       - setup
       - ccidocker/publish:
-          name: build
+          name: legacy-build
           executor:  docker-publisher
           image: $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME
           dockerfile: legacy.Dockerfile
@@ -56,14 +52,15 @@ workflows:
           deploy: false
           after_build:
             - run: mkdir -p /tmp/docker
-            - run: docker save $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -o /tmp/workspace/images.tar
+            - run: docker save $CIRCLE_PROJECT_USERNAME/$CIRCLE_PROJECT_REPONAME -o /tmp/workspace/legacy-images.tar
             - persist_to_workspace:
                 root: /tmp/workspace
                 paths:
-                  - images.tar
+                  - legacy-images.tar
 
       - docker/container-health:
-          name: compose-test
+          imageFile: legacy-images.tar
+          name: legacy-compose-test
           composeFile: docker-compose.citest.yml
           command: docker-compose -p citest -f /tmp/workspace/docker-compose.citest.yml up
           service: css
@@ -75,11 +72,12 @@ workflows:
                 sleep: 15
                 tries: 60
           requires:
-            - setup
-            - build
+            - legacy-setup
+            - legacy-build
     ### 7dtd ###
       - docker/container-health:
-          name: 7dtd-compose
+          name: legacy-7dtd-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.7dtd.yml
           command: docker-compose -p 7dtd -f /tmp/workspace/examples/docker-compose.7dtd.yml up
           service: 7dtd
@@ -91,10 +89,11 @@ workflows:
                 sleep: 30
                 tries: 30
           requires:
-            - compose-test
+            - legacy-compose-test
     ### ARK ###
       - docker/container-health:
-          name: ark-compose
+          name: legacy-ark-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.ark.yml
           command: docker-compose -p ark -f /tmp/workspace/examples/docker-compose.ark.yml up
           service: ark
@@ -106,10 +105,11 @@ workflows:
                 sleep: 30
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### CSGO ###
       - docker/container-health:
-          name: csgo-compose
+          name: legacy-csgo-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.csgo.yml
           command: docker-compose -p csgo -f /tmp/workspace/examples/docker-compose.csgo.yml up
           service: csgo
@@ -121,10 +121,11 @@ workflows:
                 sleep: 30
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### CSS ###
       - docker/container-health:
-          name: css-compose
+          name: legacy-css-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.css.yml
           command: docker-compose -p css -f /tmp/workspace/examples/docker-compose.css.yml up
           service: css
@@ -136,10 +137,11 @@ workflows:
                 sleep: 5
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### GMOD ###
       - docker/container-health:
-          name: gmod-compose
+          name: legacy-gmod-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.gmod.yml
           command: docker-compose -p gmod -f /tmp/workspace/examples/docker-compose.gmod.yml up
           service: gmod
@@ -151,7 +153,7 @@ workflows:
                 sleep: 15
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### INSS ###
       # - docker/container-health:
       #     name: inss-compose
@@ -185,7 +187,8 @@ workflows:
     #         - compose-test
     ### Medal of Honor: Allied Assault ###
       - docker/container-health:
-          name: mohaa-compose
+          name: legacy-mohaa-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.mohaa.yml
           command: docker-compose -p mohaa -f /tmp/workspace/examples/docker-compose.mohaa.yml up
           service: mohaa
@@ -197,7 +200,7 @@ workflows:
                 sleep: 30
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### Pstbs ###
       # - docker/container-health:
       #     name: pstbs-compose
@@ -217,7 +220,8 @@ workflows:
 
     ### Wet ###
       - docker/container-health:
-          name: wet-compose
+          name: legacy-wet-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.wet.yml
           command: docker-compose -p wet -f /tmp/workspace/examples/docker-compose.wet.yml up
           service: wet
@@ -229,10 +233,11 @@ workflows:
                 sleep: 5
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### VALHEIM ###
       - docker/container-health:
-          name: valheim-compose
+          name: legacy-valheim-compose
+          imageFile: legacy-images.tar
           composeFile: examples/docker-compose.valheim.yml
           command: docker-compose -p valheim -f /tmp/workspace/examples/docker-compose.valheim.yml up
           service: valheim
@@ -244,7 +249,7 @@ workflows:
                 sleep: 5
                 tries: 60
           requires:
-            - compose-test
+            - legacy-compose-test
     ### Wurm ###
       # - docker/container-health:
       #     name: wurm-compose
