@@ -14,7 +14,7 @@ GOARCH ?= $(shell go version | sed 's/^.*\ \([a-z0-9]*\)\/\([a-z0-9]*\)/\2/')
 build:
 	@docker build \
 		--compress \
-		-f Dockerfile \
+		-f legacy.Dockerfile \
 		-t joshhsoj1902/linuxgsm-docker \
 		.
 	docker tag joshhsoj1902/linuxgsm-docker:latest joshhsoj1902/linuxgsm-docker:local

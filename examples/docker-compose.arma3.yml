@@ -34,7 +34,7 @@ services:
       # directory serverfiles/mods/@cba_a3.  Load several mods as:
       # mods="mods/@ace\;mods/@acex\;mods/@cba_a3"
       - LGSM_MODS=""
-  
+
       ## Server-side Mods
       - LGSM_SERVERMODS=""
 

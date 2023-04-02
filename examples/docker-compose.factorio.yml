@@ -6,10 +6,10 @@
 # Tested in CI: No
 #
 # Does this server have save files: Yes
-# Where are save files saved: LGSM_SAVE_PATH environment config. 
+# Where are save files saved: LGSM_SAVE_PATH environment config.
 #    I highly recommend commenting out the `serverfiles` volume, then uncommenting out the localpath mount.
-#    You'll need to update the path to a folder that exists on your local machine. Then you'll need to use single player 
-#    factorio to generate a world and then copy it to that folder.  
+#    You'll need to update the path to a folder that exists on your local machine. Then you'll need to use single player
+#    factorio to generate a world and then copy it to that folder.
 #
 # Configuration:
 #  - https://github.com/GameServerManagers/LinuxGSM/blob/master/lgsm/config-default/config-lgsm/factserver/_default.cfg
