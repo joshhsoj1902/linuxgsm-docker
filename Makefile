@@ -35,4 +35,31 @@ build-monitor:
 test:
 	./scripts/test-gomplate.sh
 
+
+css:
+	@docker build \
+		--compress \
+		-f Dockerfiles/base.Dockerfile \
+		-t joshhsoj1902/linuxgsm-docker:base-latest \
+		.
+	@docker build \
+		--compress \
+		-f Dockerfiles/cssserver.Dockerfile \
+		-t joshhsoj1902/linuxgsm-docker:cssserver-latest \
+		.
+	docker-compose -f docker-compose.cssserver.yml up
+
+gmod:
+	@docker build \
+		--compress \
+		-f Dockerfiles/base.Dockerfile \
+		-t joshhsoj1902/linuxgsm-docker:base-latest \
+		.
+	@docker build \
+		--compress \
+		-f Dockerfiles/gmodserver.Dockerfile \
+		-t joshhsoj1902/linuxgsm-docker:gmodserver-latest \
+		.
+	docker-compose -f docker-compose.gmodserver.yml up
+
 .PHONY: build

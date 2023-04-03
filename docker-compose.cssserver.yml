@@ -1,0 +1,20 @@
+version: '3.1'
+volumes:
+  serverfiles:
+services:
+  game:
+    image: joshhsoj1902/linuxgsm-docker:cssserver-latest
+    environment:
+      - LGSM_UPDATEINSTALLSKIP=UPDATE
+      # - LGSM_PORT=20000
+    # volumes:
+    #   - "/home/linuxgsm/linuxgsm/logs"
+    #   - "/home/linuxgsm/linuxgsm/serverfiles/"
+    ports:
+      - 27015:27015/tcp
+      - 27015:27015/udp
+      - 27020:27020/udp
+    volumes:
+      - serverfiles:/home/linuxgsm/linuxgsm/serverfiles
+
+
