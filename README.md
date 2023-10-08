@@ -2,6 +2,8 @@
 
 [![CircleCI][circle-image]][circle-url]
 
+**NOTE**: This repo will likely be archived soon. LinuxGSM now has beta support for docker as seen [here](https://github.com/GameServerManagers/docker-gameserver). I've been working on extending it [here](https://github.com/joshhsoj1902/docker-linuxgsm-scripts). Anyone looking for a starting point for running LinuxGSM in a docker container, this repo isn't a good place to start anymore.
+
 Unoffical Dockerized version of the [Linux Game Server Manager][lgsm-home] project
 ## Usage
 
