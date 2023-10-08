@@ -8,7 +8,7 @@ WORKDIR /
 
 RUN make build-monitor
 
-FROM ubuntu:18.04
+FROM ubuntu:22.04
 
 WORKDIR /home/linuxgsm/linuxgsm
 
