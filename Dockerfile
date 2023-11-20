@@ -1,4 +1,3 @@
-# Operator
 FROM golang:1.16.0 AS builder
 RUN mkdir -p /src
 ADD Makefile /
@@ -8,7 +7,7 @@ WORKDIR /
 
 RUN make build-monitor
 
-FROM ubuntu:18.04
+FROM ubuntu:20.04
 
 WORKDIR /home/linuxgsm/linuxgsm
 
