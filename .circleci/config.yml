@@ -142,8 +142,8 @@ workflows:
                 tries: 60
           requires:
             - swarm-test
-            - compose-test  
-    ### GMOD ###    
+            - compose-test
+    ### GMOD ####
       - docker/container-health:
           name: gmod-compose
           composeFile: examples/docker-compose.gmod.yml
@@ -159,6 +159,23 @@ workflows:
           requires:
             - swarm-test
             - compose-test
+    ### L4D2 ###
+      - docker/container-health:
+          name: l4d2-compose
+          composeFile: examples/docker-compose.l4d2.yml
+          command: docker-compose -f /tmp/workspace/examples/docker-compose.l4d2.yml up
+          service: game
+          after_test: 
+            - docker/compose-exec-retry:
+                composeFilePath: /tmp/workspace/examples/docker-compose.l4d2.yml
+                service: game
+                command: curl -f http://localhost:28080/ready
+                sleep: 30
+                tries: 60
+          requires:
+            - swarm-test
+            - compose-test
+
     ### INSS ###     
       # - docker/container-health:
       #     name: inss-compose
