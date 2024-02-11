@@ -1,7 +1,7 @@
 defaults: &defaults 
     working_directory: ~/build
     docker: 
-      - image: joshhsoj1902/circleci-build-image:2.1.0
+      - image: joshhsoj1902/circleci-build-image:3.3.1
 swarm_test: &swarm_test
     name: Start container & run tests
     command: | 
