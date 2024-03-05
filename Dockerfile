@@ -1,5 +1,5 @@
 # Operator
-FROM golang:1.16.0 AS builder
+FROM golang:1.22.1 AS builder
 RUN mkdir -p /src
 ADD Makefile /
 
