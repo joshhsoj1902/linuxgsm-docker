@@ -13,7 +13,7 @@ swarm_test: &swarm_test
 version: 2.1
 
 orbs:
-    docker: joshhsoj1902/docker@0.20.0
+    docker: joshhsoj1902/docker@0.21.0
 
 jobs:
   setup:
